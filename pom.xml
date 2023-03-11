@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+<!--		<version>2.6.1</version>-->
+<!--		<version>3.0.4</version>-->
+		<version>2.7.9</version>
+<!--		<version>3.0.0</version>-->
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.ascendingdc.training</groupId>
+	<artifactId>project2020</artifactId>
+
+<!--	<packaging>war</packaging>-->
+
+	<version>0.0.1-SNAPSHOT</version>
+	<name>project2020</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+<!--		<flyway.version>6.0.4</flyway.version>-->
+<!--		<hibernate.version>5.4.3.Final</hibernate.version>-->
+<!--		<spring-framework.version>5.2.4.RELEASE</spring-framework.version>-->
+		<flyway.version>9.9.0</flyway.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+
+		<!-- Spring and Transactions -->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework</groupId>-->
+<!--			<artifactId>spring-context</artifactId>-->
+<!--			<version>${spring-framework.version}</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework</groupId>-->
+<!--			<artifactId>spring-tx</artifactId>-->
+<!--			<version>${spring-framework.version}</version>-->
+<!--		</dependency>-->
+
+		<!-- Spring ORM support -->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework</groupId>-->
+<!--			<artifactId>spring-orm</artifactId>-->
+<!--			<version>${spring-framework.version}</version>-->
+<!--		</dependency>-->
+
+		<!-- fasterxml.jsckson.core -->
+<!--		<dependency>-->
+<!--			<groupId>com.fasterxml.jackson.core</groupId>-->
+<!--			<artifactId>jackson-annotations</artifactId>-->
+<!--			<version>2.10.0</version>-->
+<!--		</dependency>-->
+
+		<!-- Hibernate -->
+<!--		<dependency>-->
+<!--			<groupId>org.hibernate</groupId>-->
+<!--			<artifactId>hibernate-entitymanager</artifactId>-->
+<!--			<version>${hibernate.version}</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.hibernate</groupId>-->
+<!--			<artifactId>hibernate-core</artifactId>-->
+<!--			<version>${hibernate.version}</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>com.github.v-ladynev</groupId>
+			<artifactId>fluent-hibernate-core</artifactId>
+			<version>0.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+<!--			<scope>provided</scope>-->
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>${flyway.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+<!--			<optional>true</optional>-->
+		</dependency>
+
+		<!-- Apache Commons -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.10</version>
+		</dependency>
+
+		<!-- Database -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.8</version>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>HelloWorld</finalName>
+		<plugins>
+			<!-- Package as an executable jar/war -->
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>${flyway.version}</version>
+<!--				<configuration>-->
+<!--					<driver>org.h2.Driver</driver>-->
+<!--					<url>jdbc:h2:mem:testdb</url>-->
+<!--&lt;!&ndash;					<url>jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</url>&ndash;&gt;-->
+<!--&lt;!&ndash;					<url>jdbc:h2:~/testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</url>&ndash;&gt;-->
+<!--					<user>sa</user>-->
+<!--					<password></password>-->
+<!--					<schemas>-->
+<!--						<schema>public</schema>-->
+<!--					</schemas>-->
+<!--					<cleanDisabled>false</cleanDisabled>-->
+<!--				</configuration>-->
+<!--				<configuration>-->
+<!--					<driver>org.postgresql.Driver</driver>-->
+<!--					<url>jdbc:postgresql://localhost:5430/ascending-14</url>-->
+<!--					<user>admin</user>-->
+<!--					<password>password</password>-->
+<!--					<schemas>-->
+<!--						<schema>public</schema>-->
+<!--					</schemas>-->
+<!--					<cleanDisabled>false</cleanDisabled>-->
+<!--				</configuration>-->
+				<configuration>
+					<driver>org.postgresql.Driver</driver>
+					<url>jdbc:postgresql://localhost:5432/pilot</url>
+					<user>admin</user>
+					<password>password</password>
+					<schemas>
+						<schema>public</schema>
+					</schemas>
+					<cleanDisabled>false</cleanDisabled>
+				</configuration>
+			</plugin>
+
+
+
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-war-plugin</artifactId>-->
+<!--				<version>3.3.1</version>-->
+<!--&lt;!&ndash;				<configuration>&ndash;&gt;-->
+<!--&lt;!&ndash;					<webResources>&ndash;&gt;-->
+<!--&lt;!&ndash;						<resource>&ndash;&gt;-->
+<!--&lt;!&ndash;							<directory>additional_resources</directory>&ndash;&gt;-->
+<!--&lt;!&ndash;						</resource>&ndash;&gt;-->
+<!--&lt;!&ndash;					</webResources>&ndash;&gt;-->
+<!--&lt;!&ndash;				</configuration>&ndash;&gt;-->
+<!--			</plugin>-->
+		</plugins>
+	</build>
+
+</project>
