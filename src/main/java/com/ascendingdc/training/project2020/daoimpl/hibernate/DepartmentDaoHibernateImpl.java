@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class DepartmentDaoHibernateImpl implements DepartmentDao {
@@ -73,7 +74,7 @@ public class DepartmentDaoHibernateImpl implements DepartmentDao {
             //Query<Department> query = session.createQuery(hql);
             //query.setParameter("deptName1", deptName);
             //deletedCount = query.executeUpdate();
-            Department dept = getDepartmentByName(deptName);
+            Department dept = getDepartmentEagerByName(deptName);
             session.delete(dept);
             transaction.commit();
             session.close();
@@ -204,7 +205,36 @@ public class DepartmentDaoHibernateImpl implements DepartmentDao {
     }
 
     @Override
-    public Department getDepartmentByName(String deptName) {
+    public Department getDepartmentLazyByName(String deptName) {
+        if (deptName == null) return null;
+        String hql = "FROM Department as dept where lower(dept.name) = :name";
+        //String hql = "FROM Department as dept where lower(dept.name) = :name";
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Department> query = session.createQuery(hql);
+//            query.setParameter("name", deptName.toLowerCase());
+            query.setParameter("name", deptName);
+
+            return query.uniqueResult();
+        }
+    }
+
+    @Override
+    public Department getDepartmentLazyByDeptId(Long id) {
+        if (id == null) return null;
+        String hql = "FROM Department as dept where dept.id = :id";
+        //String hql = "FROM Department as dept where lower(dept.name) = :name";
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Department> query = session.createQuery(hql);
+            query.setParameter("id", id);
+
+            return query.uniqueResult();
+        }
+    }
+
+    @Override
+    public Department getDepartmentEagerByName(String deptName) {
 
         if (deptName == null) return null;
         String hql = "FROM Department as dept left join fetch dept.employees as em left join " +
@@ -235,26 +265,31 @@ public class DepartmentDaoHibernateImpl implements DepartmentDao {
     }
 
     @Override
-    public List<Object[]> getDepartmentAndEmployeesByDeptName(String deptName) {
+    public Department getDepartmentAndEmployeesByDeptName(String deptName) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
 //        String hql = "FROM Department as dept left join fetch dept.employees as em left join fetch em.accounts";
 //        String hql = "From Department";
         String hql = "select distinct dept From Department as dept left join fetch dept.employees where dept.name=:name";
         Query query = session.createQuery(hql);
-        query.setParameter("name", deptName.toLowerCase());
-        List<Object[]> resultList = query.list();
+//        query.setParameter("name", deptName.toLowerCase());
+        query.setParameter("name", deptName);
 
-        for (Object[] obj : resultList) {
-            logger.debug(((Department)obj[0]).toString());
-            logger.debug(((Employee)obj[1]).toString());
-        }
+        Department retrievedDepartment = null;
+        Optional<Department> departmentOptional = query.uniqueResultOptional();
+        if(departmentOptional.isPresent())
+            retrievedDepartment = departmentOptional.get();
 
-        return resultList;
+//        for (Object[] obj : resultList) {
+//            logger.debug("===###@@@ Department from Object array = {}", ((Department)obj[0]).toString());
+//            logger.debug("===###@Optional<Department> departmentOptional @@ Employee from Object array = {}", ((Employee)obj[1]).toString());
+//        }
+
+        return retrievedDepartment;
     }
 
     @Override
-    public List<Object[]> getDepartmentAndEmployeesAndAccounts(String deptName) {
+    public Department getDepartmentAndEmployeesAndAccounts(String deptName) {
         if (deptName == null) return null;
 
         String hql = "FROM Department as dept " +
@@ -262,40 +297,23 @@ public class DepartmentDaoHibernateImpl implements DepartmentDao {
                 "left join ems.accounts as acnts " +
                 "where lower(dept.name) = :name";
 
+        Department retrievedDepartment = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery(hql);
-            query.setParameter("name", deptName.toLowerCase());
+//            query.setParameter("name", deptName.toLowerCase());
+            query.setParameter("name", deptName);
 
-            List<Object[]> resultList = query.list();
+            Optional<Department> departmentOptional = query.uniqueResultOptional();
+            if(departmentOptional.isPresent())
+                retrievedDepartment = departmentOptional.get();
+//            for (Object[] obj : resultList) {
+//                logger.debug(((Department) obj[0]).toString());
+//                logger.debug(((Employee) obj[1]).toString());
+//                logger.debug(((Account) obj[2]).toString());
+//            }
 
-            for (Object[] obj : resultList) {
-                logger.debug(((Department) obj[0]).toString());
-                logger.debug(((Employee) obj[1]).toString());
-                logger.debug(((Account) obj[2]).toString());
-            }
-
-            return resultList;
+            return retrievedDepartment;
         }
     }
 
-    @Override
-    public List<Object[]> getDepartmentAndEmployees(String deptName) {
-        if (deptName == null) return null;
-
-        String hql = "FROM Department as dept left join dept.employees where lower(dept.name) = :name";
-
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query query = session.createQuery(hql);
-            query.setParameter("name", deptName.toLowerCase());
-
-            List<Object[]> resultList = query.list();
-
-            for (Object[] obj : resultList) {
-                logger.debug(((Department)obj[0]).toString());
-                logger.debug(((Employee)obj[1]).toString());
-            }
-
-            return resultList;
-        }
-    }
 }

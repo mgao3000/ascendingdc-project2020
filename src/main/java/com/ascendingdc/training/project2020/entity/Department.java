@@ -42,9 +42,10 @@ public class Department {
  //   @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 ///    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
-//    @OneToMany(mappedBy = "department", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+//    @OneToMany(mappedBy = "department", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "department", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
 //    @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)   // not working !!!
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Employee> employees;
 
     public void addEmployee(Employee employee) {
@@ -53,7 +54,9 @@ public class Department {
     }
 
 //    @OneToOne(fetch = FetchType.EAGER, mappedBy = "department", cascade = CascadeType.ALL) fetch = FetchType.LAZY,
-    @OneToOne(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @OneToOne(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @OneToOne(mappedBy = "department", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "department", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private DepartmentDetail departmentDetail;
 
     public DepartmentDetail getDepartmentDetail() {
@@ -135,7 +138,7 @@ public class Department {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", location='" + location + '\'' +
-                ", No. of Employee ='" + getEmployees().size() + '\'' +
+//                ", No. of Employee ='" + getEmployees().size() + '\'' +
                 '}';
     }
 

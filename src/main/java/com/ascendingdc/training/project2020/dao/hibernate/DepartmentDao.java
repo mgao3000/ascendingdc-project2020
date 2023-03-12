@@ -13,10 +13,14 @@ public interface DepartmentDao {
     List<Department> getDepartmentsWithoutJoinFetch();
     Department getDepartmentById(Long id);
     List<Department> getDepartmentsWithChildren();
-    Department getDepartmentByName(String deptName);
+    Department getDepartmentLazyByName(String deptName);
+    Department getDepartmentLazyByDeptId(Long id);
+    Department getDepartmentEagerByName(String deptName);
     Department getDepartmentEagerByDeptId(Long id);
-    List<Object[]> getDepartmentAndEmployeesByDeptName(String deptName);
-    List<Object[]> getDepartmentAndEmployeesAndAccounts(String deptName);
-    List<Object[]> getDepartmentAndEmployees(String deptName);
+//    List<Object[]> getDepartmentAndEmployeesByDeptName(String deptName);
+//    List<Object[]> getDepartmentAndEmployeesAndAccounts(String deptName);
+//    List<Object[]> getDepartmentAndEmployees(String deptName);
+    Department getDepartmentAndEmployeesByDeptName(String deptName);
+    Department getDepartmentAndEmployeesAndAccounts(String deptName);
 
 }

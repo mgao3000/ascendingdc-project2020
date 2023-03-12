@@ -48,16 +48,16 @@ public class Employee {
     /*
     temporarial created for testing JDBC only
      */
-    @Transient
-    private Long departmentId;
-
-    public Long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
+//    @Transient
+//    private Long departmentId;
+//
+//    public Long getDepartmentId() {
+//        return departmentId;
+//    }
+//
+//    public void setDepartmentId(Long departmentId) {
+//        this.departmentId = departmentId;
+//    }
 
     public LocalDate getHiredDate() {
 //    public Date getHiredDate() {
@@ -73,13 +73,14 @@ public class Employee {
 //    private EmployeeDetail employeeDetail;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
 
-//    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.REMOVE, CascadeType.PERSIST},  fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "employee", cascade = {CascadeType.REMOVE, CascadeType.PERSIST},  orphanRemoval = true, fetch = FetchType.LAZY)
 //    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Account> accounts;
 
     public void addAccount(Account account) {
@@ -194,7 +195,7 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
-                ", No. of Account ='" + getAccounts().size() + '\'' +
+//                ", No. of Account ='" + getAccounts().size() + '\'' +
                 '}';
     }
 

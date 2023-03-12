@@ -1,6 +1,11 @@
-package com.ascendingdc.training.project2020.daoimpl.hibernate;
+package com.ascendingdc.training.project2020.daoimpl.springdatajpa;
 
 import com.ascendingdc.training.project2020.dao.hibernate.DepartmentDao;
+import com.ascendingdc.training.project2020.dao.hibernate.EmployeeDao;
+import com.ascendingdc.training.project2020.dao.hibernate.AccountDao;
+import com.ascendingdc.training.project2020.daoimpl.repository.AccountRepository;
+import com.ascendingdc.training.project2020.daoimpl.repository.EmployeeRepository;
+import com.ascendingdc.training.project2020.daoimpl.springdatajpa.AbstractDaoSpringDataJPATest;
 import com.ascendingdc.training.project2020.entity.Account;
 import com.ascendingdc.training.project2020.entity.Department;
 import com.ascendingdc.training.project2020.entity.DepartmentDetail;
@@ -11,6 +16,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,13 +28,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes= SpringBootAppInitializer.class)
-//@SpringBootTest
-public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
-    private Logger logger = LoggerFactory.getLogger(DepartmentDaoHibernateTest.class);
+@SpringBootTest
+public class DepartmentDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
+    private Logger logger = LoggerFactory.getLogger(DepartmentDaoSpringDataJPATest.class);
 
+    @Autowired
+    @Qualifier("departmentSpringDataJPADao")
+    private DepartmentDao departmentDao;
 
 //    @Autowired
-    private DepartmentDao departmentDao;
+//    private EmployeeRepository employeeRepository;
+//
+//    @Autowired
+//    private AccountRepository accountRepository;
+
+//    @Autowired
 
     private Department testDept;
     private String deptName;
@@ -45,7 +61,7 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
 
     @BeforeEach
     public void setup() {
-        departmentDao = new DepartmentDaoHibernateImpl();
+//        departmentDao = new DepartmentDaoHibernateImpl();
 
         deptName = "HR-Test";
         /*
@@ -98,7 +114,27 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
 
     @AfterEach
     public void teardown() {
+///        Department retrievedDept = departmentDao.getDepartmentAndEmployeesAndAccounts(testDept.getName());
+//        Set<Employee> employeeSet = retrievedDept.getEmployees();
+//        for(Employee employee : employeeSet) {
+////            Set<Account> accountSet = employee.getAccounts();
+////            for(Account account : accountSet) {
+////                accountRepository.delete(account);
+////            }
+//            employeeRepository.delete(employee);
+//        }
+///        departmentDao.delete(retrievedDept);
         departmentDao.delete(testDept);
+    }
+
+    @Test
+    public void testUpdateDepartment() {
+        testDept.setDescription(testDept.getDescription() + "_update");
+        testDept.setLocation(testDept.getLocation() + "_update");
+        Department updatedDepartment = departmentDao.update(testDept);
+        logger.info(" ===== Now, updatedDepartment = {}", updatedDepartment);
+        assertEquals(testDept.getDescription(), updatedDepartment.getDescription());
+        assertEquals(testDept.getLocation(), updatedDepartment.getLocation());
     }
 
     @Test
@@ -161,7 +197,7 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
     @Test
     public void testGetDepartmentAndEmployeesByDeptName() {
         Department department = departmentDao.getDepartmentAndEmployeesByDeptName(deptName);
-        displayDeptWithEmployeeInfo(department);
+        displayDeptWithEmployeeInfoOnly(department);
     }
 
 //    private void displayObjectList(List<Department> resultList) {
@@ -175,7 +211,16 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
         int deptIndex = 1;
         for(Department department : departmentList) {
             logger.info("@@@###===  Dept No.{} = {}", deptIndex++, department);
-            displayDeptWithEmployeeInfo(department);
+            displayDeptWithEmployeeInfoOnly(department);
+        }
+    }
+
+    private void displayDeptWithEmployeeInfoOnly(Department department) {
+        Set<Employee> employeeSet = department.getEmployees();
+        int employeeIndex = 1;
+        for(Employee employee : employeeSet) {
+            logger.info("\t@@@###===  Employee No.{} = {}", employeeIndex++, employee);
+            logger.info("===========================");
         }
     }
 
@@ -226,7 +271,6 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
     @Test
     public void saveDepartmentHibernateTest() {
         Department department = getDepartmentForTest("IT-test-1", "Virginia", "IT development");
-//        DepartmentDao departmentDao = new DepartmentDaoHibernateImpl();
         Department departmentSaved = departmentDao.save(department);
         assertNotNull(departmentSaved.getId(), "A saved department should have a ID with NULL value");
         assertEquals(department.getDescription(), departmentSaved.getDescription(), "The description value should be the same");
