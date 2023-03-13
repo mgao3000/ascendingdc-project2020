@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -226,6 +227,18 @@ public class MajorDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
          * Now delete the saved Major from DB Major table
          */
         boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
+        assertEquals(true, deleteSuccessfulFlag);
+    }
+
+    @Test
+    @Transactional
+    public void testDeleteMajorByName() {
+        Major major = createMajorByName(tempMajorName);
+        Major savedMajor = majorDao.save(major);
+        /*
+         * Now delete the saved Major from DB Major table
+         */
+        boolean deleteSuccessfulFlag = majorDao.deleteByName(savedMajor.getName());
         assertEquals(true, deleteSuccessfulFlag);
     }
 

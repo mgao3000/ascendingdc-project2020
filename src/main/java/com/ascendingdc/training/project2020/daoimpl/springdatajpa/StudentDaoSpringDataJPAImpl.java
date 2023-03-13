@@ -108,12 +108,12 @@ public class StudentDaoSpringDataJPAImpl implements StudentDao {
 
     @Override
     public Student getStudentWithAssociatedProjectsByStudentId(Long studentId) {
-        return null;
+        return studentRepository.findStudentWithAssociatedProjectsByStudentId(studentId);
     }
 
     @Override
     public Student getStudentWithAssociatedProjectsByLoginName(String loginName) {
-        return null;
+        return studentRepository.findStudentWithAssociatedProjectsByStudentLoginName(loginName);
     }
 
     @Override
