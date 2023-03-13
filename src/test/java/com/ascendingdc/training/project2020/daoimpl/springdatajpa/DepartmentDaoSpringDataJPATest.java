@@ -270,7 +270,7 @@ public class DepartmentDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest
 
     @Test
     public void saveDepartmentHibernateTest() {
-        Department department = getDepartmentForTest("IT-test-1", "Virginia", "IT development");
+        Department department = createDepartmentForTest("IT-test-1", "Virginia", "IT development");
         Department departmentSaved = departmentDao.save(department);
         assertNotNull(departmentSaved.getId(), "A saved department should have a ID with NULL value");
         assertEquals(department.getDescription(), departmentSaved.getDescription(), "The description value should be the same");
@@ -293,7 +293,7 @@ public class DepartmentDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest
         departmentDetail.setRevenue(101);
         departmentDetail.setDescription("dept detail dummy desc");
 
-        Department departmentForTest = getDepartmentForTest("dept 111", "location 111", "dept desc 111");
+        Department departmentForTest = createDepartmentForTest("dept 111", "location 111", "dept desc 111");
         departmentForTest.setDepartmentDetail(departmentDetail);
         departmentDetail.setDepartment(departmentForTest);
 
@@ -302,7 +302,7 @@ public class DepartmentDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest
         logger.info("deleteResult = {}", deleteResult);
     }
 
-    private Department getDepartmentForTest(String deptName, String location, String deptDesc) {
+    private Department createDepartmentForTest(String deptName, String location, String deptDesc) {
         Department department = new Department();
         department.setDescription(deptDesc);
         department.setLocation(location);

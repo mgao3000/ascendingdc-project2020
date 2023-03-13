@@ -25,7 +25,9 @@ public class DepartmentDetail {
     @JsonIgnore
 //    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @OneToOne(fetch = FetchType.LAZY)
-    @OneToOne
+//    @OneToOne
+//    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST},  orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name="DEPARTMENT_ID")
     private Department department;
 

@@ -69,6 +69,7 @@ public abstract class AbstractDaoSpringDataJPATest {
         return departmentDetailEntity;
     }
 
+
     protected void assertMajors(Major randomMajor, Major retrievedMajor) {
         assertEquals(randomMajor.getId(), retrievedMajor.getId());
         assertEquals(randomMajor.getName(), retrievedMajor.getName());
