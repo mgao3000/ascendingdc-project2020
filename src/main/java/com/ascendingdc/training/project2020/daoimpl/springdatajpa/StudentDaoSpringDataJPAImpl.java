@@ -7,10 +7,12 @@ import com.ascendingdc.training.project2020.entity.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("studentSpringDataJPADao")
 public class StudentDaoSpringDataJPAImpl implements StudentDao {
@@ -22,62 +24,86 @@ public class StudentDaoSpringDataJPAImpl implements StudentDao {
 
     @Override
     public Student save(Student student) {
-        return null;
+        Student savedStudent = studentRepository.save(student);
+        return savedStudent;
     }
 
     @Override
     public Student update(Student student) {
-        return null;
+        Student updatedStudent = studentRepository.save(student);
+        return updatedStudent;
     }
 
     @Override
     public boolean deleteByLoginName(String loginName) {
-        return false;
+        return studentRepository.deleteByLoginName(loginName) > 0;
     }
 
     @Override
     public boolean deleteById(Long studentId) {
-        return false;
+        boolean successFlag = false;
+        try {
+            studentRepository.deleteById(studentId);
+            successFlag = true;
+        } catch (IllegalArgumentException iae) {
+            //do nothing
+        } catch (OptimisticLockingFailureException olfe) {
+            //do nothing
+        }
+        return successFlag;
     }
 
     @Override
     public boolean delete(Student student) {
-        return false;
+        boolean successFlag = false;
+        try {
+            studentRepository.delete(student);
+            successFlag = true;
+        } catch (IllegalArgumentException iae) {
+            //do nothing
+        } catch (OptimisticLockingFailureException olfe) {
+            //do nothing
+        }
+        return successFlag;
     }
 
     @Override
     public List<Student> getStudents() {
-        return null;
+        return studentRepository.findAll();
     }
 
     @Override
     public Student getStudentById(Long id) {
-        return null;
+        Student student = null;
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        if(studentOptional.isPresent())
+            student = studentOptional.get();
+        return student;
     }
 
     @Override
     public Student getStudentByLoginName(String loginName) {
-        return null;
+        return studentRepository.findByLoginName(loginName);
     }
 
     @Override
     public List<Student> getStudentsByMajorId(Long majorId) {
-        return null;
+        return studentRepository.findStudentsByMajorId(majorId);
     }
 
     @Override
     public List<Project> getAssociatedProjectsByStudentId(Long studentId) {
-        return null;
+        return studentRepository.findProjectsByStudentId(studentId);
     }
 
     @Override
     public List<Project> getAssociatedProjectsByStudentLoginName(String loginName) {
-        return null;
+        return studentRepository.findProjectsByStudentLoginName(loginName);
     }
 
     @Override
     public List<Student> getStudentsWithAssociatedProjects() {
-        return null;
+        return studentRepository.findAllStudentsWithAssociatedProjects();
     }
 
     @Override
@@ -92,6 +118,6 @@ public class StudentDaoSpringDataJPAImpl implements StudentDao {
 
     @Override
     public List<Student> getStudentsWithAssociatedProjectsByMajorId(Long majorId) {
-        return null;
+        return studentRepository.findStudentsWithAssociatedProjectsAndMajorByMajorId(majorId);
     }
 }

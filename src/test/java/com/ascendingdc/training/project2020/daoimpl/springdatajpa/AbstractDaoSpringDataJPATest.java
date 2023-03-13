@@ -6,6 +6,8 @@ import com.ascendingdc.training.project2020.dao.hibernate.StudentDao;
 import com.ascendingdc.training.project2020.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,11 +21,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class AbstractDaoSpringDataJPATest {
     private Logger logger = LoggerFactory.getLogger(AbstractDaoSpringDataJPATest.class);
 
-    protected static MajorDao majorDao;
+//    protected static MajorDao majorDao;
+//
+//    protected static StudentDao studentDao;
+//
+//    protected static ProjectDao projectDao;
 
-    protected static StudentDao studentDao;
+    @Autowired
+    @Qualifier("majorSpringDataJPADao")
+    protected MajorDao majorDao;
 
-    protected static ProjectDao projectDao;
+    @Autowired
+    @Qualifier("studentSpringDataJPADao")
+    protected StudentDao studentDao;
+
+    @Autowired
+    @Qualifier("projectSpringDataJPADao")
+    protected ProjectDao projectDao;
 
     protected String tempMajorName;
 

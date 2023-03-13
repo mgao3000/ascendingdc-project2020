@@ -40,7 +40,7 @@ public class EmployeeDaoHibernateImpl implements EmployeeDao {
     }
 
     @Override
-    public Integer updateEmployeeAddress(String name, String address) {
+    public Integer updateEmployeeAddressByEmployeeName(String name, String address) {
         String hql = "UPDATE Employee as em set em.address = :address where em.name = :name";
         int updatedCount = 0;
         Transaction transaction = null;

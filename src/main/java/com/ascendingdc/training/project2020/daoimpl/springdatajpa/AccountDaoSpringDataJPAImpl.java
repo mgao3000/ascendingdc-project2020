@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("accountSpringDataJPADao")
 public class AccountDaoSpringDataJPAImpl implements AccountDao {
@@ -22,16 +23,24 @@ public class AccountDaoSpringDataJPAImpl implements AccountDao {
 
     @Override
     public Account save(Account account, Employee employee) {
-        return null;
+        employee.addAccount(account);
+        account.setEmployee(employee);
+        Account savedAccount = accountRepository.save(account);
+        return savedAccount;
     }
 
     @Override
     public List<Account> getAccounts() {
-        return null;
+        return accountRepository.findAll();
     }
 
     @Override
     public Account getAccountById(Long id) {
-        return null;
+        Account account = null;
+        Optional<Account> accountOptional = accountRepository.findById(id);
+        if(accountOptional.isPresent()) {
+            account = accountOptional.get();
+        }
+        return account;
     }
 }

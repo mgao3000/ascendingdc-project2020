@@ -5,11 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
+    @Transactional
     @Modifying
     @Query("delete from Department as dept where dept.id = :id")
     int deleteDepartmentUsingId(Long id);
@@ -18,6 +22,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
     Long removeByName(String name); //This method is the same as the above
 
+    @Transactional
     @Modifying
     @Query("delete from Department as dept where dept.name = :name")
     int deleteDepartmentUsingName(String name);

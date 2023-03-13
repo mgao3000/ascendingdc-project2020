@@ -6,10 +6,12 @@ import com.ascendingdc.training.project2020.entity.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("projectSpringDataJPADao")
 public class ProjectDaoSpringDataJPAImpl implements ProjectDao {
@@ -21,56 +23,80 @@ public class ProjectDaoSpringDataJPAImpl implements ProjectDao {
 
     @Override
     public Project save(Project project) {
-        return null;
+        Project savedProject = projectRepository.save(project);
+        return savedProject;
     }
 
     @Override
     public Project update(Project project) {
-        return null;
+        Project updatedProject = projectRepository.save(project);
+        return updatedProject;
     }
 
     @Override
     public boolean deleteByName(String projectName) {
-        return false;
+        return projectRepository.deleteByName(projectName) > 0;
     }
 
     @Override
     public boolean deleteById(Long projectId) {
-        return false;
+        boolean successFlag = false;
+        try {
+            projectRepository.deleteById(projectId);
+            successFlag = true;
+        } catch (IllegalArgumentException iae) {
+            //do nothing
+        } catch (OptimisticLockingFailureException olfe) {
+            //do nothing
+        }
+        return successFlag;
     }
 
     @Override
     public boolean delete(Project project) {
-        return false;
+        boolean successFlag = false;
+        try {
+            projectRepository.delete(project);
+            successFlag = true;
+        } catch (IllegalArgumentException iae) {
+            //do nothing
+        } catch (OptimisticLockingFailureException olfe) {
+            //do nothing
+        }
+        return successFlag;
     }
 
     @Override
     public List<Project> getProjects() {
-        return null;
+        return projectRepository.findAll();
     }
 
     @Override
     public Project getProjectById(Long id) {
-        return null;
+        Project project = null;
+        Optional<Project> projectOptional = projectRepository.findById(id);
+        if(projectOptional.isPresent())
+            project = projectOptional.get();
+        return project;
     }
 
     @Override
     public Project getProjectByName(String projectName) {
-        return null;
+        return projectRepository.findByName(projectName);
     }
 
     @Override
     public List<Project> getProjectsWithAssociatedStudents() {
-        return null;
+        return projectRepository.findAllProjectsWithAssociatedStudents();
     }
 
     @Override
     public Project getProjectWithAssociatedStudentsById(Long projectId) {
-        return null;
+        return projectRepository.findProjectWithAssociatedStudentsByProjectId(projectId);
     }
 
     @Override
     public Project getProjectWithAssociatedStudentsByName(String projectName) {
-        return null;
+        return projectRepository.findProjectWithAssociatedStudentsByProjectName(projectName);
     }
 }

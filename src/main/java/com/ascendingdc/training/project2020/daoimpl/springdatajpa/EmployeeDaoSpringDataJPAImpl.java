@@ -7,10 +7,11 @@ import com.ascendingdc.training.project2020.entity.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("employeeSpringDataJPADao")
 public class EmployeeDaoSpringDataJPAImpl implements EmployeeDao {
@@ -22,46 +23,64 @@ public class EmployeeDaoSpringDataJPAImpl implements EmployeeDao {
 
     @Override
     public Employee save(Employee employee, Department department) {
-        return null;
+        department.addEmployee(employee);
+        employee.setDepartment(department);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return savedEmployee;
     }
 
     @Override
-    public Integer updateEmployeeAddress(String name, String address) {
-        return null;
+    public Integer updateEmployeeAddressByEmployeeName(String name, String address) {
+        return employeeRepository.updateAddressByName(address, name);
     }
 
     @Override
     public Employee update(Employee employee) {
-        return null;
+        Employee savedEmployee = employeeRepository.save(employee);
+        return savedEmployee;
     }
 
     @Override
     public boolean deleteByName(String name) {
-        return false;
+        return employeeRepository.deleteByName(name) > 0;
     }
 
     @Override
-    public boolean delete(Employee Employee) {
-        return false;
+    public boolean delete(Employee employee) {
+        boolean successFlag = false;
+        try {
+            employeeRepository.delete(employee);
+            successFlag = true;
+        } catch (IllegalArgumentException iae) {
+            //do nothing
+        } catch (OptimisticLockingFailureException olfe) {
+            //do nothing
+        }
+        return successFlag;
     }
 
     @Override
     public List<Employee> getEmployees() {
-        return null;
+        return employeeRepository.findAll();
     }
 
     @Override
     public Employee getEmployeeById(Long id) {
-        return null;
+        Employee employee = null;
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if(employeeOptional.isPresent()) {
+            employee = employeeOptional.get();
+        }
+        return employee;
     }
 
     @Override
     public Employee getEmployeeByName(String employeeName) {
-        return null;
+        return employeeRepository.findByName(employeeName);
     }
 
     @Override
     public Employee getEmployeeAndDepartmentById(Long id) {
-        return null;
+        return employeeRepository.findEmployeeWithDepartmentByEmployeeId(id);
     }
 }
