@@ -75,6 +75,7 @@ public abstract class AbstractDaoSpringDataJPATest {
         employeeEntity.setLastName(lastName);
         employeeEntity.setEmail(firstName + "_" + lastName + "@gmail");
         employeeEntity.setAddress("123 Road, VA");
+        employeeEntity.setHiredDate(LocalDate.now());
         return employeeEntity;
     }
 

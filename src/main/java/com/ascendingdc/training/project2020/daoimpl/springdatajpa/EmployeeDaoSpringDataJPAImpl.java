@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,6 @@ public class EmployeeDaoSpringDataJPAImpl implements EmployeeDao {
     @Override
     public Employee save(Employee employee, Department department) {
         department.addEmployee(employee);
-        employee.setDepartment(department);
         Employee savedEmployee = employeeRepository.save(employee);
         return savedEmployee;
     }
@@ -41,6 +41,7 @@ public class EmployeeDaoSpringDataJPAImpl implements EmployeeDao {
     }
 
     @Override
+    @Transactional
     public boolean deleteByName(String name) {
         return employeeRepository.deleteByName(name) > 0;
     }
@@ -61,7 +62,7 @@ public class EmployeeDaoSpringDataJPAImpl implements EmployeeDao {
 
     @Override
     public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
+        return employeeRepository.findAllEmployeesWithAssociatedAccounts();
     }
 
     @Override

@@ -33,21 +33,21 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 //    List<Fruit> removeByColor(String color);
 
 
-    @Query("FROM Department as dept join fetch dept.departmentDetail left join fetch dept.employees as em left join fetch em.accounts")
+    @Query("SELECT distinct dept FROM Department as dept join fetch dept.departmentDetail left join fetch dept.employees as em left join fetch em.accounts")
     List<Department> findAllDepartmentsWithChildren();
 
-    @Query("FROM Department as dept join fetch dept.departmentDetail left join fetch dept.employees as em left join fetch em.accounts where dept.name = :name")
+    @Query("SELECT distinct dept FROM Department as dept join fetch dept.departmentDetail left join fetch dept.employees as em left join fetch em.accounts where dept.name = :name")
     Department findDepartmentWithChildrenByName(@Param("name") String name);
 
-    @Query("FROM Department as dept join fetch dept.departmentDetail left join fetch dept.employees as em left join fetch em.accounts where dept.id = :id")
+    @Query("SELECT distinct dept FROM Department as dept join fetch dept.departmentDetail left join fetch dept.employees as em left join fetch em.accounts where dept.id = :id")
     Department findDepartmentWithChildrenById(@Param("id") Long deptId);
 
     Department findByName(String name);
 
-    @Query("FROM Department as dept left join fetch dept.employees as em where dept.name = :name")
+    @Query("SELECT distinct dept FROM Department as dept left join fetch dept.employees as em where dept.name = :name")
     Department findDepartmentWithAssociatedEmployeesByDepartmentName(@Param("name") String departmentName);
 
-    @Query("FROM Department as dept left join fetch dept.employees as em left join fetch em.accounts where dept.name = :name")
+    @Query("SELECT distinct dept FROM Department as dept left join fetch dept.employees as em left join fetch em.accounts where dept.name = :name")
     Department findDepartmentWithAssociatedEmployeesAndAccountsByDepartmentName(@Param("name") String departmentName);
 
 

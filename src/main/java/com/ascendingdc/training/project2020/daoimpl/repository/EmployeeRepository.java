@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
@@ -23,5 +25,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query("SELECT em from Employee as em left join fetch em.department where em.id= :id")
     Employee findEmployeeWithDepartmentByEmployeeId(@Param(value = "id") Long employeeId);
+
+    @Query("SELECT em from Employee as em left join fetch em.accounts")
+    List<Employee> findAllEmployeesWithAssociatedAccounts();
 
 }

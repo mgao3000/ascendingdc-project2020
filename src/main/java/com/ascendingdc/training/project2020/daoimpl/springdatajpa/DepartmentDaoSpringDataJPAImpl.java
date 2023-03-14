@@ -48,7 +48,7 @@ public class DepartmentDaoSpringDataJPAImpl implements DepartmentDao {
 
     @Override
     public List<Department> getDepartments() {
-        return departmentRepository.findAll();
+        return departmentRepository.findAllDepartmentsWithChildren();
     }
 
     @Override

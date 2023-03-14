@@ -25,7 +25,6 @@ public class AccountDaoSpringDataJPAImpl implements AccountDao {
     @Override
     public Account save(Account account, Employee employee) {
         employee.addAccount(account);
-        account.setEmployee(employee);
         Account savedAccount = accountRepository.save(account);
         return savedAccount;
     }
