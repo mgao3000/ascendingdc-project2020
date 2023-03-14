@@ -53,6 +53,11 @@ public class Department {
         employee.setDepartment(this);
     }
 
+    public void removeEmployee(Employee employee) {
+        this.getEmployees().remove(employee);
+        employee.setDepartment(null);
+    }
+
 //    @OneToOne(fetch = FetchType.EAGER, mappedBy = "department", cascade = CascadeType.ALL) fetch = FetchType.LAZY,
 //    @OneToOne(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @OneToOne(mappedBy = "department", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true, fetch = FetchType.EAGER)

@@ -1,8 +1,6 @@
 package com.ascendingdc.training.project2020.daoimpl.springdatajpa;
 
-import com.ascendingdc.training.project2020.dao.hibernate.MajorDao;
-import com.ascendingdc.training.project2020.dao.hibernate.ProjectDao;
-import com.ascendingdc.training.project2020.dao.hibernate.StudentDao;
+import com.ascendingdc.training.project2020.dao.hibernate.*;
 import com.ascendingdc.training.project2020.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +36,18 @@ public abstract class AbstractDaoSpringDataJPATest {
     @Autowired
     @Qualifier("projectSpringDataJPADao")
     protected ProjectDao projectDao;
+
+    @Autowired
+    @Qualifier("employeeSpringDataJPADao")
+    protected EmployeeDao employeeDao;
+
+    @Autowired
+    @Qualifier("departmentSpringDataJPADao")
+    protected DepartmentDao departmentDao;
+
+    @Autowired
+    @Qualifier("accountSpringDataJPADao")
+    protected AccountDao accountDao;
 
     protected String tempMajorName;
 
@@ -111,6 +121,29 @@ public abstract class AbstractDaoSpringDataJPATest {
         assertTrue(randomStudent.getEnrolledDate().isEqual(retrievedStudent.getEnrolledDate()));
     }
 
+    protected void assertEmployee(Employee savedEmployee, Employee tempEmployee) {
+        assertEquals(savedEmployee.getId(), tempEmployee.getId());
+        assertEquals(savedEmployee.getName(), tempEmployee.getName());
+        assertEquals(savedEmployee.getAddress(), tempEmployee.getAddress());
+        assertEquals(savedEmployee.getEmail(), tempEmployee.getEmail());
+        assertEquals(savedEmployee.getFirstName(), tempEmployee.getFirstName());
+        assertEquals(savedEmployee.getLastName(), tempEmployee.getLastName());
+        assertTrue(savedEmployee.getHiredDate().isEqual(tempEmployee.getHiredDate()));
+    }
+
+    protected void assertDepartment(Department sourceDepartment, Department targetDepartment) {
+        assertEquals(sourceDepartment.getId(), targetDepartment.getId());
+        assertEquals(sourceDepartment.getName(), targetDepartment.getName());
+        assertEquals(sourceDepartment.getDescription(), targetDepartment.getDescription());
+        assertEquals(sourceDepartment.getLocation(), targetDepartment.getLocation());
+    }
+
+    protected void assertAccount(Account sourceAccount, Account targetAccount) {
+        assertEquals(sourceAccount.getId(), targetAccount.getId());
+        assertEquals(sourceAccount.getAccountType(), targetAccount.getAccountType());
+        assertEquals(sourceAccount.getBalance(), targetAccount.getBalance());
+    }
+
     protected Project createProjectByName(String projectName) {
         Project project = new Project();
         project.setName(projectName);
@@ -156,6 +189,36 @@ public abstract class AbstractDaoSpringDataJPATest {
         student.setEnrolledDate(LocalDate.now());
 
         return student;
+    }
+
+    protected Department getRandomDepartment() {
+        List<Department> departmentList = departmentDao.getDepartments();
+        Department randomDepartment = null;
+        if(departmentList != null && departmentList.size() > 0) {
+            int randomIndex = getRandomInt(0, departmentList.size());
+            randomDepartment = departmentList.get(randomIndex);
+        }
+        return randomDepartment;
+    }
+
+    protected Employee getRandomEmployee() {
+        List<Employee> employeeList = employeeDao.getEmployees();
+        Employee randomEmployee = null;
+        if(employeeList != null && employeeList.size() > 0) {
+            int randomIndex = getRandomInt(0, employeeList.size());
+            randomEmployee = employeeList.get(randomIndex);
+        }
+        return randomEmployee;
+    }
+
+    protected Account getRandomAccount() {
+        List<Account> accountList = accountDao.getAccounts();
+        Account randomAccount = null;
+        if(accountList != null && accountList.size() > 0) {
+            int randomIndex = getRandomInt(0, accountList.size());
+            randomAccount = accountList.get(randomIndex);
+        }
+        return randomAccount;
     }
 
     protected Project getRandomProject() {

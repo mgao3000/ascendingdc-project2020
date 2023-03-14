@@ -25,6 +25,13 @@ public abstract class AbstractDaoHibernateTest {
 
     protected static ProjectDao projectDao;
 
+    protected static DepartmentDao departmentDao;
+
+    protected static EmployeeDao employeeDao;
+
+    protected static AccountDao accountDao;
+
+
     protected String tempMajorName;
 
     protected String tempProjectName;
@@ -51,6 +58,7 @@ public abstract class AbstractDaoHibernateTest {
         employeeEntity.setLastName(lastName);
         employeeEntity.setEmail(firstName + "_" + lastName + "@gmail");
         employeeEntity.setAddress("123 Road, VA");
+        employeeEntity.setHiredDate(LocalDate.now());
         return employeeEntity;
     }
 
@@ -68,6 +76,7 @@ public abstract class AbstractDaoHibernateTest {
         departmentDetailEntity.setDescription(description);
         return departmentDetailEntity;
     }
+
 
     protected void assertMajors(Major randomMajor, Major retrievedMajor) {
         assertEquals(randomMajor.getId(), retrievedMajor.getId());
@@ -94,6 +103,29 @@ public abstract class AbstractDaoHibernateTest {
         assertEquals(randomStudent.getEmail(), retrievedStudent.getEmail());
         assertEquals(randomStudent.getAddress(), retrievedStudent.getAddress());
         assertTrue(randomStudent.getEnrolledDate().isEqual(retrievedStudent.getEnrolledDate()));
+    }
+
+    protected void assertEmployee(Employee savedEmployee, Employee tempEmployee) {
+        assertEquals(savedEmployee.getId(), tempEmployee.getId());
+        assertEquals(savedEmployee.getName(), tempEmployee.getName());
+        assertEquals(savedEmployee.getAddress(), tempEmployee.getAddress());
+        assertEquals(savedEmployee.getEmail(), tempEmployee.getEmail());
+        assertEquals(savedEmployee.getFirstName(), tempEmployee.getFirstName());
+        assertEquals(savedEmployee.getLastName(), tempEmployee.getLastName());
+        assertTrue(savedEmployee.getHiredDate().isEqual(tempEmployee.getHiredDate()));
+    }
+
+    protected void assertDepartment(Department sourceDepartment, Department targetDepartment) {
+        assertEquals(sourceDepartment.getId(), targetDepartment.getId());
+        assertEquals(sourceDepartment.getName(), targetDepartment.getName());
+        assertEquals(sourceDepartment.getDescription(), targetDepartment.getDescription());
+        assertEquals(sourceDepartment.getLocation(), targetDepartment.getLocation());
+    }
+
+    protected void assertAccount(Account sourceAccount, Account targetAccount) {
+        assertEquals(sourceAccount.getId(), targetAccount.getId());
+        assertEquals(sourceAccount.getAccountType(), targetAccount.getAccountType());
+        assertEquals(sourceAccount.getBalance(), targetAccount.getBalance());
     }
 
     protected Project createProjectByName(String projectName) {
@@ -141,6 +173,36 @@ public abstract class AbstractDaoHibernateTest {
         student.setEnrolledDate(LocalDate.now());
 
         return student;
+    }
+
+    protected Department getRandomDepartment() {
+        List<Department> departmentList = departmentDao.getDepartments();
+        Department randomDepartment = null;
+        if(departmentList != null && departmentList.size() > 0) {
+            int randomIndex = getRandomInt(0, departmentList.size());
+            randomDepartment = departmentList.get(randomIndex);
+        }
+        return randomDepartment;
+    }
+
+    protected Employee getRandomEmployee() {
+        List<Employee> employeeList = employeeDao.getEmployees();
+        Employee randomEmployee = null;
+        if(employeeList != null && employeeList.size() > 0) {
+            int randomIndex = getRandomInt(0, employeeList.size());
+            randomEmployee = employeeList.get(randomIndex);
+        }
+        return randomEmployee;
+    }
+
+    protected Account getRandomAccount() {
+        List<Account> accountList = accountDao.getAccounts();
+        Account randomAccount = null;
+        if(accountList != null && accountList.size() > 0) {
+            int randomIndex = getRandomInt(0, accountList.size());
+            randomAccount = accountList.get(randomIndex);
+        }
+        return randomAccount;
     }
 
     protected Project getRandomProject() {

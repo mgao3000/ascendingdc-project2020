@@ -32,9 +32,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DepartmentDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
     private Logger logger = LoggerFactory.getLogger(DepartmentDaoSpringDataJPATest.class);
 
-    @Autowired
-    @Qualifier("departmentSpringDataJPADao")
-    private DepartmentDao departmentDao;
+//    @Autowired
+//    @Qualifier("departmentSpringDataJPADao")
+//    private DepartmentDao departmentDao;
 
 //    @Autowired
 //    private EmployeeRepository employeeRepository;

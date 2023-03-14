@@ -7,6 +7,7 @@ import com.ascendingdc.training.project2020.entity.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,26 @@ public class AccountDaoSpringDataJPAImpl implements AccountDao {
     }
 
     @Override
+    public Account update(Account account) {
+        Account updatedAccount = accountRepository.save(account);
+        return updatedAccount;
+    }
+
+    @Override
+    public boolean delete(Account account) {
+        boolean successFlag = false;
+        try {
+            accountRepository.delete(account);
+            successFlag = true;
+        } catch (IllegalArgumentException iae) {
+            //do nothing
+        } catch (OptimisticLockingFailureException olfe) {
+            //do nothing
+        }
+        return successFlag;
+    }
+
+    @Override
     public List<Account> getAccounts() {
         return accountRepository.findAll();
     }
@@ -42,5 +63,10 @@ public class AccountDaoSpringDataJPAImpl implements AccountDao {
             account = accountOptional.get();
         }
         return account;
+    }
+
+    @Override
+    public Account findAccountAndEmployeeByAccountId(Long id) {
+        return accountRepository.findAccountWithEmployeeByAccountId(id);
     }
 }

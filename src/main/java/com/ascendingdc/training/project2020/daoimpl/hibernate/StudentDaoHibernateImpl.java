@@ -30,7 +30,8 @@ public class StudentDaoHibernateImpl extends AbstractDaoHibernateImpl implements
 
         try {
             transaction = session.beginTransaction();
-            session.saveOrUpdate(student);
+//            session.saveOrUpdate(student);
+            session.persist(student);
             transaction.commit();
         } catch (Exception e) {
             logger.error("fail to insert a student, error={}", e.getMessage());

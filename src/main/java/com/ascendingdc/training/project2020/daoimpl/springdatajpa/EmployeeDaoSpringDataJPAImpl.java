@@ -36,8 +36,8 @@ public class EmployeeDaoSpringDataJPAImpl implements EmployeeDao {
 
     @Override
     public Employee update(Employee employee) {
-        Employee savedEmployee = employeeRepository.save(employee);
-        return savedEmployee;
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return updatedEmployee;
     }
 
     @Override

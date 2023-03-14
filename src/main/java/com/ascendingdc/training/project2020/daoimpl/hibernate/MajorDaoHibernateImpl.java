@@ -36,7 +36,8 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
 //            } else {
 //                major.setId(id);
 //            }
-            session.saveOrUpdate(major);
+//            session.saveOrUpdate(major);
+            session.persist(major);
             transaction.commit();
         } catch (Exception e) {
             logger.error("fail to insert a major, error={}", e.getMessage());

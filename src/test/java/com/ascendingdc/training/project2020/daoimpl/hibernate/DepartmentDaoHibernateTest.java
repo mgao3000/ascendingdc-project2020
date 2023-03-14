@@ -5,10 +5,7 @@ import com.ascendingdc.training.project2020.entity.Account;
 import com.ascendingdc.training.project2020.entity.Department;
 import com.ascendingdc.training.project2020.entity.DepartmentDetail;
 import com.ascendingdc.training.project2020.entity.Employee;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +23,7 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
 
 
 //    @Autowired
-    private DepartmentDao departmentDao;
+//    private DepartmentDao departmentDao;
 
     private Department testDept;
     private String deptName;
@@ -40,12 +37,12 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
     @BeforeAll
     public static void setupOnce() {
 
-        //departmentDao = new DepartmentDaoImpl();
+        departmentDao = new DepartmentDaoHibernateImpl();
     }
 
     @BeforeEach
     public void setup() {
-        departmentDao = new DepartmentDaoHibernateImpl();
+//        departmentDao = new DepartmentDaoHibernateImpl();
 
         deptName = "HR-Test";
         /*
@@ -99,6 +96,12 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
     @AfterEach
     public void teardown() {
         departmentDao.delete(testDept);
+//        departmentDao = null;
+    }
+
+    @AfterAll
+    public static void teardownOnce() {
+        departmentDao = null;
     }
 
     @Test
@@ -225,7 +228,7 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
 
     @Test
     public void saveDepartmentHibernateTest() {
-        Department department = getDepartmentForTest("IT-test-1", "Virginia", "IT development");
+        Department department = createDepartmentEntity("IT-test-1", "Virginia");
 //        DepartmentDao departmentDao = new DepartmentDaoHibernateImpl();
         Department departmentSaved = departmentDao.save(department);
         assertNotNull(departmentSaved.getId(), "A saved department should have a ID with NULL value");
@@ -249,7 +252,7 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
         departmentDetail.setRevenue(101);
         departmentDetail.setDescription("dept detail dummy desc");
 
-        Department departmentForTest = getDepartmentForTest("dept 111", "location 111", "dept desc 111");
+        Department departmentForTest = createDepartmentEntity("dept 111", "location 111");
         departmentForTest.setDepartmentDetail(departmentDetail);
         departmentDetail.setDepartment(departmentForTest);
 
@@ -258,13 +261,13 @@ public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
         logger.info("deleteResult = {}", deleteResult);
     }
 
-    private Department getDepartmentForTest(String deptName, String location, String deptDesc) {
-        Department department = new Department();
-        department.setDescription(deptDesc);
-        department.setLocation(location);
-        department.setName(deptName);
-        return department;
-    }
+//    private Department getDepartmentForTest(String deptName, String location, String deptDesc) {
+//        Department department = new Department();
+//        department.setDescription(deptDesc);
+//        department.setLocation(location);
+//        department.setName(deptName);
+//        return department;
+//    }
 
     private Department createDepartmentWithEmployees(String deptName, String empName1,
                                                      String empName2) {

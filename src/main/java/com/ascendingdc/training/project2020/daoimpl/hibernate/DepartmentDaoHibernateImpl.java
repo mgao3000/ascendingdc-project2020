@@ -23,14 +23,20 @@ public class DepartmentDaoHibernateImpl implements DepartmentDao {
     @Override
     public Department save(Department department) {
         Transaction transaction = null;
-//        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-//        Session session = sessionFactory.openSession();
-        Session session = HibernateUtil.getSession();
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+//        Session session = HibernateUtil.getSession();
 
         try {
             transaction = session.beginTransaction();
+            /**
+             * very important, with hibernate session, only persist works,
+             * to make save to do cascade save, Entity mapping needs to
+             * use cascade="save-update" which is a Hibernate specific and not JPA!!!
+             */
+            session.persist(department);
 //            session.save(department);
-            session.saveOrUpdate(department);
+//            session.saveOrUpdate(department);
             transaction.commit();
             session.close();
  //           return department;
@@ -237,8 +243,10 @@ public class DepartmentDaoHibernateImpl implements DepartmentDao {
     public Department getDepartmentEagerByName(String deptName) {
 
         if (deptName == null) return null;
-        String hql = "FROM Department as dept left join fetch dept.employees as em left join " +
+        String hql = "SELECT distinct dept FROM Department as dept left join fetch dept.employees as em left join " +
                 "fetch em.accounts where lower(dept.name) = :name";
+//        String hql = "FROM Department as dept left join fetch dept.employees as em left join " +
+//                "fetch em.accounts where dept.name = :name";
         //String hql = "FROM Department as dept where lower(dept.name) = :name";
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

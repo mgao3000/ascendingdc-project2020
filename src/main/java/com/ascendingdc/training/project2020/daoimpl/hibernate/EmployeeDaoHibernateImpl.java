@@ -26,7 +26,8 @@ public class EmployeeDaoHibernateImpl implements EmployeeDao {
         try {
             transaction = session.beginTransaction();
             dept.addEmployee(employee);
-            session.save(employee);
+//            session.save(employee);
+            session.persist(employee);
             transaction.commit();
             session.close();
             return employee;
@@ -98,15 +99,15 @@ public class EmployeeDaoHibernateImpl implements EmployeeDao {
             transaction.commit();
             session.close();
             deletedCount = 1;
+            logger.debug(String.format("The employee %s was deleted", name));
         } catch (Exception e) {
             if(transaction != null)
                 transaction.rollback();
             logger.error("fail to delete Employee record, error={}", e.getMessage());
             session.close();
         }
-        logger.debug(String.format("The employee %s was deleted", name));
 
-        return deletedCount >= 1 ? true : false;
+        return deletedCount > 0 ? true : false;
     }
 
     @Override
@@ -121,15 +122,15 @@ public class EmployeeDaoHibernateImpl implements EmployeeDao {
             transaction.commit();
             session.close();
             deletedCount = 1;
+            logger.debug(String.format("The employee %s was deleted", employee.getName()));
         } catch (Exception e) {
             if(transaction != null)
                 transaction.rollback();
             logger.error("fail to delete Employee record, error={}", e.getMessage());
             session.close();
         }
-        logger.debug(String.format("The employee %s was deleted", employee.getName()));
 
-        return deletedCount >= 1 ? true : false;
+        return deletedCount > 0 ? true : false;
     }
 
     @Override
@@ -169,7 +170,7 @@ public class EmployeeDaoHibernateImpl implements EmployeeDao {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Employee> query = session.createQuery(hql);
-            query.setParameter("name", employeeName);
+            query.setParameter("name", employeeName.toLowerCase());
 
             return query.uniqueResult();
         }

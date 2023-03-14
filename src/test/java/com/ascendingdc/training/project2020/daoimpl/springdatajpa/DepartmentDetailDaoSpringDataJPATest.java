@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class DepartmentDetailDaoSpringDataJPATest extends AbstractDaoHibernateTest {
+public class DepartmentDetailDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
     private Logger logger = LoggerFactory.getLogger(DepartmentDetailDaoSpringDataJPATest.class);
 
     @Autowired

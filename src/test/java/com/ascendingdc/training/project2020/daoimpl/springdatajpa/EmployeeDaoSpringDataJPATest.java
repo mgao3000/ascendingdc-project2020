@@ -1,13 +1,18 @@
-package com.ascendingdc.training.project2020.daoimpl.hibernate;
+package com.ascendingdc.training.project2020.daoimpl.springdatajpa;
 
 import com.ascendingdc.training.project2020.dao.hibernate.DepartmentDao;
 import com.ascendingdc.training.project2020.dao.hibernate.EmployeeDao;
+import com.ascendingdc.training.project2020.daoimpl.hibernate.DepartmentDaoHibernateImpl;
+import com.ascendingdc.training.project2020.daoimpl.hibernate.EmployeeDaoHibernateImpl;
 import com.ascendingdc.training.project2020.entity.Account;
 import com.ascendingdc.training.project2020.entity.Department;
 import com.ascendingdc.training.project2020.entity.Employee;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
@@ -15,12 +20,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes= SpringBootAppInitializer.class)
-public class EmployeeDaoHibernateTest extends AbstractDaoHibernateTest {
-    private Logger logger = LoggerFactory.getLogger(EmployeeDaoHibernateTest.class);
+@SpringBootTest
+public class EmployeeDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
+    private Logger logger = LoggerFactory.getLogger(EmployeeDaoSpringDataJPATest.class);
 
 //    @Autowired
+//    @Qualifier("employeeSpringDataJPADao")
 //    private EmployeeDao employeeDao;
 //
+//    @Autowired
+//    @Qualifier("employeeSpringDataJPADao")
 //    private DepartmentDao departmentDao;
 
     private Employee employee;
@@ -32,9 +41,11 @@ public class EmployeeDaoHibernateTest extends AbstractDaoHibernateTest {
 
     @BeforeAll
     public static void setupOnce() {
-        //employeeDao = new EmployeeDaoImpl();
-        employeeDao = new EmployeeDaoHibernateImpl();
-        departmentDao = new DepartmentDaoHibernateImpl();
+    }
+
+    @AfterAll
+    public static void teardownOnce() {
+
     }
 
     @BeforeEach
@@ -58,12 +69,6 @@ public class EmployeeDaoHibernateTest extends AbstractDaoHibernateTest {
     public void teardown() {
 //        employeeDao = null;
 //        departmentDao = null;
-    }
-
-    @AfterAll
-    public static void teardownOnce() {
-        employeeDao = null;
-        departmentDao = null;
     }
 
     @Test

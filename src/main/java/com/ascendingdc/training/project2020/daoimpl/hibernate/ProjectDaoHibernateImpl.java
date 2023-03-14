@@ -37,7 +37,8 @@ public class ProjectDaoHibernateImpl extends AbstractDaoHibernateImpl implements
 //            } else {
 //                project.setId(id);
 //            }
-            session.saveOrUpdate(project);
+//            session.saveOrUpdate(project);
+            session.persist(project);
             transaction.commit();
         } catch (Exception e) {
             logger.error("fail to insert a project, error={}", e.getMessage());
