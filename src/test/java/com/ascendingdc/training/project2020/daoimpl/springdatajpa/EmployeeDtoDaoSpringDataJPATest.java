@@ -1,17 +1,11 @@
 package com.ascendingdc.training.project2020.daoimpl.springdatajpa;
 
-import com.ascendingdc.training.project2020.dao.hibernate.DepartmentDao;
-import com.ascendingdc.training.project2020.dao.hibernate.EmployeeDao;
-import com.ascendingdc.training.project2020.daoimpl.hibernate.DepartmentDaoHibernateImpl;
-import com.ascendingdc.training.project2020.daoimpl.hibernate.EmployeeDaoHibernateImpl;
 import com.ascendingdc.training.project2020.entity.Account;
 import com.ascendingdc.training.project2020.entity.Department;
 import com.ascendingdc.training.project2020.entity.Employee;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -21,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes= SpringBootAppInitializer.class)
 @SpringBootTest
-public class EmployeeDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
-    private Logger logger = LoggerFactory.getLogger(EmployeeDaoSpringDataJPATest.class);
+public class EmployeeDtoDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
+    private Logger logger = LoggerFactory.getLogger(EmployeeDtoDaoSpringDataJPATest.class);
 
 //    @Autowired
 //    @Qualifier("employeeSpringDataJPADao")

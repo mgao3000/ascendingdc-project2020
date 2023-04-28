@@ -1,8 +1,8 @@
 package com.ascendingdc.training.project2020.daoimpl.jdbc;
 
 import com.ascendingdc.training.project2020.dao.jdbc.ProjectDao;
-import com.ascendingdc.training.project2020.model.Project;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import com.ascendingdc.training.project2020.util.JDBCUtils;
 import com.ascendingdc.training.project2020.util.SQLStatementUtils;
 import org.slf4j.Logger;
@@ -32,8 +32,8 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
 
 
     @Override
-    public Project save(Project project) {
-        Project savedProject = null;
+    public ProjectDto save(ProjectDto project) {
+        ProjectDto savedProject = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -83,8 +83,8 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public Project update(Project project) {
-        Project updatedProject = null;
+    public ProjectDto update(ProjectDto project) {
+        ProjectDto updatedProject = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
 
@@ -299,14 +299,14 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public boolean delete(Project project) {
+    public boolean delete(ProjectDto project) {
         Long projectId = project.getId();
         return deleteById(projectId);
     }
 
     @Override
-    public List<Project> getProjects() {
-        List<Project> projects = new ArrayList<Project>();
+    public List<ProjectDto> getProjects() {
+        List<ProjectDto> projects = new ArrayList<ProjectDto>();
         Connection dbConnection = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -330,7 +330,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 Timestamp createTimestamp = rs.getTimestamp("create_date");
 
                 //Fill the object
-                Project project = new Project();
+                ProjectDto project = new ProjectDto();
                 project.setId(id);
                 project.setName(name);
                 project.setDescription(description);
@@ -355,8 +355,8 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public Project getProjectById(Long id) {
-        Project retrievedProject = null;
+    public ProjectDto getProjectById(Long id) {
+        ProjectDto retrievedProject = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -382,7 +382,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 Timestamp createTimestamp = rs.getTimestamp("create_date");
 
                 //Fill the object
-                retrievedProject = new Project();
+                retrievedProject = new ProjectDto();
                 retrievedProject.setId(deptId);
                 retrievedProject.setName(name);
                 retrievedProject.setDescription(description);
@@ -408,8 +408,8 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public Project getProjectByName(String projectName) {
-        Project retrievedProject = null;
+    public ProjectDto getProjectByName(String projectName) {
+        ProjectDto retrievedProject = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -435,7 +435,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 Timestamp createTimestamp = rs.getTimestamp("create_date");
 
                 //Fill the object
-                retrievedProject = new Project();
+                retrievedProject = new ProjectDto();
                 retrievedProject.setId(deptId);
                 retrievedProject.setName(name);
                 retrievedProject.setDescription(description);
@@ -461,8 +461,8 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public List<Project> getProjectsWithAssociatedStudents() {
-        List<Project> projects = new ArrayList<Project>();
+    public List<ProjectDto> getProjectsWithAssociatedStudents() {
+        List<ProjectDto> projects = new ArrayList<ProjectDto>();
         Connection dbConnection = null;
         Statement getAllProjectsStatement = null;
         PreparedStatement getStudentsByProjectIdPS = null;
@@ -492,7 +492,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 Timestamp createTimestamp = allProjectResultSet.getTimestamp("create_date");
 
                 //Fill the object
-                Project project = new Project();
+                ProjectDto project = new ProjectDto();
                 project.setId(id);
                 project.setName(name);
                 project.setDescription(description);
@@ -504,7 +504,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 studentListByProjectIdResultSet = getStudentsByProjectIdPS.executeQuery();
 
                 //Step 5: Retrieve all students by column name and then fill into student list
-                List<Student> studentList = getStudentList(studentListByProjectIdResultSet);
+                List<StudentDto> studentList = getStudentList(studentListByProjectIdResultSet);
 
                 //Step 6: use student's major ID to retrieve the associated majorName
                 getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);
@@ -533,9 +533,9 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
         return projects;
     }
 
-    private void setStudentMajorNameByMajorId(PreparedStatement getMajorNameByMajorIdPS, List<Student> studentList)  {
+    private void setStudentMajorNameByMajorId(PreparedStatement getMajorNameByMajorIdPS, List<StudentDto> studentList)  {
         ResultSet getMajorNameByMajorIdResultSet = null;
-        for(Student student : studentList)  {
+        for(StudentDto student : studentList)  {
             try {
                 getMajorNameByMajorIdPS.setLong(1, student.getMajorId());
                 getMajorNameByMajorIdResultSet = getMajorNameByMajorIdPS.executeQuery();
@@ -564,8 +564,8 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
         }
     }
 
-    private List<Student> getStudentList(ResultSet rs) throws SQLException {
-        List<Student> studentList = new ArrayList<Student>();
+    private List<StudentDto> getStudentList(ResultSet rs) throws SQLException {
+        List<StudentDto> studentList = new ArrayList<StudentDto>();
         while (rs.next()) {
             //Retrieve by column name
             Long id  = rs.getLong("id");
@@ -579,7 +579,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
             Long majorId  = rs.getLong("major_id");
 
             //Fill the object
-            Student student = new Student();
+            StudentDto student = new StudentDto();
             student.setId(id);
             student.setLoginName(loginName);
             student.setPassword(password);
@@ -596,8 +596,8 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public Project getProjectWithAssociatedStudentsById(Long projectId) {
-        Project retrievedProject = null;
+    public ProjectDto getProjectWithAssociatedStudentsById(Long projectId) {
+        ProjectDto retrievedProject = null;
         Connection dbConnection = null;
         PreparedStatement getProjectByProjectIDPS = null;
         PreparedStatement getStudentsByProjectIdPS = null;
@@ -625,7 +625,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 Timestamp createTimestamp = projectResultSet.getTimestamp("create_date");
 
                 //Fill the object
-                retrievedProject = new Project();
+                retrievedProject = new ProjectDto();
                 retrievedProject.setId(deptId);
                 retrievedProject.setName(name);
                 retrievedProject.setDescription(description);
@@ -637,7 +637,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 studentListByProjectIdResultSet = getStudentsByProjectIdPS.executeQuery();
 
                 //Step 5: Retrieve all students by column name and then fill into student list
-                List<Student> studentList = getStudentList(studentListByProjectIdResultSet);
+                List<StudentDto> studentList = getStudentList(studentListByProjectIdResultSet);
 
                 //Step 6: use student's major ID to retrieve the associated majorName
                 getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);
@@ -669,8 +669,8 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public Project getProjectWithAssociatedStudentsByName(String projectName) {
-        Project retrievedProject = null;
+    public ProjectDto getProjectWithAssociatedStudentsByName(String projectName) {
+        ProjectDto retrievedProject = null;
         Connection dbConnection = null;
         PreparedStatement getProjectByProjectNamePS = null;
         PreparedStatement getStudentsByProjectIdPS = null;
@@ -699,7 +699,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 Timestamp createTimestamp = projectResultSet.getTimestamp("create_date");
 
                 //Fill the object
-                retrievedProject = new Project();
+                retrievedProject = new ProjectDto();
                 retrievedProject.setId(deptId);
                 retrievedProject.setName(name);
                 retrievedProject.setDescription(description);
@@ -711,7 +711,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 studentListByProjectIdResultSet = getStudentsByProjectIdPS.executeQuery();
 
                 //Step 5: Retrieve all students by column name and then fill into student list
-                List<Student> studentList = getStudentList(studentListByProjectIdResultSet);
+                List<StudentDto> studentList = getStudentList(studentListByProjectIdResultSet);
 
                 //Step 6: use student's major ID to retrieve the associated majorName
                 getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);

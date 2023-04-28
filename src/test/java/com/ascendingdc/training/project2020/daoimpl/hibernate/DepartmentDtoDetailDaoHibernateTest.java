@@ -15,8 +15,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DepartmentDetailDaoHibernateTest extends AbstractDaoHibernateTest {
-    private Logger logger = LoggerFactory.getLogger(DepartmentDetailDaoHibernateTest.class);
+public class DepartmentDtoDetailDaoHibernateTest extends AbstractDaoHibernateTest {
+    private Logger logger = LoggerFactory.getLogger(DepartmentDtoDetailDaoHibernateTest.class);
 
     private static DepartmentDetailDao departmentDetailDao;
     private static DepartmentDao departmentDao;

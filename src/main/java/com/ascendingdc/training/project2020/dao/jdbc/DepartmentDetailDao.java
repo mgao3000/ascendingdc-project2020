@@ -1,12 +1,12 @@
 package com.ascendingdc.training.project2020.dao.jdbc;
 
-import com.ascendingdc.training.project2020.model.DepartmentDetail;
+import com.ascendingdc.training.project2020.dto.DepartmentDetailDto;
 
 import java.util.List;
 
 public interface DepartmentDetailDao {
-    List<DepartmentDetail> getDepartmentDetails();
-    DepartmentDetail getDepartmentDetailById(Long id);
-    DepartmentDetail save(DepartmentDetail departmentDetail);
-    boolean delete(DepartmentDetail departmentDetail);
+    List<DepartmentDetailDto> getDepartmentDetails();
+    DepartmentDetailDto getDepartmentDetailById(Long id);
+    DepartmentDetailDto save(DepartmentDetailDto departmentDetail);
+    boolean delete(DepartmentDetailDto departmentDetail);
 }

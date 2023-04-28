@@ -6,6 +6,9 @@ import com.ascendingdc.training.project2020.entity.*;
 //import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,10 +19,14 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 public abstract class AbstractDaoHibernateTest {
     private Logger logger = LoggerFactory.getLogger(AbstractDaoHibernateTest.class);
 
     protected static MajorDao majorDao;
+//    @Autowired
+//    @Qualifier("majorDaoHibernateImpl")
+//    protected MajorDao majorDao;
 
     protected static StudentDao studentDao;
 

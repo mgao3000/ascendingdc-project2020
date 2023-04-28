@@ -36,7 +36,7 @@ public class SpringJdbcTestConfig {
         dataSource.setUrl("jdbc:postgresql://localhost:5432/pilot");
         dataSource.setUsername("admin");
         dataSource.setPassword("password");
-        
+
 
         return dataSource;
     }

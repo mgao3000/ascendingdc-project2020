@@ -1,8 +1,8 @@
 package com.ascendingdc.training.project2020.daoimpl.jdbc;
 
 import com.ascendingdc.training.project2020.dao.jdbc.StudentDao;
-import com.ascendingdc.training.project2020.model.Project;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import com.ascendingdc.training.project2020.util.JDBCUtils;
 import com.ascendingdc.training.project2020.util.SQLStatementUtils;
 import org.slf4j.Logger;
@@ -32,8 +32,8 @@ public class StudentDaoJDBCImpl implements StudentDao {
 //    private final String SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID = "SELECT NAME from MAJOR WHERE ID = ?";
 
     @Override
-    public Student save(Student student, Long majorId) {
-        Student savedStudent = null;
+    public StudentDto save(StudentDto student, Long majorId) {
+        StudentDto savedStudent = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -84,8 +84,8 @@ public class StudentDaoJDBCImpl implements StudentDao {
     }
 
     @Override
-    public Student update(Student student) {
-        Student updatedStudent = null;
+    public StudentDto update(StudentDto student) {
+        StudentDto updatedStudent = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
 
@@ -292,14 +292,14 @@ public class StudentDaoJDBCImpl implements StudentDao {
         }
 
         @Override
-        public boolean delete(Student student){
+        public boolean delete(StudentDto student){
             Long studentId = student.getId();
             return deleteById(studentId);
         }
 
         @Override
-        public List<Student> getStudents () {
-            List<Student> students = new ArrayList<Student>();
+        public List<StudentDto> getStudents () {
+            List<StudentDto> students = new ArrayList<StudentDto>();
             Connection dbConnection = null;
             Statement stmt = null;
             ResultSet rs = null;
@@ -334,8 +334,8 @@ public class StudentDaoJDBCImpl implements StudentDao {
         }
 
         @Override
-        public List<Student> getStudentsByMajorId (Long majorId) {
-            List<Student> students = new ArrayList<Student>();
+        public List<StudentDto> getStudentsByMajorId (Long majorId) {
+            List<StudentDto> students = new ArrayList<StudentDto>();
             Connection dbConnection = null;
             PreparedStatement preparedStatement = null;
             ResultSet rs = null;
@@ -371,18 +371,18 @@ public class StudentDaoJDBCImpl implements StudentDao {
         }
 
     @Override
-    public List<Project> getAssociatedProjectsByStudentId(Long studentId) {
+    public List<ProjectDto> getAssociatedProjectsByStudentId(Long studentId) {
         return null;
     }
 
     @Override
-    public List<Project> getAssociatedProjectsByStudentLoginName(String loginName) {
+    public List<ProjectDto> getAssociatedProjectsByStudentLoginName(String loginName) {
         return null;
     }
 
     @Override
-        public Student getStudentById (Long id){
-            Student retrievedStudent = null;
+        public StudentDto getStudentById (Long id){
+            StudentDto retrievedStudent = null;
             Connection dbConnection = null;
             PreparedStatement preparedStatement = null;
             ResultSet rs = null;
@@ -419,8 +419,8 @@ public class StudentDaoJDBCImpl implements StudentDao {
         }
 
         @Override
-        public Student getStudentByLoginName (String loginName){
-            Student retrievedStudent = null;
+        public StudentDto getStudentByLoginName (String loginName){
+            StudentDto retrievedStudent = null;
             Connection dbConnection = null;
             PreparedStatement preparedStatement = null;
             ResultSet rs = null;
@@ -456,8 +456,8 @@ public class StudentDaoJDBCImpl implements StudentDao {
         }
 
         @Override
-        public List<Student> getStudentsWithAssociatedProjects () {
-            List<Student> students = new ArrayList<Student>();
+        public List<StudentDto> getStudentsWithAssociatedProjects () {
+            List<StudentDto> students = new ArrayList<StudentDto>();
             Connection dbConnection = null;
             Statement getAllStudentsStatement = null;
             PreparedStatement getProjectsByStudentIdPS = null;
@@ -478,7 +478,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
 
                 //STEP 3: Extract student data from result set
                 while(allStudentResultSet.next()) {
-                    Student retrievedStudent = convertResultSetToStudentModel(allStudentResultSet);
+                    StudentDto retrievedStudent = convertResultSetToStudentModel(allStudentResultSet);
 
                     //Step 4: Now prepare getProjectsByStudentIdPS and then execute the query using each studentId
                     getProjectsByStudentIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID);
@@ -486,7 +486,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
                     projectListByStudentIdResultSet = getProjectsByStudentIdPS.executeQuery();
 
                     //Step 5: Retrieve all projects by column name and then fill into project list
-                    List<Project> projectList = getProjectList(projectListByStudentIdResultSet);
+                    List<ProjectDto> projectList = getProjectList(projectListByStudentIdResultSet);
 
                     retrievedStudent.setProjectList(projectList);
 
@@ -524,8 +524,8 @@ public class StudentDaoJDBCImpl implements StudentDao {
         }
 
         @Override
-        public List<Student> getStudentsWithAssociatedProjectsByMajorId (Long majorId)  {
-            List<Student> students = new ArrayList<Student>();
+        public List<StudentDto> getStudentsWithAssociatedProjectsByMajorId (Long majorId)  {
+            List<StudentDto> students = new ArrayList<StudentDto>();
             Connection dbConnection = null;
             PreparedStatement getStudentsByMajorIdPS = null;
             PreparedStatement getProjectsByStudentIdPS = null;
@@ -547,7 +547,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
 
                 //STEP 3: Extract student data from result set
                 while(studentByMajorIdResultSet.next()) {
-                    Student retrievedStudent = convertResultSetToStudentModel(studentByMajorIdResultSet);
+                    StudentDto retrievedStudent = convertResultSetToStudentModel(studentByMajorIdResultSet);
 
                     //Step 4: Now prepare getProjectsByStudentIdPS and then execute the query using each studentId
                     getProjectsByStudentIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID);
@@ -555,7 +555,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
                     projectListByStudentIdResultSet = getProjectsByStudentIdPS.executeQuery();
 
                     //Step 5: Retrieve all projects by column name and then fill into project list
-                    List<Project> projectList = getProjectList(projectListByStudentIdResultSet);
+                    List<ProjectDto> projectList = getProjectList(projectListByStudentIdResultSet);
 
                     retrievedStudent.setProjectList(projectList);
 
@@ -593,8 +593,8 @@ public class StudentDaoJDBCImpl implements StudentDao {
         }
 
         @Override
-        public Student getStudentWithAssociatedProjectsByStudentId (Long studentId){
-            Student retrievedStudent = null;
+        public StudentDto getStudentWithAssociatedProjectsByStudentId (Long studentId){
+            StudentDto retrievedStudent = null;
             Connection dbConnection = null;
             PreparedStatement getStudentByStudentIdPS = null;
             PreparedStatement getProjectsByStudentIdPS = null;
@@ -625,7 +625,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
                 projectListByStudentIdResultSet = getProjectsByStudentIdPS.executeQuery();
 
                 //Step 5: Retrieve all projects by column name and then fill into project list
-                List<Project> projectList = getProjectList(projectListByStudentIdResultSet);
+                List<ProjectDto> projectList = getProjectList(projectListByStudentIdResultSet);
 
                 retrievedStudent.setProjectList(projectList);
 
@@ -662,8 +662,8 @@ public class StudentDaoJDBCImpl implements StudentDao {
         }
 
         @Override
-        public Student getStudentWithAssociatedProjectsByLoginName (String loginName){
-            Student retrievedStudent = null;
+        public StudentDto getStudentWithAssociatedProjectsByLoginName (String loginName){
+            StudentDto retrievedStudent = null;
             Connection dbConnection = null;
             PreparedStatement getStudentByLoginNamePS = null;
             PreparedStatement getProjectsByStudentIdPS = null;
@@ -694,7 +694,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
                 projectListByStudentIdResultSet = getProjectsByStudentIdPS.executeQuery();
 
                 //Step 5: Retrieve all projects by column name and then fill into project list
-                List<Project> projectList = getProjectList(projectListByStudentIdResultSet);
+                List<ProjectDto> projectList = getProjectList(projectListByStudentIdResultSet);
 
                 retrievedStudent.setProjectList(projectList);
 
@@ -739,8 +739,8 @@ public class StudentDaoJDBCImpl implements StudentDao {
         }
 
 
-        private List<Project> getProjectList(ResultSet projectListByStudentIdResultSet) throws SQLException {
-            List<Project> projectList = new ArrayList<Project>();
+        private List<ProjectDto> getProjectList(ResultSet projectListByStudentIdResultSet) throws SQLException {
+            List<ProjectDto> projectList = new ArrayList<ProjectDto>();
             while (projectListByStudentIdResultSet.next()) {
                 //Retrieve by column name
                 Long id  = projectListByStudentIdResultSet.getLong("id");
@@ -749,7 +749,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
                 Timestamp createTimestamp = projectListByStudentIdResultSet.getTimestamp("create_date");
 
                 //Fill the object
-                Project project = new Project();
+                ProjectDto project = new ProjectDto();
                 project.setId(id);
                 project.setName(name);
                 project.setDescription(description);
@@ -760,7 +760,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
             return projectList;
         }
 
-        private Student convertResultSetToStudentModel (ResultSet rs) throws SQLException {
+        private StudentDto convertResultSetToStudentModel (ResultSet rs) throws SQLException {
             //Retrieve by column name
             Long id = rs.getLong("id");
             String loginName = rs.getString("login_name");
@@ -773,7 +773,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
             Long majorId = rs.getLong("major_id");
 
             //Fill the object
-            Student student = new Student();
+            StudentDto student = new StudentDto();
             student.setId(id);
             student.setLoginName(loginName);
             student.setPassword(password);

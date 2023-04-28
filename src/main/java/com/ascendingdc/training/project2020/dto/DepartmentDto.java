@@ -1,10 +1,10 @@
-package com.ascendingdc.training.project2020.model;
+package com.ascendingdc.training.project2020.dto;
 
 import java.util.Objects;
 
-public class Department {
-    public Department() {}
-    public Department(String name, String description, String location) {
+public class DepartmentDto {
+    public DepartmentDto() {}
+    public DepartmentDto(String name, String description, String location) {
         this.name = name;
         this.description = description;
         this.location = location;
@@ -54,7 +54,7 @@ public class Department {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Department that = (Department) o;
+        DepartmentDto that = (DepartmentDto) o;
         return id == that.id &&
                 name.equals(that.name) &&
                 Objects.equals(description, that.description) &&

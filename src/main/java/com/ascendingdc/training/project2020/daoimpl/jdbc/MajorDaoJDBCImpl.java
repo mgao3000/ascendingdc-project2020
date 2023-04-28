@@ -1,9 +1,9 @@
 package com.ascendingdc.training.project2020.daoimpl.jdbc;
 
 import com.ascendingdc.training.project2020.dao.jdbc.MajorDao;
-import com.ascendingdc.training.project2020.model.Major;
-import com.ascendingdc.training.project2020.model.Project;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.MajorDto;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import com.ascendingdc.training.project2020.util.JDBCUtils;
 import com.ascendingdc.training.project2020.util.SQLStatementUtils;
 import org.slf4j.Logger;
@@ -32,8 +32,8 @@ public class MajorDaoJDBCImpl implements MajorDao {
 //    private final String SQL_SELECT_PROJECTS_BY_STUDENT_ID = "SELECT p.* FROM PROJECT p, STUDENT_PROJECT sp where p.ID=sp.PROJECT_ID and sp.STUDENT_ID=?";
 
     @Override
-    public Major save(Major major) {
-        Major savedMajor = null;
+    public MajorDto save(MajorDto major) {
+        MajorDto savedMajor = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -83,8 +83,8 @@ public class MajorDaoJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major update(Major major) {
-        Major updatedMajor = null;
+    public MajorDto update(MajorDto major) {
+        MajorDto updatedMajor = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
 
@@ -171,7 +171,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
             selectStudentsByMajorIdPS.setLong(1, majorId);
             getStudentsByMajorIdResultSet = selectStudentsByMajorIdPS.executeQuery();
 
-            List<Student> studentList = getStudentListFromResultSet(getStudentsByMajorIdResultSet);
+            List<StudentDto> studentList = getStudentListFromResultSet(getStudentsByMajorIdResultSet);
 
             //Step 4: auto-commit is disabled
             dbConnection.setAutoCommit(false);
@@ -179,13 +179,13 @@ public class MajorDaoJDBCImpl implements MajorDao {
             //Step 5: Loop through the studentList and use each student ID to delete
             //        STUDENT/PROJECT relationship in STUDENT_PROJECT table
             deleteStudentProjectRelationshipByStudentIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_DELETE_ALL_STUDENT_AND_PROJECT_IDS_BY_STUDENT_ID);
-            for(Student eachStudent : studentList) {
+            for(StudentDto eachStudent : studentList) {
                 deleteStudentProjectRelationshipByStudentId(deleteStudentProjectRelationshipByStudentIdPS, eachStudent.getId());
             }
 
             //Step 6: Now loop through the studentList and delete each student in STUDENT table
             deleteStudentByStudentIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_DELETE_STUDENT_BY_ID);
-            for(Student eachStudent : studentList) {
+            for(StudentDto eachStudent : studentList) {
                 boolean deleteSuccessfulFlag = deleteStudentByStudentId(deleteStudentByStudentIdPS, eachStudent.getId());
                 if (!deleteSuccessfulFlag) {
                     dbConnection.rollback();
@@ -267,8 +267,8 @@ public class MajorDaoJDBCImpl implements MajorDao {
     }
 
 
-    private List<Student> getStudentListFromResultSet(ResultSet getStudentsByMajorIdResultSet) throws SQLException {
-        List<Student> studentList = new ArrayList<Student>();
+    private List<StudentDto> getStudentListFromResultSet(ResultSet getStudentsByMajorIdResultSet) throws SQLException {
+        List<StudentDto> studentList = new ArrayList<StudentDto>();
         while (getStudentsByMajorIdResultSet.next()) {
             //Retrieve by column name
             Long id = getStudentsByMajorIdResultSet.getLong("id");
@@ -282,7 +282,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
             Long majorId = getStudentsByMajorIdResultSet.getLong("major_id");
 
             //Fill the object
-            Student student = new Student();
+            StudentDto student = new StudentDto();
             student.setId(id);
             student.setLoginName(loginName);
             student.setPassword(password);
@@ -323,7 +323,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
             selectStudentsByMajorIdPS.setLong(1, majorId);
             getStudentsByMajorIdResultSet = selectStudentsByMajorIdPS.executeQuery();
 
-            List<Student> studentList = getStudentListFromResultSet(getStudentsByMajorIdResultSet);
+            List<StudentDto> studentList = getStudentListFromResultSet(getStudentsByMajorIdResultSet);
 
             //Step 3: auto-commit is disabled
             dbConnection.setAutoCommit(false);
@@ -331,13 +331,13 @@ public class MajorDaoJDBCImpl implements MajorDao {
             //Step 4: Loop through the studentList and use each student ID to delete
             //        STUDENT/PROJECT relationship in STUDENT_PROJECT table
             deleteStudentProjectRelationshipByStudentIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_DELETE_ALL_STUDENT_AND_PROJECT_IDS_BY_STUDENT_ID);
-            for(Student eachStudent : studentList) {
+            for(StudentDto eachStudent : studentList) {
                 deleteStudentProjectRelationshipByStudentId(deleteStudentProjectRelationshipByStudentIdPS, eachStudent.getId());
             }
 
             //Step 5: Now loop through the studentList and delete each student in STUDENT table
             deleteStudentByStudentIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_DELETE_STUDENT_BY_ID);
-            for(Student eachStudent : studentList) {
+            for(StudentDto eachStudent : studentList) {
                 boolean deleteSuccessfulFlag = deleteStudentByStudentId(deleteStudentByStudentIdPS, eachStudent.getId());
                 if (!deleteSuccessfulFlag) {
                     dbConnection.rollback();
@@ -383,14 +383,14 @@ public class MajorDaoJDBCImpl implements MajorDao {
     }
 
     @Override
-    public boolean delete(Major major) {
+    public boolean delete(MajorDto major) {
         Long majorId = major.getId();
         return deleteById(majorId);
     }
 
     @Override
-    public List<Major> getMajors() {
-        List<Major> majors = new ArrayList<Major>();
+    public List<MajorDto> getMajors() {
+        List<MajorDto> majors = new ArrayList<MajorDto>();
         Connection dbConnection = null;
         Statement getAllMajorsStatement = null;
         ResultSet getAllMajorsResultSet = null;
@@ -413,7 +413,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                 String description = getAllMajorsResultSet.getString("description");
 
                 //Fill the object
-                Major major = new Major();
+                MajorDto major = new MajorDto();
                 major.setId(id);
                 major.setName(name);
                 major.setDescription(description);
@@ -438,8 +438,8 @@ public class MajorDaoJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major getMajorById(Long id) {
-        Major retrievedMajor = null;
+    public MajorDto getMajorById(Long id) {
+        MajorDto retrievedMajor = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -463,13 +463,13 @@ public class MajorDaoJDBCImpl implements MajorDao {
                 String description = rs.getString("description");
 
                 //Fill the object
-                retrievedMajor = new Major();
+                retrievedMajor = new MajorDto();
                 retrievedMajor.setId(deptId);
                 retrievedMajor.setName(name);
                 retrievedMajor.setDescription(description);
             }
         }
-        catch(Exception e){
+        catch(SQLException e){
             logger.error("SQLException is caught when trying to select a Major by majorId. The input majorId =" + id + ", the error = " + e.getMessage());
         }
         finally {
@@ -488,8 +488,8 @@ public class MajorDaoJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major getMajorByName(String majorName) {
-        Major retrievedMajor = null;
+    public MajorDto getMajorByName(String majorName) {
+        MajorDto retrievedMajor = null;
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -513,7 +513,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                 String description = rs.getString("description");
 
                 //Fill the object
-                retrievedMajor = new Major();
+                retrievedMajor = new MajorDto();
                 retrievedMajor.setId(deptId);
                 retrievedMajor.setName(name);
                 retrievedMajor.setDescription(description);
@@ -538,8 +538,8 @@ public class MajorDaoJDBCImpl implements MajorDao {
     }
 
     @Override
-    public List<Major> getMajorsWithChildren() {
-        List<Major> majors = new ArrayList<Major>();
+    public List<MajorDto> getMajorsWithChildren() {
+        List<MajorDto> majors = new ArrayList<MajorDto>();
         Connection dbConnection = null;
         Statement getAllMajorsStatement = null;
         PreparedStatement getStudentListByMajorIdPS = null;
@@ -566,7 +566,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                 String description = getAllMajorsResultSet.getString("description");
 
                 //Fill the object
-                Major major = new Major();
+                MajorDto major = new MajorDto();
                 major.setId(id);
                 major.setName(name);
                 major.setDescription(description);
@@ -576,11 +576,11 @@ public class MajorDaoJDBCImpl implements MajorDao {
                 getStudentListByMajorIdPS.setLong(1, major.getId());
                 getStudentListByMajorIdResultSet = getStudentListByMajorIdPS.executeQuery();
 
-                List<Student> studentList = getStudentListFromResultSet(getStudentListByMajorIdResultSet);
+                List<StudentDto> studentList = getStudentListFromResultSet(getStudentListByMajorIdResultSet);
 
                 //Step 5: loop through the retrieved student list, use each student ID to select the associated project list if
                 // there is a student/project relationship exists
-                for(Student eachStudent : studentList) {
+                for(StudentDto eachStudent : studentList) {
                     //First set major name value for each Student
                     eachStudent.setMajorName(major.getName());
                     //Now to retrieve the potential associated project list
@@ -589,7 +589,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                     getAssociatedProjectListByStudentIdResultSet = getAssociatedProjectListByStudentIdPS.executeQuery();
 
                     //Step 5: Retrieve all projects by column name and then fill into project list
-                    List<Project> projectList = getProjectList(getAssociatedProjectListByStudentIdResultSet);
+                    List<ProjectDto> projectList = getProjectList(getAssociatedProjectListByStudentIdResultSet);
 
                     eachStudent.setProjectList(projectList);
                 }
@@ -619,8 +619,8 @@ public class MajorDaoJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major getMajorAndStudentsAndProjectsByMajorId(Long majorId) {
-        Major retrievedMajor = null;
+    public MajorDto getMajorAndStudentsAndProjectsByMajorId(Long majorId) {
+        MajorDto retrievedMajor = null;
         Connection dbConnection = null;
         PreparedStatement getMajorByMajorIdPS = null;
         PreparedStatement getStudentListByMajorIdPS = null;
@@ -648,7 +648,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                 String description = getMajorByMajorIdResultSet.getString("description");
 
                 //Fill the object
-                retrievedMajor = new Major();
+                retrievedMajor = new MajorDto();
                 retrievedMajor.setId(deptId);
                 retrievedMajor.setName(name);
                 retrievedMajor.setDescription(description);
@@ -658,11 +658,11 @@ public class MajorDaoJDBCImpl implements MajorDao {
                 getStudentListByMajorIdPS.setLong(1, retrievedMajor.getId());
                 getStudentListByMajorIdResultSet = getStudentListByMajorIdPS.executeQuery();
 
-                List<Student> studentList = getStudentListFromResultSet(getStudentListByMajorIdResultSet);
+                List<StudentDto> studentList = getStudentListFromResultSet(getStudentListByMajorIdResultSet);
 
                 //Step 5: loop through the retrieved student list, use each student ID to select the associated project list if
                 // there is a student/project relationship exists
-                for(Student eachStudent : studentList) {
+                for(StudentDto eachStudent : studentList) {
                     //First set major name value for each Student
                     eachStudent.setMajorName(retrievedMajor.getName());
                     //Now to retrieve the potential associated project list
@@ -671,7 +671,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                     getAssociatedProjectListByStudentIdResultSet = getAssociatedProjectListByStudentIdPS.executeQuery();
 
                     //Step 5: Retrieve all projects by column name and then fill into project list
-                    List<Project> projectList = getProjectList(getAssociatedProjectListByStudentIdResultSet);
+                    List<ProjectDto> projectList = getProjectList(getAssociatedProjectListByStudentIdResultSet);
 
                     eachStudent.setProjectList(projectList);
                 }
@@ -703,8 +703,8 @@ public class MajorDaoJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major getMajorAndStudentsAndProjectsByMajorName(String majorName) {
-        Major retrievedMajor = null;
+    public MajorDto getMajorAndStudentsAndProjectsByMajorName(String majorName) {
+        MajorDto retrievedMajor = null;
         Connection dbConnection = null;
         PreparedStatement getMajorByMajorNamePS = null;
         PreparedStatement getStudentListByMajorIdPS = null;
@@ -732,7 +732,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                 String description = getMajorByMajorNameResultSet.getString("description");
 
                 //Fill the object
-                retrievedMajor = new Major();
+                retrievedMajor = new MajorDto();
                 retrievedMajor.setId(deptId);
                 retrievedMajor.setName(name);
                 retrievedMajor.setDescription(description);
@@ -742,11 +742,11 @@ public class MajorDaoJDBCImpl implements MajorDao {
                 getStudentListByMajorIdPS.setLong(1, retrievedMajor.getId());
                 getStudentListByMajorIdResultSet = getStudentListByMajorIdPS.executeQuery();
 
-                List<Student> studentList = getStudentListFromResultSet(getStudentListByMajorIdResultSet);
+                List<StudentDto> studentList = getStudentListFromResultSet(getStudentListByMajorIdResultSet);
 
                 //Step 5: loop through the retrieved student list, use each student ID to select the associated project list if
                 // there is a student/project relationship exists
-                for(Student eachStudent : studentList) {
+                for(StudentDto eachStudent : studentList) {
                     //First set major name value for each Student
                     eachStudent.setMajorName(retrievedMajor.getName());
                     //Now to retrieve the potential associated project list
@@ -755,7 +755,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                     getAssociatedProjectListByStudentIdResultSet = getAssociatedProjectListByStudentIdPS.executeQuery();
 
                     //Step 5: Retrieve all projects by column name and then fill into project list
-                    List<Project> projectList = getProjectList(getAssociatedProjectListByStudentIdResultSet);
+                    List<ProjectDto> projectList = getProjectList(getAssociatedProjectListByStudentIdResultSet);
 
                     eachStudent.setProjectList(projectList);
                 }
@@ -785,8 +785,8 @@ public class MajorDaoJDBCImpl implements MajorDao {
         return retrievedMajor;
     }
 
-    private List<Project> getProjectList(ResultSet projectListByStudentIdResultSet) throws SQLException {
-        List<Project> projectList = new ArrayList<Project>();
+    private List<ProjectDto> getProjectList(ResultSet projectListByStudentIdResultSet) throws SQLException {
+        List<ProjectDto> projectList = new ArrayList<ProjectDto>();
         while (projectListByStudentIdResultSet.next()) {
             //Retrieve by column name
             Long id  = projectListByStudentIdResultSet.getLong("id");
@@ -795,7 +795,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
             Timestamp createTimestamp = projectListByStudentIdResultSet.getTimestamp("create_date");
 
             //Fill the object
-            Project project = new Project();
+            ProjectDto project = new ProjectDto();
             project.setId(id);
             project.setName(name);
             project.setDescription(description);

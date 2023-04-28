@@ -1,5 +1,6 @@
 package com.ascendingdc.training.project2020.daoimpl.hibernate;
 
+import com.ascendingdc.training.project2020.dao.hibernate.MajorDao;
 import com.ascendingdc.training.project2020.entity.Major;
 import com.ascendingdc.training.project2020.entity.Project;
 import com.ascendingdc.training.project2020.entity.Student;
@@ -8,17 +9,27 @@ import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//@SpringBootTest
 public class MajorDaoHibernateTest extends AbstractDaoHibernateTest {
     private Logger logger = LoggerFactory.getLogger(MajorDaoHibernateTest.class);
 
 //    @Rule
 //    public ExpectedException thrown = ExpectedException.none();
+
+//    private static MajorDao majorDao;
+//    private MajorDao majorDao;
+
+//    @Autowired
+//    private MajorDao majorDao;
 
     @BeforeAll
     public static void setupOnce() {
@@ -36,6 +47,8 @@ public class MajorDaoHibernateTest extends AbstractDaoHibernateTest {
 
     @BeforeEach
     public void setup() {
+//        majorDao = new MajorDaoHibernateImpl();
+
         tempMajorName = "Major-" + getRandomInt(1, 1000);
         tempLoginName = "Student-login-" + getRandomInt(1, 1000);
         tempProjectName = "Project-" + getRandomInt(1, 1000);
@@ -131,6 +144,12 @@ public class MajorDaoHibernateTest extends AbstractDaoHibernateTest {
             assertAssociatedStudentsAndProjectsBeingRetrieved(retrievedMajor.getStudents());
             displayMajorWithAssociatedStudents(retrievedMajor);
         }
+
+        /*
+         *  demo purpose
+         */
+//        Major retrievedMajor = majorDao.getMajorAndStudentsAndProjectsByMajorId((long)2);
+//        assertEquals(2, retrievedMajor.getStudents().size());
     }
 
     @Test
@@ -184,17 +203,36 @@ public class MajorDaoHibernateTest extends AbstractDaoHibernateTest {
     }
 
     @Test
+    @Transactional
+    public void testSaveMajor() {
+        Major major = createMajorByNameOne("abc" + getRandomInt(1, 100));
+        Major savedMajor = majorDao.save(major);
+        assertNotNull(savedMajor.getId());
+        assertEquals(major.getName(), savedMajor.getName());
+        assertEquals(major.getDescription(), savedMajor.getDescription());
+    }
+
+    private Major createMajorByNameOne(String name) {
+        Major major = new Major();
+        major.setName(name);
+        major.setDescription(name + " descripton");
+        return major;
+    }
+
+    @Test
+    @Transactional
     public void saveMajorOnlyTest() {
         Major major = createMajorByName(tempMajorName);
         Major savedMajor = majorDao.save(major);
+        assertNotNull(savedMajor.getId());
         assertEquals(major.getName(), savedMajor.getName());
         assertEquals(major.getDescription(), savedMajor.getDescription());
         displayMajorWithoutChildren(savedMajor);
         /*
          * Now clean up the saved Major from DB Major table
          */
-        boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
-        assertEquals(true, deleteSuccessfulFlag);
+//        boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
+//        assertEquals(true, deleteSuccessfulFlag);
     }
 
     @Test
@@ -206,6 +244,77 @@ public class MajorDaoHibernateTest extends AbstractDaoHibernateTest {
          */
         boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
         assertEquals(true, deleteSuccessfulFlag);
+    }
+
+    @Test
+    public void createMajorWithAssociatedStudentsTest() {
+        //Step 0: create a temp Major
+        Major major = createMajorByName(tempMajorName);
+//        Major majorSaved = majorDao.save(major);
+
+        //Step 1.1: create a temp Student No.1
+        Student student1 = createStudentByLoginNameAndEmailWithoutMajorAssigned(tempLoginName, tempEmail);
+//        student1.setMajor(majorSaved);
+        student1.setMajor(major);
+//        Student studentSaved1 = studentDao.save(student1);
+
+        //Step 1.2: create a temp Student No.2
+        Student student2 = createStudentByLoginNameAndEmailWithoutMajorAssigned(tempLoginName+"-2", 2 + tempEmail);
+//        student2.setMajor(majorSaved);
+        student2.setMajor(major);
+//        Student studentSaved2 = studentDao.save(student2);
+
+        //update the major
+//        majorSaved.addStudent(studentSaved1);
+//        majorSaved.addStudent(studentSaved2);
+        majorDao.save(major);
+
+//        //Start doing assertions
+//        assertEquals(2, majorSaved.getStudents().size());
+//
+//        /*
+//         * Now delete the saved Major from DB Major table.
+//         * Due to the saved Major has some students associated with.
+//         * EntityCannotBeDeletedDueToNonEmptyChildrenException is
+//         * thrown when trying to call majorDao.delete(majorSaved);
+//         * Here we choose to use try-catch to handle the thrown
+//         * EntityCannotBeDeletedDueToNonEmptyChildrenException.
+//         * The reason is we would like to continue to clean
+//         * up those temporarily created major and students
+//         */
+////        thrown.expect(EntityCannotBeDeletedDueToNonEmptyChildrenException.class);
+////        boolean deleteSuccessfulFlag = majorDao.delete(majorSaved);
+//        try {
+//            boolean deleteSuccessfulFlag = majorDao.delete(majorSaved);
+//        } catch(EntityCannotBeDeletedDueToNonEmptyChildrenException ex) {
+//            assertTrue(ex instanceof EntityCannotBeDeletedDueToNonEmptyChildrenException);
+//        }
+//
+//        /*
+//         * Now start clean up the temporarily created students and the major
+//         * by removing students first and then delete the major
+//         */
+//        majorSaved.removeStudent(studentSaved1);
+//        majorSaved.removeStudent(studentSaved2);
+//
+//        boolean deleteSuccessfulFlag = studentDao.delete(studentSaved1);
+//        assertTrue(deleteSuccessfulFlag);
+//
+//        deleteSuccessfulFlag = studentDao.delete(studentSaved2);
+//        assertTrue(deleteSuccessfulFlag);
+//
+//        deleteSuccessfulFlag = majorDao.delete(majorSaved);
+//        assertTrue(deleteSuccessfulFlag);
+//
+//        //Now start to do multiple selection to make sure new created major, students and projects are gone!
+//        Major retrievedMajor = majorDao.getMajorById(majorSaved.getId());
+//        assertNull(retrievedMajor);
+//
+//        Student retrievedStudent = studentDao.getStudentById(studentSaved1.getId());
+//        assertNull(retrievedStudent);
+//        retrievedStudent = studentDao.getStudentById(studentSaved2.getId());
+//        assertNull(retrievedStudent);
+
     }
 
     @Test

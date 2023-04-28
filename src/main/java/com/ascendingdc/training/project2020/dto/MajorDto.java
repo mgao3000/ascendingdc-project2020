@@ -1,15 +1,15 @@
-package com.ascendingdc.training.project2020.model;
+package com.ascendingdc.training.project2020.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Major {
+public class MajorDto {
 
-    public Major() {
+    public MajorDto() {
     }
 
-    public Major(String name, String description) {
+    public MajorDto(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -20,7 +20,7 @@ public class Major {
 
     private String description;
 
-    private List<Student> studentList = new ArrayList<Student>();
+    private List<StudentDto> studentList = new ArrayList<StudentDto>();
 
     public Long getId() {
         return id;
@@ -46,19 +46,19 @@ public class Major {
         this.description = description;
     }
 
-    public List<Student> getStudentList() {
+    public List<StudentDto> getStudentList() {
         return studentList;
     }
 
-    public void setStudentList(List<Student> studentList) {
+    public void setStudentList(List<StudentDto> studentList) {
         this.studentList = studentList;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Major)) return false;
-        Major major = (Major) o;
+        if (!(o instanceof MajorDto)) return false;
+        MajorDto major = (MajorDto) o;
         return Objects.equals(getId(), major.getId()) && Objects.equals(getName(), major.getName()) && Objects.equals(getDescription(), major.getDescription());
     }
 

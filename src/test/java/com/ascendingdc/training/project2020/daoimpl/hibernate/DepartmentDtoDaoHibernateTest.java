@@ -1,6 +1,5 @@
 package com.ascendingdc.training.project2020.daoimpl.hibernate;
 
-import com.ascendingdc.training.project2020.dao.hibernate.DepartmentDao;
 import com.ascendingdc.training.project2020.entity.Account;
 import com.ascendingdc.training.project2020.entity.Department;
 import com.ascendingdc.training.project2020.entity.DepartmentDetail;
@@ -18,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes= SpringBootAppInitializer.class)
 //@SpringBootTest
-public class DepartmentDaoHibernateTest extends AbstractDaoHibernateTest {
-    private Logger logger = LoggerFactory.getLogger(DepartmentDaoHibernateTest.class);
+public class DepartmentDtoDaoHibernateTest extends AbstractDaoHibernateTest {
+    private Logger logger = LoggerFactory.getLogger(DepartmentDtoDaoHibernateTest.class);
 
 
 //    @Autowired

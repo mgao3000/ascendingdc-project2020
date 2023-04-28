@@ -1,4 +1,4 @@
-package com.ascendingdc.training.project2020.model;
+package com.ascendingdc.training.project2020.dto;
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Project  {
+public class ProjectDto {
 //    private Logger logger = LoggerFactory.getLogger(Project.class);
 
-    public Project() {
+    public ProjectDto() {
     }
 
-    public Project(String name, String description) {
+    public ProjectDto(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -27,7 +27,7 @@ public class Project  {
 
     private LocalDate createDate;
 
-    private List<Student> studentList = new ArrayList<Student>();
+    private List<StudentDto> studentList = new ArrayList<StudentDto>();
 
     public Long getId() {
         return id;
@@ -61,19 +61,19 @@ public class Project  {
         this.createDate = createDate;
     }
 
-    public List<Student> getStudentList() {
+    public List<StudentDto> getStudentList() {
         return studentList;
     }
 
-    public void setStudentList(List<Student> studentList) {
+    public void setStudentList(List<StudentDto> studentList) {
         this.studentList = studentList;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Project)) return false;
-        Project project = (Project) o;
+        if (!(o instanceof ProjectDto)) return false;
+        ProjectDto project = (ProjectDto) o;
         return Objects.equals(getId(), project.getId()) && Objects.equals(getName(), project.getName()) && Objects.equals(getDescription(), project.getDescription()) && Objects.equals(getCreateDate(), project.getCreateDate());
     }
 

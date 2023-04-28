@@ -1,9 +1,9 @@
 package com.ascendingdc.training.project2020.daoimpl.springjdbc;
 
 import com.ascendingdc.training.project2020.dao.jdbc.MajorDao;
-import com.ascendingdc.training.project2020.model.Major;
-import com.ascendingdc.training.project2020.model.Project;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.MajorDto;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import com.ascendingdc.training.project2020.util.SQLStatementUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major save(Major major) {
+    public MajorDto save(MajorDto major) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("name", major.getName())
                         .addValue("description", major.getDescription());
@@ -41,7 +41,7 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major update(Major major) {
+    public MajorDto update(MajorDto major) {
         int updateResult = jdbcTemplate.update(SQLStatementUtils.SQL_UPDATE_MAJOR,
                 major.getName(), major.getDescription(), major.getId());
         if(updateResult > 0)
@@ -63,18 +63,18 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
     }
 
     @Override
-    public boolean delete(Major major) {
+    public boolean delete(MajorDto major) {
         return deleteById(major.getId());
     }
 
     @Override
-    public List<Major> getMajors() {
+    public List<MajorDto> getMajors() {
         return jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_ALL_MAJORS, new MajorMapper());
     }
 
     @Override
-    public Major getMajorById(Long id) {
-        Major retrievedMajor = null;
+    public MajorDto getMajorById(Long id) {
+        MajorDto retrievedMajor = null;
         try {
             retrievedMajor = jdbcTemplate.queryForObject(SQLStatementUtils.SQL_SELECT_MAJOR_BY_ID,
                     new Object[] {id}, new MajorMapper());
@@ -86,8 +86,8 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major getMajorByName(String majorName) {
-        Major retrievedMajor = null;
+    public MajorDto getMajorByName(String majorName) {
+        MajorDto retrievedMajor = null;
         try {
             retrievedMajor = jdbcTemplate.queryForObject(SQLStatementUtils.SQL_SELECT_MAJOR_BY_MAME,
                     new Object[] {majorName}, new MajorMapper());
@@ -99,13 +99,13 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
     }
 
     @Override
-    public List<Major> getMajorsWithChildren() {
-        List<Major> allMajors = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_ALL_MAJORS, new MajorMapper());
-        for(Major major : allMajors) {
-            List<Student> studentList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_STUDENTS_BY_MAJOR_ID,
+    public List<MajorDto> getMajorsWithChildren() {
+        List<MajorDto> allMajors = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_ALL_MAJORS, new MajorMapper());
+        for(MajorDto major : allMajors) {
+            List<StudentDto> studentList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_STUDENTS_BY_MAJOR_ID,
                     new StudentMapper(), new Object[] {major.getId()});
-            for(Student student : studentList) {
-                List<Project> projectList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
+            for(StudentDto student : studentList) {
+                List<ProjectDto> projectList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                         new ProjectMapper(), new Object[] {student.getId()});
                 student.setProjectList(projectList);
             }
@@ -115,15 +115,15 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major getMajorAndStudentsAndProjectsByMajorId(Long majorId) {
-        Major retrievedMajor = null;
+    public MajorDto getMajorAndStudentsAndProjectsByMajorId(Long majorId) {
+        MajorDto retrievedMajor = null;
         try {
             retrievedMajor = jdbcTemplate.queryForObject(SQLStatementUtils.SQL_SELECT_MAJOR_BY_ID,
                     new Object[] {majorId}, new MajorMapper());
-            List<Student> studentList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_STUDENTS_BY_MAJOR_ID,
+            List<StudentDto> studentList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_STUDENTS_BY_MAJOR_ID,
                     new StudentMapper(), new Object[] {retrievedMajor.getId()});
-            for(Student student : studentList) {
-                List<Project> projectList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
+            for(StudentDto student : studentList) {
+                List<ProjectDto> projectList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                         new ProjectMapper(), new Object[] {student.getId()});
                 student.setProjectList(projectList);
             }
@@ -135,15 +135,15 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
     }
 
     @Override
-    public Major getMajorAndStudentsAndProjectsByMajorName(String majorName) {
-        Major retrievedMajor = null;
+    public MajorDto getMajorAndStudentsAndProjectsByMajorName(String majorName) {
+        MajorDto retrievedMajor = null;
         try {
             retrievedMajor = jdbcTemplate.queryForObject(SQLStatementUtils.SQL_SELECT_MAJOR_BY_MAME,
                     new Object[] {majorName}, new MajorMapper());
-            List<Student> studentList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_STUDENTS_BY_MAJOR_ID,
+            List<StudentDto> studentList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_STUDENTS_BY_MAJOR_ID,
                     new StudentMapper(), new Object[] {retrievedMajor.getId()});
-            for(Student student : studentList) {
-                List<Project> projectList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
+            for(StudentDto student : studentList) {
+                List<ProjectDto> projectList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                         new ProjectMapper(), new Object[] {student.getId()});
                 student.setProjectList(projectList);
             }

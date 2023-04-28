@@ -349,6 +349,12 @@ public abstract class AbstractDaoSpringDataJPATest {
         }
     }
 
+    protected void displayMajorWithChildren(Major major) {
+        logger.info("Major={}", major);
+        displayStudentSetWithAssociatedProjects(major.getStudents());
+        logger.info("===============================================");
+    }
+
     protected void displayMajorWithAssociatedStudents(Major major) {
         logger.info("Major detail={}", major);
         displayStudentSetWithAssociatedProjects(major.getStudents());

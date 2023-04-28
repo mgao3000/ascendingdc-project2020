@@ -1,11 +1,11 @@
-package com.ascendingdc.training.project2020.model;
+package com.ascendingdc.training.project2020.dto;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Employee {
-    public Employee() { }
-    public Employee(String name, String firstName, String lastName, String email, String address) {
+public class EmployeeDto {
+    public EmployeeDto() { }
+    public EmployeeDto(String name, String firstName, String lastName, String email, String address) {
         this.name = name;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -101,7 +101,7 @@ public class Employee {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
+        EmployeeDto employee = (EmployeeDto) o;
         return id == employee.id &&
                 name.equals(employee.name) &&
                 Objects.equals(firstName, employee.firstName) &&

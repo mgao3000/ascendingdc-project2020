@@ -18,14 +18,14 @@ public class StudentDaoHibernateTest extends AbstractDaoHibernateTest {
     @BeforeAll
     public static void setupOnce() {
         studentDao = new StudentDaoHibernateImpl();
-        majorDao = new MajorDaoHibernateImpl();
+//        majorDao = new MajorDaoHibernateImpl();
         projectDao = new ProjectDaoHibernateImpl();
     }
 
     @AfterAll
     public static void teardownOnce() {
         studentDao = null;
-        majorDao = null;
+//        majorDao = null;
         projectDao = null;
     }
 

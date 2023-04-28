@@ -86,15 +86,15 @@ public class StudentDaoSpringDataJPAImpl implements StudentDao {
         return studentRepository.findByLoginName(loginName);
     }
 
-    @Override
-    public List<Student> getStudentsByMajorId(Long majorId) {
-        return studentRepository.findStudentsByMajorId(majorId);
-    }
-
-    @Override
-    public List<Project> getAssociatedProjectsByStudentId(Long studentId) {
-        return studentRepository.findProjectsByStudentId(studentId);
-    }
+//    @Override
+//    public List<Student> getStudentsByMajorId(Long majorId) {
+//        return studentRepository.findStudentsByMajorId(majorId);
+//    }
+//
+//    @Override
+//    public List<Project> getAssociatedProjectsByStudentId(Long studentId) {
+//        return studentRepository.findProjectsByStudentId(studentId);
+//    }
 
     @Override
     public List<Project> getAssociatedProjectsByStudentLoginName(String loginName) {
@@ -116,8 +116,8 @@ public class StudentDaoSpringDataJPAImpl implements StudentDao {
         return studentRepository.findStudentWithAssociatedProjectsByStudentLoginName(loginName);
     }
 
-    @Override
-    public List<Student> getStudentsWithAssociatedProjectsByMajorId(Long majorId) {
-        return studentRepository.findStudentsWithAssociatedProjectsAndMajorByMajorId(majorId);
-    }
+//    @Override
+//    public List<Student> getStudentsWithAssociatedProjectsByMajorId(Long majorId) {
+//        return studentRepository.findStudentsWithAssociatedProjectsAndMajorByMajorId(majorId);
+//    }
 }

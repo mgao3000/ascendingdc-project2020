@@ -2,9 +2,6 @@ package com.ascendingdc.training.project2020.daoimpl.springdatajpa;
 
 import com.ascendingdc.training.project2020.dao.hibernate.DepartmentDao;
 import com.ascendingdc.training.project2020.dao.hibernate.DepartmentDetailDao;
-import com.ascendingdc.training.project2020.daoimpl.hibernate.AbstractDaoHibernateTest;
-import com.ascendingdc.training.project2020.daoimpl.hibernate.DepartmentDaoHibernateImpl;
-import com.ascendingdc.training.project2020.daoimpl.hibernate.DepartmentDetailDaoHibernateImpl;
 import com.ascendingdc.training.project2020.daoimpl.repository.DepartmentDetailRepository;
 import com.ascendingdc.training.project2020.entity.Department;
 import com.ascendingdc.training.project2020.entity.DepartmentDetail;
@@ -24,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class DepartmentDetailDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
-    private Logger logger = LoggerFactory.getLogger(DepartmentDetailDaoSpringDataJPATest.class);
+public class DepartmentDtoDetailDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
+    private Logger logger = LoggerFactory.getLogger(DepartmentDtoDetailDaoSpringDataJPATest.class);
 
     @Autowired
     @Qualifier("departmentDetailSpringDataJPADao")

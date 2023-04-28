@@ -2,6 +2,8 @@ package com.ascendingdc.training.project2020.util;
 
 public class HQLStatementUtil {
 
+
+
     /*
      * Major related HQL Statements
      */

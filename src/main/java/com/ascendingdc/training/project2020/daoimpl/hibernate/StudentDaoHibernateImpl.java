@@ -200,20 +200,20 @@ public class StudentDaoHibernateImpl extends AbstractDaoHibernateImpl implements
         return getStudentByLoginNameAndHQL(loginName, HQLStatementUtil.HQL_SELECT_STUDENT_BY_LOGIN_NAME);
     }
 
-    @Override
-    public List<Student> getStudentsByMajorId(Long majorId) {
-        return null;
-    }
+//    @Override
+//    public List<Student> getStudentsByMajorId(Long majorId) {
+//        return null;
+//    }
 
     @Override
     public Student getStudentWithAssociatedProjectsByLoginName(String loginName) {
         return getStudentByLoginNameAndHQL(loginName, HQLStatementUtil.HQL_SELECT_STUDENT_WITH_ASSOCIATED_PROJECTS_BY_STUDENT_LOGIN_NAME);
     }
 
-    @Override
-    public List<Student> getStudentsWithAssociatedProjectsByMajorId(Long majorId) {
-        return null;
-    }
+//    @Override
+//    public List<Student> getStudentsWithAssociatedProjectsByMajorId(Long majorId) {
+//        return null;
+//    }
 
     private Student getStudentByLoginNameAndHQL(String loginName, String hqlStatement) {
         Student retrievedStudent = null;
@@ -230,21 +230,21 @@ public class StudentDaoHibernateImpl extends AbstractDaoHibernateImpl implements
         return retrievedStudent;
     }
 
-    @Override
-    public List<Project> getAssociatedProjectsByStudentId(Long studentId) {
-        List<Project> projectList = new ArrayList<>();
-        if(studentId != null) {
-            try(Session session = HibernateUtil.getSession()) {
-                Query<Project> query = session.createQuery(HQLStatementUtil.HQL_SELECT_ASSOCIATED_PROJECTS_BY_STUDENT_ID);
-                query.setParameter("id", studentId);
-
-                projectList = query.list();
-            } catch (HibernateException he) {
-                logger.error("fail to retrieve the associated Projects by studentId={}, error={}", studentId, he.getMessage());
-            }
-        }
-        return projectList;
-    }
+//    @Override
+//    public List<Project> getAssociatedProjectsByStudentId(Long studentId) {
+//        List<Project> projectList = new ArrayList<>();
+//        if(studentId != null) {
+//            try(Session session = HibernateUtil.getSession()) {
+//                Query<Project> query = session.createQuery(HQLStatementUtil.HQL_SELECT_ASSOCIATED_PROJECTS_BY_STUDENT_ID);
+//                query.setParameter("id", studentId);
+//
+//                projectList = query.list();
+//            } catch (HibernateException he) {
+//                logger.error("fail to retrieve the associated Projects by studentId={}, error={}", studentId, he.getMessage());
+//            }
+//        }
+//        return projectList;
+//    }
 
     @Override
     public List<Project> getAssociatedProjectsByStudentLoginName(String loginName) {

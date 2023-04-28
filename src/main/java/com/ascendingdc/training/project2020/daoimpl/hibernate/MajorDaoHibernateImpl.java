@@ -14,10 +14,13 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository("majorDaoHibernateImpl")
 public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements MajorDao {
     private Logger logger = LoggerFactory.getLogger(MajorDaoHibernateImpl.class);
 
@@ -38,6 +41,9 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
 //            }
 //            session.saveOrUpdate(major);
             session.persist(major);
+//            String description = major.getDescription();
+ //           major.setDescription(major.getName() + "_changeit");
+//            major.setDescription(description);
             transaction.commit();
         } catch (Exception e) {
             logger.error("fail to insert a major, error={}", e.getMessage());
@@ -46,6 +52,7 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
         } finally {
             session.close();
         }
+//        major.setDescription("hahaha");
         return major;
     }
 
@@ -149,15 +156,40 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
 //        return deleteByName(major.getName());
     }
 
+    public boolean deleteMajor(Major major) {
+        boolean deleteResult = false;
+        Transaction transaction = null;
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        try {
+            transaction = session.beginTransaction();
+            session.delete(major);
+            transaction.commit();
+            deleteResult = true;
+        } catch (Exception e) {
+            logger.error("fail to update major, error={}", e.getMessage());
+            if(transaction != null)
+                transaction.rollback();
+        } finally {
+            session.close();
+        }
+        return deleteResult;
+    }
+
+
     @Override
     public List<Major> getMajors() {
         List<Major> majorList = null;
-        try (Session session = HibernateUtil.getSession()) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        try {
             Query<Major> query = session.createQuery(HQLStatementUtil.HQL_SELECT_ALL_MAJORS);
 
             majorList = query.list();
         } catch (HibernateException he) {
             logger.error("fail to retrieve all majors, error={}", he.getMessage());
+        } finally {
+            session.close();
         }
         if(majorList == null)
             majorList = new ArrayList<Major>();
@@ -180,13 +212,41 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
     }
 
     @Override
-    public Major getMajorById(Long id) {
-        return getMajorByIdAndHQL(id, HQLStatementUtil.HQL_SELECT_MAJOR_BY_ID);
+    public Major getMajorById(Long majorId) {
+//        return getMajorByIdAndHQL(id, HQLStatementUtil.HQL_SELECT_MAJOR_BY_ID);
+        Major major = null;
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        try {
+            Query<Major> query = session.createQuery(HQLStatementUtil.HQL_SELECT_MAJOR_BY_ID);
+            query.setParameter("id", majorId);
+
+            major = query.uniqueResult();
+        } catch (HibernateException he) {
+            logger.error("fail to retrieve major with id={}, error={}", majorId, he.getMessage());
+        } finally {
+            session.close();
+        }
+        return major;
     }
 
     @Override
     public Major getMajorAndStudentsAndProjectsByMajorId(Long majorId) {
-        return getMajorByIdAndHQL(majorId, HQLStatementUtil.HQL_SELECT_MAJOR_WITH_CHILDREN_BY_MAJOR_ID);
+//        return getMajorByIdAndHQL(majorId, HQLStatementUtil.HQL_SELECT_MAJOR_WITH_CHILDREN_BY_MAJOR_ID);
+        Major major = null;
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        try {
+            Query<Major> query = session.createQuery(HQLStatementUtil.HQL_SELECT_MAJOR_WITH_CHILDREN_BY_MAJOR_ID);
+            query.setParameter("id", majorId);
+
+            major = query.uniqueResult();
+        } catch (HibernateException he) {
+            logger.error("fail to retrieve major with id={}, error={}", majorId, he.getMessage());
+        } finally {
+            session.close();
+        }
+        return major;
     }
 
     private Major getMajorByIdAndHQL(Long majorId, String hqlStatement) {

@@ -2,8 +2,8 @@ package com.ascendingdc.training.project2020.daoimpl.jdbc;
 
 import com.ascendingdc.training.project2020.daoimpl.springjdbc.MajorDaoSpringJDBCImpl;
 import com.ascendingdc.training.project2020.daoimpl.springjdbc.StudentDaoSpringJDBCImpl;
-import com.ascendingdc.training.project2020.model.Major;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.MajorDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,9 +58,9 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void getStudentsTest() {
-        List<Student> studentList = studentDao.getStudents();
+        List<StudentDto> studentList = studentDao.getStudents();
         int i = 1;
-        for(Student student : studentList) {
+        for(StudentDto student : studentList) {
             logger.info("No.{} student = {}", i, student);
             i++;
         }
@@ -71,11 +71,11 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Now need to use majorDao to randomly select a valid Major
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
 
-        List<Student> studentList = studentDao.getStudentsByMajorId(randomMajor.getId());
+        List<StudentDto> studentList = studentDao.getStudentsByMajorId(randomMajor.getId());
         int i = 1;
-        for(Student student : studentList) {
+        for(StudentDto student : studentList) {
             logger.info("No.{} student = {}", i, student);
             i++;
         }
@@ -86,12 +86,12 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random StudentModel from DB
          */
-        Student randomStudent = getRandomStudentModel();
+        StudentDto randomStudent = getRandomStudentModel();
         if(randomStudent == null) {
             logger.error("there is no student being found in database, please double check DB connection!");
         } else {
             Long studentId = randomStudent.getId();
-            Student retrievedStudentModel = studentDao.getStudentById(studentId);
+            StudentDto retrievedStudentModel = studentDao.getStudentById(studentId);
             assertStudentModels(randomStudent, retrievedStudentModel);
         }
     }
@@ -101,25 +101,25 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random StudentModel from DB
          */
-        Student randomStudent = getRandomStudentModel();
+        StudentDto randomStudent = getRandomStudentModel();
         if(randomStudent == null) {
             logger.error("there is no Student being found in database, please double check DB connection!");
         } else {
             String loginName = randomStudent.getLoginName();
-            Student retrievedStudentModel = studentDao.getStudentByLoginName(loginName);
+            StudentDto retrievedStudentModel = studentDao.getStudentByLoginName(loginName);
             assertStudentModels(randomStudent, retrievedStudentModel);
         }
     }
 
     @Test
     public void saveStudentTest() {
-        Student student = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
+        StudentDto student = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
         /*
          * Now need to use majorDao to randomly select a valid Major
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
 
-        Student savedStudent = studentDao.save(student, randomMajor.getId());
+        StudentDto savedStudent = studentDao.save(student, randomMajor.getId());
         student.setMajorId(randomMajor.getId());
         assertStudentModels(student, savedStudent);
         /*
@@ -134,13 +134,13 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * create a temp Student to test deletion
          */
-        Student student = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
+        StudentDto student = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
         /*
          * Now need to use majorDao to randomly select a valid Major
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
 
-        Student savedStudent = studentDao.save(student, randomMajor.getId());
+        StudentDto savedStudent = studentDao.save(student, randomMajor.getId());
         /*
          * Now delete the saved Project from DB Major table
          */
@@ -153,13 +153,13 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * create a temp Student to test deletion
          */
-        Student student = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
+        StudentDto student = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
         /*
          * Now need to use majorDao to randomly select a valid Major
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
 
-        Student savedStudent = studentDao.save(student, randomMajor.getId());
+        StudentDto savedStudent = studentDao.save(student, randomMajor.getId());
         /*
          * Now delete the saved Student using student ID from DB Major table
          */
@@ -172,13 +172,13 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * create a temp Student to test deletion
          */
-        Student student = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
+        StudentDto student = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
         /*
          * Now need to use majorDao to randomly select a valid Major
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
 
-        Student savedStudent = studentDao.save(student, randomMajor.getId());
+        StudentDto savedStudent = studentDao.save(student, randomMajor.getId());
         /*
          * Now delete the saved Student using student ID from DB Major table
          */
@@ -188,7 +188,7 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void updateStudentTest() {
-        Student originalStudentModel = getRandomStudentModel();
+        StudentDto originalStudentModel = getRandomStudentModel();
 
         String originalStudentAddress = originalStudentModel.getAddress();
         String modifiedStudentAddress = originalStudentAddress + "---Modified Address";
@@ -196,7 +196,7 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Now start doing update operation
          */
-        Student updatedStudentModel = studentDao.update(originalStudentModel);
+        StudentDto updatedStudentModel = studentDao.update(originalStudentModel);
         assertStudentModels(originalStudentModel, updatedStudentModel);
 
         /*
@@ -209,7 +209,7 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void getStudentsWithAssociatedProjectsTest() {
-        List<Student> studentList = studentDao.getStudentsWithAssociatedProjects();
+        List<StudentDto> studentList = studentDao.getStudentsWithAssociatedProjects();
         displayStudents(studentList);
     }
 
@@ -218,9 +218,9 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Now need to use majorDao to randomly select a valid Major
          */
-        Major randomMajorModel = getRandomMajorModel();
+        MajorDto randomMajorModel = getRandomMajorModel();
 
-        List<Student> studentList = studentDao.getStudentsWithAssociatedProjectsByMajorId(randomMajorModel.getId());
+        List<StudentDto> studentList = studentDao.getStudentsWithAssociatedProjectsByMajorId(randomMajorModel.getId());
         displayStudents(studentList);
     }
 
@@ -229,12 +229,12 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random StudentModel from DB
          */
-        Student randomStudent = getRandomStudentModel();
+        StudentDto randomStudent = getRandomStudentModel();
         if(randomStudent == null) {
             logger.error("there is no student being found in database, please double check DB connection!");
         } else {
             Long studentId = randomStudent.getId();
-            Student retrievedStudentModel = studentDao.getStudentWithAssociatedProjectsByStudentId(studentId);
+            StudentDto retrievedStudentModel = studentDao.getStudentWithAssociatedProjectsByStudentId(studentId);
             assertStudentModels(randomStudent, retrievedStudentModel);
             displayStudent(retrievedStudentModel);
         }
@@ -245,12 +245,12 @@ public class StudentDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random StudentModel from DB
          */
-        Student randomStudent = getRandomStudentModel();
+        StudentDto randomStudent = getRandomStudentModel();
         if(randomStudent == null) {
             logger.error("there is no Student being found in database, please double check DB connection!");
         } else {
             String loginName = randomStudent.getLoginName();
-            Student retrievedStudentModel = studentDao.getStudentWithAssociatedProjectsByLoginName(loginName);
+            StudentDto retrievedStudentModel = studentDao.getStudentWithAssociatedProjectsByLoginName(loginName);
             assertStudentModels(randomStudent, retrievedStudentModel);
             displayStudent(retrievedStudentModel);
         }

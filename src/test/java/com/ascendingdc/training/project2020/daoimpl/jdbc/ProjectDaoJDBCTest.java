@@ -1,7 +1,7 @@
 package com.ascendingdc.training.project2020.daoimpl.jdbc;
 
 import com.ascendingdc.training.project2020.daoimpl.springjdbc.ProjectDaoSpringJDBCImpl;
-import com.ascendingdc.training.project2020.model.Project;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void getProjectsTest() {
-        List<Project> projectModelList = projectDao.getProjects();
+        List<ProjectDto> projectModelList = projectDao.getProjects();
         displayProjects(projectModelList);
 //        int i = 1;
 //        for(ProjectModel project : projectModelList) {
@@ -63,12 +63,12 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random ProjectModel from DB
          */
-        Project randomProject = getRandomProjectModel();
+        ProjectDto randomProject = getRandomProjectModel();
         if(randomProject == null) {
             logger.error("there is no project being found in database, please double check DB connection!");
         } else {
             Long projectId = randomProject.getId();
-            Project retrievedProjectModel = projectDao.getProjectById(projectId);
+            ProjectDto retrievedProjectModel = projectDao.getProjectById(projectId);
             assertProjectModels(randomProject, retrievedProjectModel);
         }
     }
@@ -78,20 +78,20 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random ProjectModel from DB
          */
-        Project randomProject = getRandomProjectModel();
+        ProjectDto randomProject = getRandomProjectModel();
         if(randomProject == null) {
             logger.error("there is no Project being found in database, please double check DB connection!");
         } else {
             String projectName = randomProject.getName();
-            Project retrievedProjectModel = projectDao.getProjectByName(projectName);
+            ProjectDto retrievedProjectModel = projectDao.getProjectByName(projectName);
             assertProjectModels(randomProject, retrievedProjectModel);
         }
     }
 
     @Test
     public void saveProjectTest() {
-        Project project = createProjectByName(tempProjectName);
-        Project savedProject = projectDao.save(project);
+        ProjectDto project = createProjectByName(tempProjectName);
+        ProjectDto savedProject = projectDao.save(project);
         assertNotNull(savedProject);
         assertEquals(project.getName(), savedProject.getName());
         assertEquals(project.getDescription(), savedProject.getDescription());
@@ -104,8 +104,8 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void deleteProjectTest() {
-        Project project = createProjectByName(tempProjectName);
-        Project savedProject = projectDao.save(project);
+        ProjectDto project = createProjectByName(tempProjectName);
+        ProjectDto savedProject = projectDao.save(project);
         /*
          * Now delete the saved Project from DB Major table
          */
@@ -115,8 +115,8 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void deleteProjectByIdTest() {
-        Project project = createProjectByName(tempProjectName);
-        Project savedProject = projectDao.save(project);
+        ProjectDto project = createProjectByName(tempProjectName);
+        ProjectDto savedProject = projectDao.save(project);
         /*
          * Now delete the saved Project from DB Major table
          */
@@ -126,8 +126,8 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void deleteProjectByNameTest() {
-        Project project = createProjectByName(tempProjectName);
-        Project savedProject = projectDao.save(project);
+        ProjectDto project = createProjectByName(tempProjectName);
+        ProjectDto savedProject = projectDao.save(project);
         /*
          * Now delete the saved Project from DB Major table
          */
@@ -137,14 +137,14 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void updateProjectTest() {
-        Project originalProjectModel = getRandomProjectModel();
+        ProjectDto originalProjectModel = getRandomProjectModel();
         String originalProjectDesc = originalProjectModel.getDescription();
         String modifiedProjectDesc = originalProjectDesc + "---newUpdate";
         originalProjectModel.setDescription(modifiedProjectDesc);
         /*
          * Now start doing update operation
          */
-        Project updatedProjectModel = projectDao.update(originalProjectModel);
+        ProjectDto updatedProjectModel = projectDao.update(originalProjectModel);
         assertProjectModels(originalProjectModel, updatedProjectModel);
 
         /*
@@ -157,7 +157,7 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void getProjectsWithAssociatedStudentsTest() {
-        List<Project> projectModelList = projectDao.getProjectsWithAssociatedStudents();
+        List<ProjectDto> projectModelList = projectDao.getProjectsWithAssociatedStudents();
         displayProjects(projectModelList);
     }
 
@@ -166,12 +166,12 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random ProjectModel from DB
          */
-        Project randomProject = getRandomProjectModel();
+        ProjectDto randomProject = getRandomProjectModel();
         if(randomProject == null) {
             logger.error("there is no project being found in database, please double check DB connection!");
         } else {
             Long projectId = randomProject.getId();
-            Project retrievedProjectModel = projectDao.getProjectWithAssociatedStudentsById(projectId);
+            ProjectDto retrievedProjectModel = projectDao.getProjectWithAssociatedStudentsById(projectId);
             assertProjectModels(randomProject, retrievedProjectModel);
             displayProject(retrievedProjectModel);
         }
@@ -183,12 +183,12 @@ public class ProjectDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random ProjectModel from DB
          */
-        Project randomProject = getRandomProjectModel();
+        ProjectDto randomProject = getRandomProjectModel();
         if(randomProject == null) {
             logger.error("there is no Project being found in database, please double check DB connection!");
         } else {
             String projectName = randomProject.getName();
-            Project retrievedProjectModel = projectDao.getProjectWithAssociatedStudentsByName(projectName);
+            ProjectDto retrievedProjectModel = projectDao.getProjectWithAssociatedStudentsByName(projectName);
             assertProjectModels(randomProject, retrievedProjectModel);
             displayProject(retrievedProjectModel);
         }

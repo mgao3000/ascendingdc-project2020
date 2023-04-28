@@ -1,11 +1,11 @@
-package com.ascendingdc.training.project2020.model;
+package com.ascendingdc.training.project2020.dto;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Account {
-    public  Account() {}
-    public  Account(String accountType, BigDecimal balance) {
+public class AccountDto {
+    public AccountDto() {}
+    public AccountDto(String accountType, BigDecimal balance) {
         this.accountType = accountType;
         this.balance = balance;
     }
@@ -53,7 +53,7 @@ public class Account {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
+        AccountDto account = (AccountDto) o;
         return id == account.id &&
                 account.balance.compareTo(balance) == 0 &&
                 accountType.equals(account.accountType);

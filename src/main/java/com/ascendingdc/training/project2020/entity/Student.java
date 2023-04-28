@@ -59,7 +59,7 @@ public class Student  {
 
 //    @ManyToMany(mappedBy = "students", cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
 //    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST} )
 //    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "student_project",
             joinColumns = { @JoinColumn(name = "student_id") },

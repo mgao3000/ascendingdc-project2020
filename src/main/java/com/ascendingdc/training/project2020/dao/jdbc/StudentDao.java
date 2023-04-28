@@ -1,28 +1,28 @@
 package com.ascendingdc.training.project2020.dao.jdbc;
 
-import com.ascendingdc.training.project2020.model.Project;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 
 import java.util.List;
 
 public interface StudentDao {
 //    Student save(Student student);
-    Student save(Student student, Long majorId);
-    Student update(Student student);
+    StudentDto save(StudentDto student, Long majorId);
+    StudentDto update(StudentDto student);
     boolean deleteByLoginName(String loginName);
     boolean deleteById(Long studentId);
-    boolean delete(Student student);
-    List<Student> getStudents();
-    Student getStudentById(Long id);
-    Student getStudentByLoginName(String loginName);
+    boolean delete(StudentDto student);
+    List<StudentDto> getStudents();
+    StudentDto getStudentById(Long id);
+    StudentDto getStudentByLoginName(String loginName);
 
-    List<Student> getStudentsByMajorId (Long majorId);
-    List<Project> getAssociatedProjectsByStudentId(Long studentId);
-    List<Project> getAssociatedProjectsByStudentLoginName(String loginName);
+    List<StudentDto> getStudentsByMajorId (Long majorId);
+    List<ProjectDto> getAssociatedProjectsByStudentId(Long studentId);
+    List<ProjectDto> getAssociatedProjectsByStudentLoginName(String loginName);
 
-    List<Student> getStudentsWithAssociatedProjects();
-    Student getStudentWithAssociatedProjectsByStudentId(Long studentId);
-    Student getStudentWithAssociatedProjectsByLoginName(String loginName);
+    List<StudentDto> getStudentsWithAssociatedProjects();
+    StudentDto getStudentWithAssociatedProjectsByStudentId(Long studentId);
+    StudentDto getStudentWithAssociatedProjectsByLoginName(String loginName);
 
-    List<Student> getStudentsWithAssociatedProjectsByMajorId (Long majorId);
+    List<StudentDto> getStudentsWithAssociatedProjectsByMajorId (Long majorId);
 }

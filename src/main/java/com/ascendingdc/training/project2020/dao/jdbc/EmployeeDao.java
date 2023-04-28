@@ -1,19 +1,19 @@
 package com.ascendingdc.training.project2020.dao.jdbc;
 
-import com.ascendingdc.training.project2020.model.Department;
-import com.ascendingdc.training.project2020.model.Employee;
+import com.ascendingdc.training.project2020.dto.DepartmentDto;
+import com.ascendingdc.training.project2020.dto.EmployeeDto;
 
 import java.util.List;
 
 public interface EmployeeDao {
-    Employee save(Employee employee, Department department);
+    EmployeeDto save(EmployeeDto employee, DepartmentDto department);
     Integer updateEmployeeAddress(String name, String address);
-    Employee update(Employee employee);
+    EmployeeDto update(EmployeeDto employee);
     boolean deleteByName(String name);
-    boolean delete(Employee Employee);
-    List<Employee> getEmployees();
-    Employee getEmployeeById(Long id);
-    Employee getEmployeeByName(String employeeName);
-    Employee getEmployeeAndDepartmentById(Long id);
+    boolean delete(EmployeeDto Employee);
+    List<EmployeeDto> getEmployees();
+    EmployeeDto getEmployeeById(Long id);
+    EmployeeDto getEmployeeByName(String employeeName);
+    EmployeeDto getEmployeeAndDepartmentById(Long id);
 
 }

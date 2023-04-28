@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -26,6 +27,8 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+//@Transactional
+@Rollback(value = true)
 public class MajorDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
     private Logger logger = LoggerFactory.getLogger(MajorDaoSpringDataJPATest.class);
 
@@ -206,6 +209,7 @@ public class MajorDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
     }
 
     @Test
+    @Transactional
     public void saveMajorOnlyTest() {
         Major major = createMajorByName(tempMajorName);
         Major savedMajor = majorDao.save(major);
@@ -215,8 +219,8 @@ public class MajorDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
         /*
          * Now clean up the saved Major from DB Major table
          */
-        boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
-        assertEquals(true, deleteSuccessfulFlag);
+//        boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
+//        assertEquals(true, deleteSuccessfulFlag);
     }
 
     @Test
@@ -242,6 +246,43 @@ public class MajorDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
         assertEquals(true, deleteSuccessfulFlag);
     }
 
+    @Test
+    @Transactional
+    public void testMajorCascadeSaving() {
+        //Step 1: create a temp Major
+        Major major = createMajorByName(tempMajorName);
+
+        //Step 2: create two Students
+        Student student1 = createStudentByLoginNameAndEmailWithoutMajorAssigned(tempLoginName, tempEmail);
+        major.addStudent(student1);
+
+        String secondLoginName = "Student-login-" + getRandomInt(1, 1000);
+        String secondEmail = "test-email" + getRandomInt(1, 1000) + "@google.com";
+        Student student2 = createStudentByLoginNameAndEmailWithoutMajorAssigned(secondLoginName, secondEmail);
+        major.addStudent(student2);
+
+        //Step 3: create three Projects
+        Project project1 = createProjectByName(tempProjectName);
+
+        String projectName2 = "Project-" + getRandomInt(1, 1000);
+        Project project2 = createProjectByName(projectName2);
+
+        String projectName3 = "Project-" + getRandomInt(1, 1000);
+        Project project3 = createProjectByName(projectName3);
+
+        //Step 4: set student-project relationship
+        student1.addProject(project1);
+        student1.addProject(project2);
+        student1.addProject(project3);
+        student2.addProject(project2);
+
+        //Step 4: save major in cascade way
+        Major savedMajor = majorDao.save(major);
+
+        assertNotNull(savedMajor.getId());
+ //       assertEquals(2, major.);
+        displayMajorWithChildren(savedMajor);
+    }
     @Test
     public void createMajorWithAssociatedStudentsAndThenDeleteFailedTest() {
         //Step 0: create a temp Major

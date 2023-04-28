@@ -1,19 +1,19 @@
 package com.ascendingdc.training.project2020.dao.jdbc;
 
-import com.ascendingdc.training.project2020.model.Project;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
 
 import java.util.List;
 
 public interface ProjectDao {
-    Project save(Project project);
-    Project update(Project project);
+    ProjectDto save(ProjectDto project);
+    ProjectDto update(ProjectDto project);
     boolean deleteByName(String projectName);
     boolean deleteById(Long projectId);
-    boolean delete(Project project);
-    List<Project> getProjects();
-    Project getProjectById(Long id);
-    Project getProjectByName(String projectName);
-    List<Project> getProjectsWithAssociatedStudents();
-    Project getProjectWithAssociatedStudentsById(Long projectId);
-    Project getProjectWithAssociatedStudentsByName(String projectName);
+    boolean delete(ProjectDto project);
+    List<ProjectDto> getProjects();
+    ProjectDto getProjectById(Long id);
+    ProjectDto getProjectByName(String projectName);
+    List<ProjectDto> getProjectsWithAssociatedStudents();
+    ProjectDto getProjectWithAssociatedStudentsById(Long projectId);
+    ProjectDto getProjectWithAssociatedStudentsByName(String projectName);
 }

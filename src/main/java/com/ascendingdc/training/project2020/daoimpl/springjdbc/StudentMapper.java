@@ -1,15 +1,15 @@
 package com.ascendingdc.training.project2020.daoimpl.springjdbc;
 
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class StudentMapper implements RowMapper<Student> {
+public class StudentMapper implements RowMapper<StudentDto> {
     @Override
-    public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Student student = new Student();
+    public StudentDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+        StudentDto student = new StudentDto();
         student.setId(rs.getLong("id"));
         student.setLoginName(rs.getString("login_name"));
         student.setPassword(rs.getString("password"));

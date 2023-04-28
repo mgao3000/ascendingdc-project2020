@@ -1,7 +1,7 @@
 package com.ascendingdc.training.project2020.entity;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -73,7 +73,7 @@ public class Project  {
      */
     public boolean removeStudent(Student student) {
         boolean successfulFlag = student.getProjects().remove(this);
-        successfulFlag = getStudents().remove(student);
+        successfulFlag = this.getStudents().remove(student);
         return successfulFlag;
     }
 

@@ -4,9 +4,9 @@ import com.ascendingdc.training.project2020.dao.jdbc.MajorDao;
 import com.ascendingdc.training.project2020.dao.jdbc.ProjectDao;
 import com.ascendingdc.training.project2020.dao.jdbc.StudentDao;
 import com.ascendingdc.training.project2020.dao.jdbc.StudentProjectDao;
-import com.ascendingdc.training.project2020.model.Major;
-import com.ascendingdc.training.project2020.model.Project;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.MajorDto;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,20 +37,20 @@ public abstract class AbstractDaoJDBCTest {
 
     protected String randomEmail = null;
 
-    protected void assertMajorModels(Major randomMajor, Major retrievedMajorModel) {
+    protected void assertMajorModels(MajorDto randomMajor, MajorDto retrievedMajorModel) {
         assertEquals(randomMajor.getId(), retrievedMajorModel.getId());
         assertEquals(randomMajor.getName(), retrievedMajorModel.getName());
         assertEquals(randomMajor.getDescription(), retrievedMajorModel.getDescription());
     }
 
-    protected void assertProjectModels(Project randomProjectModel, Project retrievedProjectModel) {
+    protected void assertProjectModels(ProjectDto randomProjectModel, ProjectDto retrievedProjectModel) {
         assertEquals(randomProjectModel.getId(), retrievedProjectModel.getId());
         assertEquals(randomProjectModel.getName(), retrievedProjectModel.getName());
         assertEquals(randomProjectModel.getDescription(), retrievedProjectModel.getDescription());
         assertTrue(randomProjectModel.getCreateDate().isEqual(retrievedProjectModel.getCreateDate()));
     }
 
-    protected void assertStudentModels(Student randomStudentModel, Student retrievedStudentModel) {
+    protected void assertStudentModels(StudentDto randomStudentModel, StudentDto retrievedStudentModel) {
         assertEquals(randomStudentModel.getId(), retrievedStudentModel.getId());
         assertEquals(randomStudentModel.getMajorId(), retrievedStudentModel.getMajorId());
         assertEquals(randomStudentModel.getLoginName(), retrievedStudentModel.getLoginName());
@@ -62,23 +62,23 @@ public abstract class AbstractDaoJDBCTest {
         assertTrue(randomStudentModel.getEnrolledDate().isEqual(retrievedStudentModel.getEnrolledDate()));
     }
 
-    protected Project createProjectByName(String projectName) {
-        Project project = new Project();
+    protected ProjectDto createProjectByName(String projectName) {
+        ProjectDto project = new ProjectDto();
         project.setName(projectName);
         project.setDescription(projectName + "--description");
         project.setCreateDate(LocalDate.now());
         return project;
     }
 
-    protected Major createMajorByName(String name) {
-        Major major = new Major();
+    protected MajorDto createMajorByName(String name) {
+        MajorDto major = new MajorDto();
         major.setName(name);
         major.setDescription(name + "--description");
         return major;
     }
 
-    protected Student createStudentByLoginNameAndEmail(String loginName, String email) {
-        Student student = new Student();
+    protected StudentDto createStudentByLoginNameAndEmail(String loginName, String email) {
+        StudentDto student = new StudentDto();
         student.setLoginName(loginName);
         student.setPassword("password123456");
         student.setFirstName("Frist name test");
@@ -90,15 +90,15 @@ public abstract class AbstractDaoJDBCTest {
         /*
          * Now using MajorDao to select a valid Major from DB
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
         student.setMajorId(randomMajor.getId());
 
         return student;
     }
 
-    protected Project getRandomProjectModel() {
-        List<Project> projectModelList = projectDao.getProjects();
-        Project randomProject = null;
+    protected ProjectDto getRandomProjectModel() {
+        List<ProjectDto> projectModelList = projectDao.getProjects();
+        ProjectDto randomProject = null;
         if(projectModelList != null && projectModelList.size() > 0) {
             int randomIndex = getRandomInt(0, projectModelList.size());
             randomProject = projectModelList.get(randomIndex);
@@ -106,9 +106,9 @@ public abstract class AbstractDaoJDBCTest {
         return randomProject;
     }
 
-    protected Major getRandomMajorModel() {
-        List<Major> majorModelList = majorDao.getMajors();
-        Major randomMajor = null;
+    protected MajorDto getRandomMajorModel() {
+        List<MajorDto> majorModelList = majorDao.getMajors();
+        MajorDto randomMajor = null;
         if(majorModelList != null && majorModelList.size() > 0) {
             int randomIndex = getRandomInt(0, majorModelList.size());
             randomMajor = majorModelList.get(randomIndex);
@@ -116,9 +116,9 @@ public abstract class AbstractDaoJDBCTest {
         return randomMajor;
     }
 
-    protected Student getRandomStudentModel() {
-        List<Student> studentModelList = studentDao.getStudents();
-        Student randomStudent = null;
+    protected StudentDto getRandomStudentModel() {
+        List<StudentDto> studentModelList = studentDao.getStudents();
+        StudentDto randomStudent = null;
         if(studentModelList != null && studentModelList.size() > 0) {
             int randomIndex = getRandomInt(0, studentModelList.size());
             randomStudent = studentModelList.get(randomIndex);
@@ -126,35 +126,35 @@ public abstract class AbstractDaoJDBCTest {
         return randomStudent;
     }
 
-    protected void displayStudents(List<Student> studentList) {
+    protected void displayStudents(List<StudentDto> studentList) {
         logger.info("The total number of Students is: {}", studentList.size());
         int index = 1;
-        for(Student student : studentList) {
+        for(StudentDto student : studentList) {
             logger.info("No.{} Student:", index);
             displayStudent(student);
             index++;
         }
     }
 
-    protected void displayProjects(List<Project> projectList) {
+    protected void displayProjects(List<ProjectDto> projectList) {
         logger.info("The total number of Projects is: {}", projectList.size());
         int index = 1;
-        for(Project eachProject : projectList) {
+        for(ProjectDto eachProject : projectList) {
             logger.info("No.{} project:", index);
             displayProject(eachProject);
             index++;
         }
     }
 
-    protected void displayProject(Project project) {
+    protected void displayProject(ProjectDto project) {
         logger.info("Project detail={}", project);
         displayStudentList(project.getStudentList());
     }
 
-    protected void displayStudentList(List<Student> studentList) {
+    protected void displayStudentList(List<StudentDto> studentList) {
         logger.info("\t The total associated students={}", studentList.size());
         int index = 1;
-        for (Student student : studentList) {
+        for (StudentDto student : studentList) {
             logger.info("No.{} student = {}", index, student);
             if(student.getProjectList() != null) {
                 logger.info("\t The total associated projects with studentId={}", student.getId());
@@ -164,17 +164,17 @@ public abstract class AbstractDaoJDBCTest {
         }
     }
 
-    protected void displayMajors(List<Major> majorList) {
+    protected void displayMajors(List<MajorDto> majorList) {
         logger.info("The total number of Majors is: {}", majorList.size());
         int index = 1;
-        for(Major major : majorList) {
+        for(MajorDto major : majorList) {
             logger.info("No.{} Major:", index);
             displayMajor(major);
             index++;
         }
     }
 
-    protected void displayMajor(Major major) {
+    protected void displayMajor(MajorDto major) {
         logger.info("Major detail={}", major);
         displayStudentList(major.getStudentList());
     }
@@ -189,15 +189,15 @@ public abstract class AbstractDaoJDBCTest {
 //        }
 //    }
 
-    protected void displayStudent(Student student) {
+    protected void displayStudent(StudentDto student) {
         logger.info("Student detail={}", student);
         displayProjectList(student.getProjectList());
     }
 
-    protected void displayProjectList(List<Project> projectList) {
+    protected void displayProjectList(List<ProjectDto> projectList) {
         logger.info("\t The total associated projects={}", projectList.size());
         int index = 1;
-        for (Project project : projectList) {
+        for (ProjectDto project : projectList) {
             logger.info("No.{} project = {}", index, project);
             index++;
         }

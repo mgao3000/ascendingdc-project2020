@@ -1,17 +1,17 @@
-package com.ascendingdc.training.project2020.model;
+package com.ascendingdc.training.project2020.dto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Student  {
+public class StudentDto {
 
-    public Student() {
+    public StudentDto() {
     }
 
-    public Student(String loginName, String password, String firstName,
-                   String lastName, String email, String address) {
+    public StudentDto(String loginName, String password, String firstName,
+                      String lastName, String email, String address) {
         this.loginName = loginName;
         this.password = password;
         this.firstName = firstName;
@@ -40,7 +40,7 @@ public class Student  {
 
     private String majorName;
 
-    private List<Project> projectList = new ArrayList<Project>();
+    private List<ProjectDto> projectList = new ArrayList<ProjectDto>();
 
     public Long getMajorId() {
         return majorId;
@@ -122,19 +122,19 @@ public class Student  {
         this.majorName = majorName;
     }
 
-    public List<Project> getProjectList() {
+    public List<ProjectDto> getProjectList() {
         return projectList;
     }
 
-    public void setProjectList(List<Project> projectList) {
+    public void setProjectList(List<ProjectDto> projectList) {
         this.projectList = projectList;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Student)) return false;
-        Student student = (Student) o;
+        if (!(o instanceof StudentDto)) return false;
+        StudentDto student = (StudentDto) o;
 //        return Objects.equals(getId(), student.getId()) && Objects.equals(getLoginName(), student.getLoginName()) && Objects.equals(getPassword(), student.getPassword()) && Objects.equals(getFirstName(), student.getFirstName()) && Objects.equals(getLastName(), student.getLastName()) && Objects.equals(getEmail(), student.getEmail()) && Objects.equals(getAddress(), student.getAddress()) && Objects.equals(getEnrolledDate(), student.getEnrolledDate());
         return Objects.equals(getId(), student.getId()) && Objects.equals(getLoginName(), student.getLoginName()) && Objects.equals(getPassword(), student.getPassword()) && Objects.equals(getFirstName(), student.getFirstName()) && Objects.equals(getLastName(), student.getLastName()) && Objects.equals(getEmail(), student.getEmail()) && Objects.equals(getAddress(), student.getAddress());
 //        return Objects.equals(getId(), student.getId());

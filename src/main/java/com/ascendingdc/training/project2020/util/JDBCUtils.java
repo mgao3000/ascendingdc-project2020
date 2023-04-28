@@ -19,6 +19,14 @@ public class JDBCUtils {
     private static final String jdbcUsername = "admin";    //"admin";
     private static final String jdbcPassword = "password";      //""password";
 
+//    private JDBCUtils() {};
+
+//    private static JDBCUtils jdbcUtils = getConnection();
+
+//    public static JDBCUtils getJdbcUtilsInstance() {
+//        return jdbcUtils;
+//    }
+
     public static Connection getConnection() {
         Connection connection = null;
         try {

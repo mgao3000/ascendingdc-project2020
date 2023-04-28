@@ -1,8 +1,8 @@
 package com.ascendingdc.training.project2020.daoimpl.springjdbc;
 
 import com.ascendingdc.training.project2020.dao.jdbc.ProjectDao;
-import com.ascendingdc.training.project2020.model.Project;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import com.ascendingdc.training.project2020.util.SQLStatementUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class ProjectDaoSpringJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public Project save(Project project) {
+    public ProjectDto save(ProjectDto project) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("name", project.getName())
                 .addValue("description", project.getDescription())
@@ -42,7 +42,7 @@ public class ProjectDaoSpringJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public Project update(Project project) {
+    public ProjectDto update(ProjectDto project) {
         int updateResult = jdbcTemplate.update(SQLStatementUtils.SQL_UPDATE_PROJECT,
                 project.getName(), project.getDescription(),
                 project.getCreateDate(), project.getId());
@@ -65,18 +65,18 @@ public class ProjectDaoSpringJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public boolean delete(Project project) {
+    public boolean delete(ProjectDto project) {
         return deleteById(project.getId());
     }
 
     @Override
-    public List<Project> getProjects() {
+    public List<ProjectDto> getProjects() {
         return jdbcTemplate.query(SQLStatementUtils.SELECT_ALL_PROJECT, new ProjectMapper());
     }
 
     @Override
-    public Project getProjectById(Long id) {
-        Project project = null;
+    public ProjectDto getProjectById(Long id) {
+        ProjectDto project = null;
         try {
             project = jdbcTemplate.queryForObject(SQLStatementUtils.SQL_SELECT_PROJECT_BY_ID,
                 new Object[] {id}, new ProjectMapper());
@@ -87,8 +87,8 @@ public class ProjectDaoSpringJDBCImpl implements ProjectDao {
    }
 
     @Override
-    public Project getProjectByName(String projectName) {
-        Project project = null;
+    public ProjectDto getProjectByName(String projectName) {
+        ProjectDto project = null;
         try {
             project = jdbcTemplate.queryForObject(SQLStatementUtils.SQL_SELECT_PROJECT_BY_NAME,
                     new Object[] {projectName}, new ProjectMapper());
@@ -99,10 +99,10 @@ public class ProjectDaoSpringJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public List<Project> getProjectsWithAssociatedStudents() {
-       List<Project> allProjectList = jdbcTemplate.query(SQLStatementUtils.SELECT_ALL_PROJECT, new ProjectMapper());
-       for(Project project : allProjectList) {
-           List<Student> studentList = jdbcTemplate.query(SQLStatementUtils.SELECT_STUDENTS_BY_PROJECT_ID,
+    public List<ProjectDto> getProjectsWithAssociatedStudents() {
+       List<ProjectDto> allProjectList = jdbcTemplate.query(SQLStatementUtils.SELECT_ALL_PROJECT, new ProjectMapper());
+       for(ProjectDto project : allProjectList) {
+           List<StudentDto> studentList = jdbcTemplate.query(SQLStatementUtils.SELECT_STUDENTS_BY_PROJECT_ID,
                    new StudentMapper(), new Object[] {project.getId()});
             project.setStudentList(studentList);
        }
@@ -110,12 +110,12 @@ public class ProjectDaoSpringJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public Project getProjectWithAssociatedStudentsById(Long projectId) {
-        Project project = null;
+    public ProjectDto getProjectWithAssociatedStudentsById(Long projectId) {
+        ProjectDto project = null;
         try {
             project = jdbcTemplate.queryForObject(SQLStatementUtils.SQL_SELECT_PROJECT_BY_ID,
                     new Object[] {projectId}, new ProjectMapper());
-            List<Student> studentList = jdbcTemplate.query(SQLStatementUtils.SELECT_STUDENTS_BY_PROJECT_ID,
+            List<StudentDto> studentList = jdbcTemplate.query(SQLStatementUtils.SELECT_STUDENTS_BY_PROJECT_ID,
                     new StudentMapper(), new Object[] {project.getId()});
             project.setStudentList(studentList);
         } catch (EmptyResultDataAccessException e) {
@@ -125,12 +125,12 @@ public class ProjectDaoSpringJDBCImpl implements ProjectDao {
     }
 
     @Override
-    public Project getProjectWithAssociatedStudentsByName(String projectName) {
-        Project project = null;
+    public ProjectDto getProjectWithAssociatedStudentsByName(String projectName) {
+        ProjectDto project = null;
         try {
             project = jdbcTemplate.queryForObject(SQLStatementUtils.SQL_SELECT_PROJECT_BY_NAME,
                     new Object[] {projectName}, new ProjectMapper());
-            List<Student> studentList = jdbcTemplate.query(SQLStatementUtils.SELECT_STUDENTS_BY_PROJECT_ID,
+            List<StudentDto> studentList = jdbcTemplate.query(SQLStatementUtils.SELECT_STUDENTS_BY_PROJECT_ID,
                     new StudentMapper(), new Object[] {project.getId()});
             project.setStudentList(studentList);
         } catch (EmptyResultDataAccessException e) {

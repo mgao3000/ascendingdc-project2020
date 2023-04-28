@@ -1,6 +1,6 @@
-package com.ascendingdc.training.project2020.model;
+package com.ascendingdc.training.project2020.dto;
 
-public class DepartmentDetail {
+public class DepartmentDetailDto {
     private Long id;
 
     private String description;
@@ -11,10 +11,10 @@ public class DepartmentDetail {
 
     private Long departmentId;
 
-    public DepartmentDetail() {
+    public DepartmentDetailDto() {
     }
 
-    public DepartmentDetail(String description, int revenue, int size) {
+    public DepartmentDetailDto(String description, int revenue, int size) {
         this.description = description;
         this.revenue = revenue;
         this.size = size;

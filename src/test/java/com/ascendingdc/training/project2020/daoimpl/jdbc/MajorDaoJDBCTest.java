@@ -1,22 +1,18 @@
 package com.ascendingdc.training.project2020.daoimpl.jdbc;
 
-import com.ascendingdc.training.project2020.configuration.SpringJdbcTestConfig;
 import com.ascendingdc.training.project2020.daoimpl.springjdbc.MajorDaoSpringJDBCImpl;
 import com.ascendingdc.training.project2020.daoimpl.springjdbc.ProjectDaoSpringJDBCImpl;
 import com.ascendingdc.training.project2020.daoimpl.springjdbc.StudentDaoSpringJDBCImpl;
 import com.ascendingdc.training.project2020.daoimpl.springjdbc.StudentProjectDaoSpringJDBCImpl;
-import com.ascendingdc.training.project2020.model.Major;
-import com.ascendingdc.training.project2020.model.Project;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.MajorDto;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 //import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -25,8 +21,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 //@Import(SpringJdbcTestConfig.class)
-@SpringBootTest
+//@SpringBootTest
 //@ComponentScan(basePackageClasses={com.ascendingdc.training.project2020.configuration.SpringJdbcConfig.class})
+//@Transactional
 public class MajorDaoJDBCTest extends AbstractDaoJDBCTest {
     private static Logger logger = LoggerFactory.getLogger(MajorDaoJDBCTest.class);
 
@@ -98,9 +95,9 @@ public class MajorDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void getMajorsTest() {
-        List<Major> majorModelList = majorDao.getMajors();
+        List<MajorDto> majorModelList = majorDao.getMajors();
         int i = 1;
-        for(Major major : majorModelList) {
+        for(MajorDto major : majorModelList) {
             logger.info("No.{} Major = {}", i, major);
             i++;
         }
@@ -111,34 +108,44 @@ public class MajorDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random MajorModel from DB
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
         if(randomMajor == null) {
             logger.error("there is no major being found in database, please double check DB connection!");
         } else {
             Long majorId = randomMajor.getId();
-            Major retrievedMajorModel = majorDao.getMajorById(majorId);
+            MajorDto retrievedMajorModel = majorDao.getMajorById(majorId);
             assertMajorModels(randomMajor, retrievedMajorModel);
         }
     }
+
+//    @Test
+//    public void testGetMajorByInvalidId() {
+//        Long majorId = 15678L;
+//        Exception exception = Assertions.assertThrows(Exception.class, () -> {
+//            majorDao.getMajorById(15678L);
+//        }, "Exception was expected");
+//
+//        Assertions.assertEquals("SQLException is caught when trying to select a Major by majorId. The input majorId =" + majorId, exception.getMessage());
+//    }
 
     @Test
     public void getMajorByNameTest() {
         /*
          * Pick up a random MajorModel from DB
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
         if(randomMajor == null) {
             logger.error("there is no major being found in database, please double check DB connection!");
         } else {
             String majorName = randomMajor.getName();
-            Major retrievedMajorModel = majorDao.getMajorByName(majorName);
+            MajorDto retrievedMajorModel = majorDao.getMajorByName(majorName);
             assertMajorModels(randomMajor, retrievedMajorModel);
         }
     }
 
     @Test
     public void getMajorsWithChildrenTest() {
-        List<Major> majorModelList = majorDao.getMajorsWithChildren();
+        List<MajorDto> majorModelList = majorDao.getMajorsWithChildren();
         displayMajors(majorModelList);
     }
 
@@ -147,12 +154,12 @@ public class MajorDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random MajorModel from DB
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
         if(randomMajor == null) {
             logger.error("there is no major being found in database, please double check DB connection!");
         } else {
             Long majorId = randomMajor.getId();
-            Major retrievedMajorModel = majorDao.getMajorAndStudentsAndProjectsByMajorId(majorId);
+            MajorDto retrievedMajorModel = majorDao.getMajorAndStudentsAndProjectsByMajorId(majorId);
             assertMajorModels(randomMajor, retrievedMajorModel);
             displayMajor(retrievedMajorModel);
         }
@@ -163,12 +170,12 @@ public class MajorDaoJDBCTest extends AbstractDaoJDBCTest {
         /*
          * Pick up a random MajorModel from DB
          */
-        Major randomMajor = getRandomMajorModel();
+        MajorDto randomMajor = getRandomMajorModel();
         if(randomMajor == null) {
             logger.error("there is no major being found in database, please double check DB connection!");
         } else {
             String majorName = randomMajor.getName();
-            Major retrievedMajorModel = majorDao.getMajorAndStudentsAndProjectsByMajorName(majorName);
+            MajorDto retrievedMajorModel = majorDao.getMajorAndStudentsAndProjectsByMajorName(majorName);
             assertMajorModels(randomMajor, retrievedMajorModel);
             displayMajor(retrievedMajorModel);
         }
@@ -176,64 +183,93 @@ public class MajorDaoJDBCTest extends AbstractDaoJDBCTest {
 
 
     @Test
+    @Transactional
     public void saveMajorTest() {
-        Major major = createMajorByName(tempMajorName);
-        Major savedMajor = majorDao.save(major);
+        MajorDto major = createMajorByName(tempMajorName);
+        MajorDto savedMajor = majorDao.save(major);
+        assertNotNull(savedMajor.getId());
         assertEquals(major.getName(), savedMajor.getName());
         assertEquals(major.getDescription(), savedMajor.getDescription());
         /*
          * Now clean up the saved Major from DB Major table
          */
-        boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
-        assertEquals(true, deleteSuccessfulFlag);
+//        boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
+//        assertEquals(true, deleteSuccessfulFlag);
     }
 
     @Test
     public void deleteMajorTest() {
-        Major major = createMajorByName(tempMajorName);
-        Major savedMajor = majorDao.save(major);
+        MajorDto major = createMajorByName(tempMajorName);
+        MajorDto savedMajor = majorDao.save(major);
+        assertNotNull(savedMajor.getId(), " successfully saved Major should have a valid ID value");
         /*
          * Now delete the saved Major from DB Major table
          */
         boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
         assertEquals(true, deleteSuccessfulFlag);
+        assertTrue(deleteSuccessfulFlag, "the returned boolean flag should be true if the deletion is successful");
+
+        /*
+         * Now assert the deleted Major no longer exists in DB.
+         */
+        MajorDto retrievedMajor = majorDao.getMajorById(savedMajor.getId());
+        assertNull(retrievedMajor, "Select a deleted Major should return null");
+    }
+
+    @Test
+    public void deleteMajorByIdTest() {
+        MajorDto major = createMajorByName(tempMajorName);
+        MajorDto savedMajor = majorDao.save(major);
+        assertNotNull(savedMajor.getId(), " successfully saved Major should have a valid ID value");
+        /*
+         * Now delete the saved Major from DB Major table
+         */
+        boolean deleteSuccessfulFlag = majorDao.deleteById(savedMajor.getId());
+        assertTrue(deleteSuccessfulFlag);
+
+        /*
+         * Now assert the deleted Major no longer exists in DB.
+         */
+        MajorDto retrievedMajor = majorDao.getMajorById(savedMajor.getId());
+        assertNull(retrievedMajor, "Select a deleted Major should return null");
+
     }
 
     @Test
     public void deleteMajorWithChildrenTest() {
         //Step 0: create a temp Major
-        Major major = createMajorByName(tempMajorName);
-        Major majorSaved = majorDao.save(major);
+        MajorDto major = createMajorByName(tempMajorName);
+        MajorDto majorSaved = majorDao.save(major);
 
         //Step 1.1: create a temp Student No.1
-        Student student1 = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
+        StudentDto student1 = createStudentByLoginNameAndEmail(tempLoginName, randomEmail);
 //        student1.setMajorId(majorSaved.getId());
-        Student studentSaved1 = studentDao.save(student1, majorSaved.getId());
+        StudentDto studentSaved1 = studentDao.save(student1, majorSaved.getId());
 
         //Step 1.2  create a temp project No.1
-        Project project1 = createProjectByName(tempProjectName);
-        Project projectSaved1 = projectDao.save(project1);
+        ProjectDto project1 = createProjectByName(tempProjectName);
+        ProjectDto projectSaved1 = projectDao.save(project1);
 
         //Step 1.3: create a temp project No.2
-        Project project2 = createProjectByName(tempProjectName+"-2");
-        Project projectSaved2 = projectDao.save(project2);
+        ProjectDto project2 = createProjectByName(tempProjectName+"-2");
+        ProjectDto projectSaved2 = projectDao.save(project2);
 
         //Step 1.4: set relationship for student No.1 with project No.1 and No.2
         studentProjectDao.addStudentProjectRelationship(studentSaved1.getId(), projectSaved1.getId());
         studentProjectDao.addStudentProjectRelationship(studentSaved1.getId(), projectSaved2.getId());
 
         //Step 2.1: create a temp Student No.2
-        Student student2 = createStudentByLoginNameAndEmail(tempLoginName+"-2", 2 + randomEmail);
+        StudentDto student2 = createStudentByLoginNameAndEmail(tempLoginName+"-2", 2 + randomEmail);
 //        student2.setMajorId(majorSaved.getId());
-        Student studentSaved2 = studentDao.save(student2, majorSaved.getId());
+        StudentDto studentSaved2 = studentDao.save(student2, majorSaved.getId());
 
         //Step 2.2  create a temp project No.3
-        Project project3 = createProjectByName(tempProjectName+"-3");
-        Project projectSaved3 = projectDao.save(project3);
+        ProjectDto project3 = createProjectByName(tempProjectName+"-3");
+        ProjectDto projectSaved3 = projectDao.save(project3);
 
         //Step 2.3: create a temp project No.4
-        Project project4 = createProjectByName(tempProjectName+"-4");
-        Project projectSaved4 = projectDao.save(project4);
+        ProjectDto project4 = createProjectByName(tempProjectName+"-4");
+        ProjectDto projectSaved4 = projectDao.save(project4);
 
         //Step 2.4: set relationship for student No.2 with project No.3 and No.4
         studentProjectDao.addStudentProjectRelationship(studentSaved2.getId(), projectSaved3.getId());
@@ -282,15 +318,15 @@ public class MajorDaoJDBCTest extends AbstractDaoJDBCTest {
 //        assertEquals(true, deleteSuccessfulFlag);
 
         //Now start to do multiple selection to make sure new created major, students are gone!
-        Major retrievedMajor = majorDao.getMajorById(majorSaved.getId());
+        MajorDto retrievedMajor = majorDao.getMajorById(majorSaved.getId());
         assertNull(retrievedMajor);
 
-        Student retrievedStudent = studentDao.getStudentById(studentSaved1.getId());
+        StudentDto retrievedStudent = studentDao.getStudentById(studentSaved1.getId());
         assertNull(retrievedStudent);
         retrievedStudent = studentDao.getStudentById(studentSaved2.getId());
         assertNull(retrievedStudent);
 
-        Project retrievedProject = projectDao.getProjectById(projectSaved1.getId());
+        ProjectDto retrievedProject = projectDao.getProjectById(projectSaved1.getId());
         assertNull(retrievedProject);
         retrievedProject = projectDao.getProjectById(projectSaved2.getId());
         assertNull(retrievedProject);
@@ -302,14 +338,15 @@ public class MajorDaoJDBCTest extends AbstractDaoJDBCTest {
 
     @Test
     public void updateMajorTest() {
-        Major originalMajorModel = getRandomMajorModel();
+//        Major originalMajorModel = getRandomMajorModel();
+        MajorDto originalMajorModel = majorDao.getMajorById(5L);
         String currentMajorDesc = originalMajorModel.getDescription();
         String modifiedMajorDesc = currentMajorDesc + "---newUpdate";
         originalMajorModel.setDescription(modifiedMajorDesc);
         /*
          * Now start doing update operation
          */
-        Major updatedMajorModel = majorDao.update(originalMajorModel);
+        MajorDto updatedMajorModel = majorDao.update(originalMajorModel);
         assertMajorModels(originalMajorModel, updatedMajorModel);
 
         /*

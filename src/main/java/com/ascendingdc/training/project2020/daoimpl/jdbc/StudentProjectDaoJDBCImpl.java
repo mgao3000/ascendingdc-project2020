@@ -1,8 +1,8 @@
 package com.ascendingdc.training.project2020.daoimpl.jdbc;
 
 import com.ascendingdc.training.project2020.dao.jdbc.StudentProjectDao;
-import com.ascendingdc.training.project2020.model.Project;
-import com.ascendingdc.training.project2020.model.Student;
+import com.ascendingdc.training.project2020.dto.ProjectDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import com.ascendingdc.training.project2020.util.JDBCUtils;
 import com.ascendingdc.training.project2020.util.SQLStatementUtils;
 import org.slf4j.Logger;
@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class StudentProjectDaoJDBCImpl implements StudentProjectDao {
     private Logger logger = LoggerFactory.getLogger(StudentProjectDaoJDBCImpl.class);
@@ -27,7 +28,7 @@ public class StudentProjectDaoJDBCImpl implements StudentProjectDao {
     }
 
     @Override
-    public boolean deleteStudentProjectRelationship(Student student, Project project) {
+    public boolean deleteStudentProjectRelationship(StudentDto student, ProjectDto project) {
         return deleteStudentProjectRelationship(student.getId(), project.getId());
     }
 
@@ -73,7 +74,7 @@ public class StudentProjectDaoJDBCImpl implements StudentProjectDao {
     }
 
     @Override
-    public boolean addStudentProjectRelationship(Student student, Project project) {
+    public boolean addStudentProjectRelationship(StudentDto student, ProjectDto project) {
         return addStudentProjectRelationship(student.getId(), project.getId());
     }
 
@@ -116,5 +117,15 @@ public class StudentProjectDaoJDBCImpl implements StudentProjectDao {
             }
         }
         return isSuccessfulSaved;
+    }
+
+    @Override
+    public List<Long> findStudentIdListByProjectId(long projectId) {
+        return null;
+    }
+
+    @Override
+    public List<Long> findProjectIdListByStudentId(long studentId) {
+        return null;
     }
 }
