@@ -1,5 +1,8 @@
 package com.ascendingdc.training.project2020.dto;
 
+import com.ascendingdc.training.project2020.entity.Department;
+
+import java.util.List;
 import java.util.Objects;
 
 public class DepartmentDto {
@@ -17,6 +20,27 @@ public class DepartmentDto {
     private String description;
 
     private String location;
+
+    private List<EmployeeDto> employeeDtoList;
+
+    public Department convertDepartmentDtoToDepartment() {
+        Department department = new Department();
+        if(getId() != null) {
+            department.setId(getId());
+        }
+        department.setDescription(getDescription());
+        department.setName(getName());
+        department.setLocation(getLocation());
+        return department;
+    }
+
+    public List<EmployeeDto> getEmployeeDtoList() {
+        return employeeDtoList;
+    }
+
+    public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
+        this.employeeDtoList = employeeDtoList;
+    }
 
     public Long getId() {
         return id;

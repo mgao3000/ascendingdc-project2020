@@ -591,7 +591,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                     //Step 5: Retrieve all projects by column name and then fill into project list
                     List<ProjectDto> projectList = getProjectList(getAssociatedProjectListByStudentIdResultSet);
 
-                    eachStudent.setProjectList(projectList);
+                    eachStudent.setProjectDtoList(projectList);
                 }
 
                 major.setStudentList(studentList);
@@ -673,7 +673,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                     //Step 5: Retrieve all projects by column name and then fill into project list
                     List<ProjectDto> projectList = getProjectList(getAssociatedProjectListByStudentIdResultSet);
 
-                    eachStudent.setProjectList(projectList);
+                    eachStudent.setProjectDtoList(projectList);
                 }
 
                 retrievedMajor.setStudentList(studentList);
@@ -757,7 +757,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                     //Step 5: Retrieve all projects by column name and then fill into project list
                     List<ProjectDto> projectList = getProjectList(getAssociatedProjectListByStudentIdResultSet);
 
-                    eachStudent.setProjectList(projectList);
+                    eachStudent.setProjectDtoList(projectList);
                 }
 
                 retrievedMajor.setStudentList(studentList);

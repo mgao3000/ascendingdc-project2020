@@ -488,7 +488,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
                     //Step 5: Retrieve all projects by column name and then fill into project list
                     List<ProjectDto> projectList = getProjectList(projectListByStudentIdResultSet);
 
-                    retrievedStudent.setProjectList(projectList);
+                    retrievedStudent.setProjectDtoList(projectList);
 
                     //Step 5: use student's major ID to retrieve the associated majorName
                     getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);
@@ -557,7 +557,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
                     //Step 5: Retrieve all projects by column name and then fill into project list
                     List<ProjectDto> projectList = getProjectList(projectListByStudentIdResultSet);
 
-                    retrievedStudent.setProjectList(projectList);
+                    retrievedStudent.setProjectDtoList(projectList);
 
                     //Step 5: use student's major ID to retrieve the associated majorName
                     getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);
@@ -627,7 +627,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
                 //Step 5: Retrieve all projects by column name and then fill into project list
                 List<ProjectDto> projectList = getProjectList(projectListByStudentIdResultSet);
 
-                retrievedStudent.setProjectList(projectList);
+                retrievedStudent.setProjectDtoList(projectList);
 
                 //Step 5: use student's major ID to retrieve the associated majorName
                 getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);
@@ -696,7 +696,7 @@ public class StudentDaoJDBCImpl implements StudentDao {
                 //Step 5: Retrieve all projects by column name and then fill into project list
                 List<ProjectDto> projectList = getProjectList(projectListByStudentIdResultSet);
 
-                retrievedStudent.setProjectList(projectList);
+                retrievedStudent.setProjectDtoList(projectList);
 
                 //Step 5: use student's major ID to retrieve the associated majorName
                 getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);

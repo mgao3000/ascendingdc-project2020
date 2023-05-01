@@ -1,5 +1,6 @@
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.MajorDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
@@ -29,6 +30,24 @@ public class Major {
 
     @Column(name ="description")
     private String description;
+
+    public MajorDto convertMajorToMajorDto() {
+        MajorDto majorDto = new MajorDto();
+        majorDto.setId(getId());
+        majorDto.setName(getName());
+        majorDto.setDescription(getDescription());
+        return majorDto;
+    }
+
+    //    public Major convertMajorDtoToMajor(MajorDto majorDto) {
+//        Major major = new Major();
+//        if(majorDto.getId() != null)
+//            major.setId(majorDto.getId());
+//        major.setName(majorDto.getName());
+//        major.setDescription(majorDto.getDescription());
+//        return major;
+//    }
+
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
 //    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)

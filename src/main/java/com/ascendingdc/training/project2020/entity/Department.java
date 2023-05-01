@@ -1,12 +1,13 @@
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.AccountDto;
+import com.ascendingdc.training.project2020.dto.DepartmentDto;
+import com.ascendingdc.training.project2020.dto.EmployeeDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 //import jarkarta.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "department", schema = "public")
@@ -63,6 +64,41 @@ public class Department {
 //    @OneToOne(mappedBy = "department", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true, fetch = FetchType.EAGER)
     @OneToOne(mappedBy = "department", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private DepartmentDetail departmentDetail;
+
+    public DepartmentDto convertDepartmentToDepartmentDto() {
+        DepartmentDto departmentDto = new DepartmentDto();
+        departmentDto.setDescription(getDescription());
+        departmentDto.setId(getId());
+        departmentDto.setLocation(getLocation());
+        departmentDto.setName(getName());
+        List<EmployeeDto> employeeDtoList = getEmployeeDtoList(getEmployees());
+        departmentDto.setEmployeeDtoList(employeeDtoList);
+        return departmentDto;
+    }
+
+    private List<EmployeeDto> getEmployeeDtoList(Set<Employee> employees) {
+        List<EmployeeDto> employeeDtoList = new ArrayList<>();
+        if(employees != null) {
+            for (Employee employee : employees) {
+                EmployeeDto employeeDto = employee.convertEmployeeToEmployeeDto();
+                List<AccountDto> accountDtoList = getAccountDtoList(employee.getAccounts());
+                employeeDto.setAccountDtoList(accountDtoList);
+                employeeDtoList.add(employeeDto);
+            }
+        }
+        return employeeDtoList;
+    }
+
+    private List<AccountDto> getAccountDtoList(Set<Account> accounts) {
+        List<AccountDto> accountDtoList = new ArrayList<>();
+        if(accounts != null) {
+            for(Account account : accounts) {
+                AccountDto accountDto = account.convertAccountToAccountDto();
+                accountDtoList.add(accountDto);
+            }
+        }
+        return accountDtoList;
+    }
 
     public DepartmentDetail getDepartmentDetail() {
         return departmentDetail;

@@ -1,5 +1,7 @@
 package com.ascendingdc.training.project2020.dto;
 
+import com.ascendingdc.training.project2020.entity.Account;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -16,7 +18,17 @@ public class AccountDto {
 
     private BigDecimal balance;
 
-    private long employeeId;
+//    private long employeeId;
+
+    public Account convertAccountDtoToAccount() {
+        Account account = new Account();
+        if(getId() != null)
+            account.setId(getId());
+        account.setBalance(getBalance());
+        account.setAccountType(getAccountType());
+        return account;
+    }
+
 
     public Long getId() {
         return id;
@@ -40,13 +52,13 @@ public class AccountDto {
         this.balance = balance;
     }
 
-    public long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(long employeeId) {
-        this.employeeId = employeeId;
-    }
+//    public long getEmployeeId() {
+//        return employeeId;
+//    }
+//
+//    public void setEmployeeId(long employeeId) {
+//        this.employeeId = employeeId;
+//    }
 
 
     @Override

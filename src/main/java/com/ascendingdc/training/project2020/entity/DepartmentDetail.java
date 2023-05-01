@@ -1,5 +1,6 @@
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.DepartmentDetailDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -7,6 +8,15 @@ import javax.persistence.*;
 @Entity
 @Table(name = "department_details")
 public class DepartmentDetail {
+    public DepartmentDetail() {
+    }
+
+    public DepartmentDetail(String description, int revenue, int size) {
+        this.description = description;
+        this.revenue = revenue;
+        this.size = size;
+    }
+
     @Id
     //@SequenceGenerator(name = "employee_id_generator", sequenceName = "employee_id_seq", allocationSize = 1)
     //@GeneratedValue(strategy = SEQUENCE, generator = "employee_id_generator")
@@ -22,6 +32,15 @@ public class DepartmentDetail {
     @Column(name = "size")
     private int size;
 
+    public DepartmentDetailDto convertDepartmentDetailToDepartmentDetailDto() {
+        DepartmentDetailDto departmentDetailDto = new DepartmentDetailDto();
+        departmentDetailDto.setId(getId());
+        departmentDetailDto.setDescription(getDescription());
+        departmentDetailDto.setRevenue(getRevenue());
+        departmentDetailDto.setSize(getSize());
+        return departmentDetailDto;
+    }
+
     @JsonIgnore
 //    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @OneToOne(fetch = FetchType.LAZY)
@@ -30,15 +49,6 @@ public class DepartmentDetail {
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name="DEPARTMENT_ID")
     private Department department;
-
-    public DepartmentDetail() {
-    }
-
-    public DepartmentDetail(String description, int revenue, int size) {
-        this.description = description;
-        this.revenue = revenue;
-        this.size = size;
-    }
 
     public Long getId() {
         return id;

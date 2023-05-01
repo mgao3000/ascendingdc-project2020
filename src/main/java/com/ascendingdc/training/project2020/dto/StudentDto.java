@@ -1,5 +1,7 @@
 package com.ascendingdc.training.project2020.dto;
 
+import com.ascendingdc.training.project2020.entity.Student;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,21 @@ public class StudentDto {
 
     private String majorName;
 
-    private List<ProjectDto> projectList = new ArrayList<ProjectDto>();
+    private List<ProjectDto> projectDtoList = new ArrayList<ProjectDto>();
+
+    public Student convertStudentDtoToStudent() {
+        Student student = new Student();
+        if(getId() != null)
+            student.setId(getId());
+        student.setAddress(getAddress());
+        student.setEmail(getEmail());
+        student.setFirstName(getFirstName());
+        student.setLastName(getLastName());
+        student.setLoginName(getLoginName());
+        student.setEnrolledDate(getEnrolledDate());
+        student.setPassword(getPassword());
+        return student;
+    }
 
     public Long getMajorId() {
         return majorId;
@@ -122,12 +138,12 @@ public class StudentDto {
         this.majorName = majorName;
     }
 
-    public List<ProjectDto> getProjectList() {
-        return projectList;
+    public List<ProjectDto> getProjectDtoList() {
+        return projectDtoList;
     }
 
-    public void setProjectList(List<ProjectDto> projectList) {
-        this.projectList = projectList;
+    public void setProjectDtoList(List<ProjectDto> projectDtoList) {
+        this.projectDtoList = projectDtoList;
     }
 
     @Override

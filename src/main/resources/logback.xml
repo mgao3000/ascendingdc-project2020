@@ -74,12 +74,12 @@
         <appender-ref ref="console" />
     </logger>
 
-    <logger name="org.springframework" level="INFO">
+    <logger name="org.springframework" level="ERROR">
         <appender-ref ref="springLog" />
         <appender-ref ref="console" />
     </logger>
 
-    <logger name="org.hibernate" level="INFO">
+    <logger name="org.hibernate" level="ERROR">
         <appender-ref ref="hibernateLog" />
         <appender-ref ref="console" />
     </logger>

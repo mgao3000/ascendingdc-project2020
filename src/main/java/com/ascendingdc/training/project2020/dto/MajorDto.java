@@ -1,5 +1,7 @@
 package com.ascendingdc.training.project2020.dto;
 
+import com.ascendingdc.training.project2020.entity.Major;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +23,23 @@ public class MajorDto {
     private String description;
 
     private List<StudentDto> studentList = new ArrayList<StudentDto>();
+
+    public Major convertMajorDtoToMajor() {
+        Major major = new Major();
+        if(getId() != null)
+            major.setId(getId());
+        major.setName(getName());
+        major.setDescription(getDescription());
+        return major;
+    }
+
+//    public MajorDto convertMajorToMajorDto(Major major) {
+//        MajorDto majorDto = new MajorDto();
+//        majorDto.setId(major.getId());
+//        majorDto.setName(major.getName());
+//        majorDto.setDescription(major.getDescription());
+//        return majorDto;
+//    }
 
     public Long getId() {
         return id;

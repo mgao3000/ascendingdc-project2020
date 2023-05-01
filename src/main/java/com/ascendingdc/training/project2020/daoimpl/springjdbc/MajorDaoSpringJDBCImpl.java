@@ -107,7 +107,7 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
             for(StudentDto student : studentList) {
                 List<ProjectDto> projectList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                         new ProjectMapper(), new Object[] {student.getId()});
-                student.setProjectList(projectList);
+                student.setProjectDtoList(projectList);
             }
             major.setStudentList(studentList);
         }
@@ -125,7 +125,7 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
             for(StudentDto student : studentList) {
                 List<ProjectDto> projectList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                         new ProjectMapper(), new Object[] {student.getId()});
-                student.setProjectList(projectList);
+                student.setProjectDtoList(projectList);
             }
             retrievedMajor.setStudentList(studentList);
         } catch (EmptyResultDataAccessException e) {
@@ -145,7 +145,7 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
             for(StudentDto student : studentList) {
                 List<ProjectDto> projectList = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                         new ProjectMapper(), new Object[] {student.getId()});
-                student.setProjectList(projectList);
+                student.setProjectDtoList(projectList);
             }
             retrievedMajor.setStudentList(studentList);
 

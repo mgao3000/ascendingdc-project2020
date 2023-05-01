@@ -1,5 +1,6 @@
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.EmployeeDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -44,6 +45,18 @@ public class Employee {
     @Column(name = "hired_date")
     private LocalDate hiredDate;
 //    private Date hiredDate;
+
+    public EmployeeDto convertEmployeeToEmployeeDto() {
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setId(getId());
+        employeeDto.setEmail(getEmail());
+        employeeDto.setFirstName(getFirstName());
+        employeeDto.setLastName(getLastName());
+        employeeDto.setAddress(getAddress());
+        employeeDto.setHiredDate(getHiredDate());
+        return employeeDto;
+    }
+
 
     /*
     temporarial created for testing JDBC only

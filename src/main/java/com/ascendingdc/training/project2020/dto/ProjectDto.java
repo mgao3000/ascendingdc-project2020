@@ -3,6 +3,8 @@ package com.ascendingdc.training.project2020.dto;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+import com.ascendingdc.training.project2020.entity.Project;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,17 @@ public class ProjectDto {
 
     private LocalDate createDate;
 
-    private List<StudentDto> studentList = new ArrayList<StudentDto>();
+    private List<StudentDto> studentDtoList = new ArrayList<StudentDto>();
+
+    public Project convertProjectDtoToProject() {
+        Project project = new Project();
+        if(getId() != null)
+            project.setId(getId());
+        project.setName(getName());
+        project.setDescription(getDescription());
+        project.setCreateDate(getCreateDate());
+        return project;
+    }
 
     public Long getId() {
         return id;
@@ -61,12 +73,12 @@ public class ProjectDto {
         this.createDate = createDate;
     }
 
-    public List<StudentDto> getStudentList() {
-        return studentList;
+    public List<StudentDto> getStudentDtoList() {
+        return studentDtoList;
     }
 
-    public void setStudentList(List<StudentDto> studentList) {
-        this.studentList = studentList;
+    public void setStudentDtoList(List<StudentDto> studentDtoList) {
+        this.studentDtoList = studentDtoList;
     }
 
     @Override

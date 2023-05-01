@@ -1,5 +1,6 @@
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.AccountDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -26,6 +27,14 @@ public class Account {
 
     @Column(name = "balance")
     private BigDecimal balance;
+
+    public AccountDto convertAccountToAccountDto() {
+        AccountDto accountDto = new AccountDto();
+        accountDto.setId(getId());
+        accountDto.setAccountType(getAccountType());
+        accountDto.setBalance(getBalance());
+        return accountDto;
+    }
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

@@ -45,9 +45,9 @@ public class MajorDaoSpringDataJPAImpl implements MajorDao {
             majorRepository.deleteById(majorId);
             successFlag = true;
         } catch (IllegalArgumentException iae) {
-            //do nothing
+            logger.error("caught IllegalArgumentException when trying deleteById with majorId={}, error={}", majorId, iae.getMessage());
         } catch (OptimisticLockingFailureException olfe) {
-            //do nothing
+            logger.error("caught OptimisticLockingFailureException when trying deleteById with majorId={}, error={}", majorId, olfe.getMessage());
         }
         return successFlag;
     }
@@ -59,9 +59,9 @@ public class MajorDaoSpringDataJPAImpl implements MajorDao {
             majorRepository.delete(major);
             successFlag = true;
         } catch (IllegalArgumentException iae) {
-            //do nothing
+            logger.error("caught IllegalArgumentException when trying delete major, error={}", iae.getMessage());
         } catch (OptimisticLockingFailureException olfe) {
-            //do nothing
+            logger.error("caught OptimisticLockingFailureException when trying delete major, error={}", olfe.getMessage());
         }
         return successFlag;
     }

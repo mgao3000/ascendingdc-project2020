@@ -1,6 +1,9 @@
 package com.ascendingdc.training.project2020.dto;
 
+import com.ascendingdc.training.project2020.entity.Employee;
+
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class EmployeeDto {
@@ -26,17 +29,51 @@ public class EmployeeDto {
     private String address;
 
     private LocalDate hiredDate;
-//    private Date hiredDate;
 
-    private Long departmentId;
+    private DepartmentDto departmentDto;
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public Employee convertEmployeeDtoToEmployee() {
+        Employee employee = new Employee();
+        if(getId() != null)
+            employee.setId(getId());
+        employee.setName(getName());
+        employee.setAddress(getAddress());
+        employee.setEmail(getEmail());
+        employee.setFirstName(getFirstName());
+        employee.setLastName(getLastName());
+        employee.setHiredDate(getHiredDate());
+        return employee;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public DepartmentDto getDepartmentDto() {
+        return departmentDto;
     }
+
+    public void setDepartmentDto(DepartmentDto departmentDto) {
+        this.departmentDto = departmentDto;
+    }
+
+    //    private Date hiredDate;
+
+//    private Long departmentId;
+
+//    public Long getDepartmentId() {
+//        return departmentId;
+//    }
+//
+//    public void setDepartmentId(Long departmentId) {
+//        this.departmentId = departmentId;
+//    }
+
+    public List<AccountDto> getAccountDtoList() {
+        return accountDtoList;
+    }
+
+    public void setAccountDtoList(List<AccountDto> accountDtoList) {
+        this.accountDtoList = accountDtoList;
+    }
+
+    private List<AccountDto> accountDtoList;
 
     public LocalDate getHiredDate() {
 //    public Date getHiredDate() {

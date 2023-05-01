@@ -15,10 +15,12 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class StudentDaoHibernateImpl extends AbstractDaoHibernateImpl implements StudentDao {
     private Logger logger = LoggerFactory.getLogger(StudentDaoHibernateImpl.class);
 

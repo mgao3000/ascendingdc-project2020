@@ -510,7 +510,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);
                 setStudentMajorNameByMajorId(getMajorNameByMajorIdPS, studentList);
 
-                project.setStudentList(studentList);
+                project.setStudentDtoList(studentList);
                 projects.add(project);
             }
         }
@@ -643,7 +643,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);
                 setStudentMajorNameByMajorId(getMajorNameByMajorIdPS, studentList);
 
-                retrievedProject.setStudentList(studentList);
+                retrievedProject.setStudentDtoList(studentList);
             }
         }
         catch(Exception e){
@@ -717,7 +717,7 @@ public class ProjectDaoJDBCImpl implements ProjectDao {
                 getMajorNameByMajorIdPS = dbConnection.prepareStatement(SQLStatementUtils.SQL_SELECT_MAJOR_NAME_BY_MAJOR_ID);
                 setStudentMajorNameByMajorId(getMajorNameByMajorIdPS, studentList);
 
-                retrievedProject.setStudentList(studentList);
+                retrievedProject.setStudentDtoList(studentList);
             }
         }
         catch(Exception e){

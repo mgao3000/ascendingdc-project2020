@@ -16,13 +16,13 @@ public interface StudentDao {
     Student getStudentById(Long id);
     Student getStudentByLoginName(String loginName);
 
-    List<Student> getStudentsByMajorId (Long majorId);
-    List<Project> getAssociatedProjectsByStudentId(Long studentId);
+//    List<Student> getStudentsByMajorId (Long majorId);
+//    List<Project> getAssociatedProjectsByStudentId(Long studentId);
     List<Project> getAssociatedProjectsByStudentLoginName(String loginName);
 
     List<Student> getStudentsWithAssociatedProjects();
     Student getStudentWithAssociatedProjectsByStudentId(Long studentId);
     Student getStudentWithAssociatedProjectsByLoginName(String loginName);
 
-    List<Student> getStudentsWithAssociatedProjectsByMajorId (Long majorId);
+//    List<Student> getStudentsWithAssociatedProjectsByMajorId (Long majorId);
 }

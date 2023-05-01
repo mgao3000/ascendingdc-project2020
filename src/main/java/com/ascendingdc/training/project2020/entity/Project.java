@@ -1,5 +1,6 @@
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.ProjectDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +35,15 @@ public class Project  {
 
     @Column(name = "create_date")
     private LocalDate createDate;
+
+    public ProjectDto convertProjectToProjectDto() {
+        ProjectDto projectDto = new ProjectDto();
+        projectDto.setId(getId());
+        projectDto.setName(getName());
+        projectDto.setDescription(getDescription());
+        projectDto.setCreateDate(getCreateDate());
+        return projectDto;
+    }
 
     @ManyToMany(mappedBy = "projects", fetch = FetchType.LAZY)
 //    @ManyToMany(fetch = FetchType.LAZY)

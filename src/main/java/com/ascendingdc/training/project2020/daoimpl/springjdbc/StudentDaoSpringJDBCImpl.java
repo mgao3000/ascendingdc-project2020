@@ -127,7 +127,7 @@ public class StudentDaoSpringJDBCImpl implements StudentDao {
         for(StudentDto student : studentList) {
             List<ProjectDto> projects = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                     new Object[] {student.getId()}, new ProjectMapper());
-            student.setProjectList(projects);
+            student.setProjectDtoList(projects);
         }
         return studentList;
     }
@@ -140,7 +140,7 @@ public class StudentDaoSpringJDBCImpl implements StudentDao {
                     new Object[] {studentId}, new StudentMapper());
             List<ProjectDto> projects = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                     new Object[] {student.getId()}, new ProjectMapper());
-            student.setProjectList(projects);
+            student.setProjectDtoList(projects);
         } catch (EmptyResultDataAccessException e) {
             // do nothing
         }
@@ -155,7 +155,7 @@ public class StudentDaoSpringJDBCImpl implements StudentDao {
                     new Object[] {loginName}, new StudentMapper());
             List<ProjectDto> projects = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                     new Object[] {student.getId()}, new ProjectMapper());
-            student.setProjectList(projects);
+            student.setProjectDtoList(projects);
         } catch (EmptyResultDataAccessException e) {
             // do nothing
         }
@@ -169,7 +169,7 @@ public class StudentDaoSpringJDBCImpl implements StudentDao {
         for(StudentDto student : studentList) {
             List<ProjectDto> projects = jdbcTemplate.query(SQLStatementUtils.SQL_SELECT_PROJECTS_BY_STUDENT_ID,
                     new Object[] {student.getId()}, new ProjectMapper());
-            student.setProjectList(projects);
+            student.setProjectDtoList(projects);
         }
         return studentList;
     }

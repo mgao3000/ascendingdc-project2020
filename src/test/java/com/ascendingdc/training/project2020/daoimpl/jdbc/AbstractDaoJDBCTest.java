@@ -148,7 +148,7 @@ public abstract class AbstractDaoJDBCTest {
 
     protected void displayProject(ProjectDto project) {
         logger.info("Project detail={}", project);
-        displayStudentList(project.getStudentList());
+        displayStudentList(project.getStudentDtoList());
     }
 
     protected void displayStudentList(List<StudentDto> studentList) {
@@ -156,9 +156,9 @@ public abstract class AbstractDaoJDBCTest {
         int index = 1;
         for (StudentDto student : studentList) {
             logger.info("No.{} student = {}", index, student);
-            if(student.getProjectList() != null) {
+            if(student.getProjectDtoList() != null) {
                 logger.info("\t The total associated projects with studentId={}", student.getId());
-                displayProjectList(student.getProjectList());
+                displayProjectList(student.getProjectDtoList());
             }
             index++;
         }
@@ -191,7 +191,7 @@ public abstract class AbstractDaoJDBCTest {
 
     protected void displayStudent(StudentDto student) {
         logger.info("Student detail={}", student);
-        displayProjectList(student.getProjectList());
+        displayProjectList(student.getProjectDtoList());
     }
 
     protected void displayProjectList(List<ProjectDto> projectList) {

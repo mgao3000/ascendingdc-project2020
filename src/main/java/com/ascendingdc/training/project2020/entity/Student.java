@@ -1,5 +1,6 @@
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -49,6 +50,19 @@ public class Student  {
 
     @Column(name = "enrolled_date")
     private LocalDate enrolledDate;
+
+    public StudentDto convertStudentToStudentDto() {
+        StudentDto studentDto = new StudentDto();
+        studentDto.setId(getId());
+        studentDto.setFirstName(getFirstName());
+        studentDto.setLastName(getLastName());
+        studentDto.setLoginName(getLoginName());
+        studentDto.setPassword(getPassword());
+        studentDto.setEmail(getEmail());
+        studentDto.setAddress(getAddress());
+        studentDto.setEnrolledDate(getEnrolledDate());
+        return studentDto;
+    }
 
     @JsonIgnore
 //    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH})

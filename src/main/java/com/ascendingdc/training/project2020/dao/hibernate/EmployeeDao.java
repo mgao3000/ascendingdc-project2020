@@ -10,7 +10,7 @@ public interface EmployeeDao {
     Integer updateEmployeeAddressByEmployeeName(String name, String address);
     Employee update(Employee employee);
     boolean deleteByName(String name);
-    boolean delete(Employee Employee);
+    boolean delete(Employee employee);
     List<Employee> getEmployees();
     Employee getEmployeeById(Long id);
     Employee getEmployeeByName(String employeeName);
