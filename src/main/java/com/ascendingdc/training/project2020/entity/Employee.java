@@ -1,13 +1,12 @@
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.AccountDto;
 import com.ascendingdc.training.project2020.dto.EmployeeDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "employee")
@@ -54,9 +53,27 @@ public class Employee {
         employeeDto.setLastName(getLastName());
         employeeDto.setAddress(getAddress());
         employeeDto.setHiredDate(getHiredDate());
+        List<AccountDto> accountDtoList = getAccountDtoListByAccountSet(getAccounts());
+        employeeDto.setAccountDtoList(accountDtoList);
         return employeeDto;
     }
 
+    private List<AccountDto> getAccountDtoListByAccountSet(Set<Account> accounts) {
+        List<AccountDto> accountDtoList = new ArrayList<>();
+        for(Account account : accounts) {
+            AccountDto accountDto = convertAccountToAccountDto(account);
+            accountDtoList.add(accountDto);
+        }
+        return accountDtoList;
+    }
+
+    private AccountDto convertAccountToAccountDto(Account account) {
+        AccountDto accountDto = new AccountDto();
+        accountDto.setId(account.getId());
+        accountDto.setAccountType(account.getAccountType());
+        accountDto.setBalance(account.getBalance());
+        return accountDto;
+    }
 
     /*
     temporarial created for testing JDBC only

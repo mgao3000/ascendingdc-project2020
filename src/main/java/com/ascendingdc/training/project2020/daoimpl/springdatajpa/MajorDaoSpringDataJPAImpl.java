@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +35,20 @@ public class MajorDaoSpringDataJPAImpl implements MajorDao {
     }
 
     @Override
+    @Transactional
     public boolean deleteByName(String majorName) {
-        return majorRepository.deleteByName(majorName) > 0;
+//        return majorRepository.deleteByName(majorName) > 0;
+        boolean successFlag = false;
+        try {
+            majorRepository.deleteByName(majorName);
+            successFlag = true;
+        } catch (IllegalArgumentException iae) {
+            logger.error("caught IllegalArgumentException when trying deleteByName with majorName={}, error={}", majorName, iae.getMessage());
+        } catch (OptimisticLockingFailureException olfe) {
+            logger.error("caught OptimisticLockingFailureException when trying deleteByName with majorName={}, error={}", majorName, olfe.getMessage());
+        }
+        return successFlag;
+
     }
 
     @Override

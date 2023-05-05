@@ -1,10 +1,13 @@
 package com.ascendingdc.training.project2020.dto;
 
+import com.ascendingdc.training.project2020.entity.Account;
 import com.ascendingdc.training.project2020.entity.Employee;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class EmployeeDto {
     public EmployeeDto() { }
@@ -42,7 +45,27 @@ public class EmployeeDto {
         employee.setFirstName(getFirstName());
         employee.setLastName(getLastName());
         employee.setHiredDate(getHiredDate());
+        Set<Account> accountSet = getAccountSetByAccountDtoList(getAccountDtoList());
+        employee.setAccounts(accountSet);
         return employee;
+    }
+
+    private Set<Account> getAccountSetByAccountDtoList(List<AccountDto> accountDtoList) {
+        Set<Account> accountset = new HashSet<>();
+        for(AccountDto accountDto : accountDtoList) {
+            Account account = convertAccountDtoToAccount(accountDto);
+            accountset.add(account);
+        }
+        return accountset;
+    }
+
+    private Account convertAccountDtoToAccount(AccountDto accountDto) {
+        Account account = new Account();
+        if(accountDto.getId() != null)
+            account.setId(accountDto.getId());
+        account.setBalance(accountDto.getBalance());
+        account.setAccountType(accountDto.getAccountType());
+        return account;
     }
 
     public DepartmentDto getDepartmentDto() {

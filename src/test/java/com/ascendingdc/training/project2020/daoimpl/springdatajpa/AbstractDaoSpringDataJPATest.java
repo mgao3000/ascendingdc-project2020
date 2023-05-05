@@ -27,6 +27,7 @@ public abstract class AbstractDaoSpringDataJPATest {
 
     @Autowired
     @Qualifier("majorSpringDataJPADao")
+//    @Qualifier("majorDaoHibernateImpl")
     protected MajorDao majorDao;
 
     @Autowired

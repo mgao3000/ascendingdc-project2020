@@ -1,8 +1,10 @@
 package com.ascendingdc.training.project2020.service.impl;
 
 import com.ascendingdc.training.project2020.dao.hibernate.DepartmentDao;
+import com.ascendingdc.training.project2020.dto.DepartmentDetailDto;
 import com.ascendingdc.training.project2020.dto.DepartmentDto;
 import com.ascendingdc.training.project2020.entity.Department;
+import com.ascendingdc.training.project2020.entity.DepartmentDetail;
 import com.ascendingdc.training.project2020.service.DepartmentService;
 import com.ascendingdc.training.project2020.util.DtoAndEntityConvertUtil;
 import org.slf4j.Logger;
@@ -26,8 +28,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDto save(DepartmentDto departmentDto) {
         Department department = DtoAndEntityConvertUtil.convertDepartmentDtoToDepartment(departmentDto);
+        DepartmentDetailDto departmentDetailDto = departmentDto.getDepartmentDetailDto();
+        if(departmentDetailDto != null) {
+            DepartmentDetail departmentDetail = departmentDetailDto.convertDepartmentDetailDtoToDepartmentDetail();
+            department.setDepartmentDetail(departmentDetail);
+        }
         Department savedDepartment = departmentDao.save(department);
-        DepartmentDto savedDepartmentDto = DtoAndEntityConvertUtil.convertDepartmentToDepartmentDto(savedDepartment);
+//        DepartmentDto savedDepartmentDto = DtoAndEntityConvertUtil.convertDepartmentToDepartmentDto(savedDepartment);
+        DepartmentDto savedDepartmentDto = savedDepartment.convertDepartmentToDepartmentDto();
         return savedDepartmentDto;
     }
 

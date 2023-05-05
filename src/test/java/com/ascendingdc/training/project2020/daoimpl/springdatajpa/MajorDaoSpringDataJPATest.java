@@ -208,8 +208,9 @@ public class MajorDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
         }
     }
 
-    @Test
-    @Transactional
+ //   @Test
+    @RepeatedTest(5)
+//    @Transactional
     public void saveMajorOnlyTest() {
         Major major = createMajorByName(tempMajorName);
         Major savedMajor = majorDao.save(major);
@@ -234,15 +235,26 @@ public class MajorDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
         assertEquals(true, deleteSuccessfulFlag);
     }
 
-    @Test
-    @Transactional
-    public void testDeleteMajorByName() {
+     @Test
+     public void testDeleteMajorByName() {
         Major major = createMajorByName(tempMajorName);
         Major savedMajor = majorDao.save(major);
+        logger.info("======================, savedMajor.id={}", savedMajor.getId());
+        logger.info("======================, savedMajor.name={}", savedMajor.getName());
+        logger.info("======================, savedMajor.Description={}", savedMajor.getDescription());
         /*
          * Now delete the saved Major from DB Major table
          */
+//        boolean deleteSuccessfulFlag = majorDao.deleteByName("Major-741");
+//        Major retrievedMajor = majorDao.getMajorByName("Major-711");
         boolean deleteSuccessfulFlag = majorDao.deleteByName(savedMajor.getName());
+        assertEquals(true, deleteSuccessfulFlag);
+    }
+
+    @Test
+    public void testDeleteMajorByMajorId() {
+        long majorId = 163;
+        boolean deleteSuccessfulFlag = majorDao.deleteById(majorId);
         assertEquals(true, deleteSuccessfulFlag);
     }
 
@@ -276,7 +288,7 @@ public class MajorDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
         student1.addProject(project3);
         student2.addProject(project2);
 
-        //Step 4: save major in cascade way
+        //Step 5: save major in cascade way
         Major savedMajor = majorDao.save(major);
 
         assertNotNull(savedMajor.getId());

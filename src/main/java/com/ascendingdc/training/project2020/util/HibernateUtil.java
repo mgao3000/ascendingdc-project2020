@@ -1,5 +1,6 @@
 package com.ascendingdc.training.project2020.util;
 
+import com.ascendingdc.training.project2020.entity.Major;
 import com.github.fluent.hibernate.cfg.scanner.EntityScanner;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -36,6 +37,7 @@ public class HibernateUtil {
         String dbPassword = "password";
 
         String[] modelPackages = {"com.ascendingdc.training.project2020.entity"};
+
 //        String dbDriver = System.getProperty("database.driver");
 //        String dbDialect = System.getProperty("database.dialect");
 //        String dbUrl = System.getProperty("database.url");
@@ -43,6 +45,8 @@ public class HibernateUtil {
 //        String dbPassword = System.getProperty("database.password");
 
         Configuration configuration = new Configuration();
+        configuration.addPackage("com.ascendingdc.training.project2020.entity");
+        configuration.addAnnotatedClass(Major.class);
         Properties settings = new Properties();
         settings.put(Environment.DRIVER, dbDriver);
         settings.put(Environment.DIALECT, dbDialect);

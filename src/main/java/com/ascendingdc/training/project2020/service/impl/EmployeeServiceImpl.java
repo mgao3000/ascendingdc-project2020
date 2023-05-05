@@ -1,5 +1,6 @@
 package com.ascendingdc.training.project2020.service.impl;
 
+import com.ascendingdc.training.project2020.dao.hibernate.DepartmentDao;
 import com.ascendingdc.training.project2020.dao.hibernate.EmployeeDao;
 import com.ascendingdc.training.project2020.dto.DepartmentDto;
 import com.ascendingdc.training.project2020.dto.EmployeeDto;
@@ -25,12 +26,29 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Qualifier("employeeSpringDataJPADao")
     private EmployeeDao employeeDao;
 
+    @Autowired
+    @Qualifier("departmentSpringDataJPADao")
+    private DepartmentDao departmentDao;
+
     @Override
     public EmployeeDto save(EmployeeDto employeeDto, DepartmentDto departmentDto) {
-        Employee employee = DtoAndEntityConvertUtil.convertEmployeeDtoToEmployee(employeeDto);
-        Department department = DtoAndEntityConvertUtil.convertDepartmentDtoToDepartment(departmentDto);
+//        Employee employee = DtoAndEntityConvertUtil.convertEmployeeDtoToEmployee(employeeDto);
+        Employee employee = employeeDto.convertEmployeeDtoToEmployee();
+//        Department department = DtoAndEntityConvertUtil.convertDepartmentDtoToDepartment(departmentDto);
+        Department department = departmentDto.convertDepartmentDtoToDepartment();
         Employee savedEmployee = employeeDao.save(employee, department);
-        EmployeeDto savedEmployeeDto = DtoAndEntityConvertUtil.convertEmployeeToEmployeeDto(savedEmployee);
+//        EmployeeDto savedEmployeeDto = DtoAndEntityConvertUtil.convertEmployeeToEmployeeDto(savedEmployee);
+        EmployeeDto savedEmployeeDto = savedEmployee.convertEmployeeToEmployeeDto();
+        return savedEmployeeDto;
+    }
+
+    @Override
+    public EmployeeDto save(EmployeeDto employeeDto, String deptName) {
+        Employee employee = employeeDto.convertEmployeeDtoToEmployee();
+        Department department = departmentDao.getDepartmentEagerByName(deptName);
+        Employee savedEmployee = employeeDao.save(employee, department);
+//        EmployeeDto savedEmployeeDto = DtoAndEntityConvertUtil.convertEmployeeToEmployeeDto(savedEmployee);
+        EmployeeDto savedEmployeeDto = savedEmployee.convertEmployeeToEmployeeDto();
         return savedEmployeeDto;
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface EmployeeService {
     EmployeeDto save(EmployeeDto employeeDto, DepartmentDto departmentDto);
+    EmployeeDto save(EmployeeDto employeeDto, String deptName);
     Integer updateEmployeeAddressByEmployeeName(String name, String address);
     EmployeeDto update(EmployeeDto employeeDto);
     boolean deleteByName(String name);

@@ -1,6 +1,7 @@
 package com.ascendingdc.training.project2020.entity;
 
 import com.ascendingdc.training.project2020.dto.AccountDto;
+import com.ascendingdc.training.project2020.dto.DepartmentDetailDto;
 import com.ascendingdc.training.project2020.dto.DepartmentDto;
 import com.ascendingdc.training.project2020.dto.EmployeeDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -73,7 +74,18 @@ public class Department {
         departmentDto.setName(getName());
         List<EmployeeDto> employeeDtoList = getEmployeeDtoList(getEmployees());
         departmentDto.setEmployeeDtoList(employeeDtoList);
+        DepartmentDetailDto departmentDetailDto = getDepartmentDetailDtoByDepartmentDetail(getDepartmentDetail());
+        departmentDto.setDepartmentDetailDto(departmentDetailDto);
         return departmentDto;
+    }
+
+    private DepartmentDetailDto getDepartmentDetailDtoByDepartmentDetail(DepartmentDetail departmentDetail) {
+        DepartmentDetailDto departmentDetailDto = new DepartmentDetailDto();
+        departmentDetailDto.setId(departmentDetail.getId());
+        departmentDetailDto.setDescription(departmentDetail.getDescription());
+        departmentDetailDto.setRevenue(departmentDetail.getRevenue());
+        departmentDetailDto.setSize(departmentDetail.getSize());
+        return departmentDetailDto;
     }
 
     private List<EmployeeDto> getEmployeeDtoList(Set<Employee> employees) {

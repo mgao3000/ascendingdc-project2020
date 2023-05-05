@@ -4,6 +4,7 @@ import com.ascendingdc.training.project2020.dto.*;
 import com.ascendingdc.training.project2020.entity.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +18,25 @@ public class DtoAndEntityConvertUtil {
         department.setDescription(departmentDto.getDescription());
         department.setName(departmentDto.getName());
         department.setLocation(departmentDto.getLocation());
+        DepartmentDetail departmentDetail = getDepartmentDetailByDepartmentDetailDto(departmentDto.getDepartmentDetailDto());
+        Set<Employee> employeeSet = getEmployeeSetByEmployeeDtoList(departmentDto.getEmployeeDtoList());
+        department.setDepartmentDetail(departmentDetail);
+        department.setEmployees(employeeSet);
         return department;
+    }
+
+    private static Set<Employee> getEmployeeSetByEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
+        Set<Employee> employeeSet = new HashSet<>();
+        for(EmployeeDto employeeDto : employeeDtoList) {
+            Employee employee = convertEmployeeDtoToEmployee(employeeDto);
+            employeeSet.add(employee);
+        }
+        return employeeSet;
+    }
+
+    private static DepartmentDetail getDepartmentDetailByDepartmentDetailDto(DepartmentDetailDto departmentDetailDto) {
+        DepartmentDetail departmentDetail = convertDepartmentDetailDtoToDepartmentDetail(departmentDetailDto);
+        return departmentDetail;
     }
 
     public static DepartmentDto convertDepartmentToDepartmentDto(Department department) {
@@ -28,7 +47,14 @@ public class DtoAndEntityConvertUtil {
         departmentDto.setName(department.getName());
         List<EmployeeDto> employeeDtoList = getEmployeeDtoList(department.getEmployees());
         departmentDto.setEmployeeDtoList(employeeDtoList);
+        DepartmentDetailDto departmentDetailDto = getDepartmentDetailDtoByDepartmentDetail(department.getDepartmentDetail());
+        departmentDto.setDepartmentDetailDto(departmentDetailDto);
         return departmentDto;
+    }
+
+    private static DepartmentDetailDto getDepartmentDetailDtoByDepartmentDetail(DepartmentDetail departmentDetail) {
+        DepartmentDetailDto departmentDetailDto = convertDepartmentDetailToDepartmentDetailDto(departmentDetail);
+        return departmentDetailDto;
     }
 
     public static List<EmployeeDto> getEmployeeDtoList(Set<Employee> employees) {
@@ -101,7 +127,18 @@ public class DtoAndEntityConvertUtil {
         employee.setFirstName(employeeDto.getFirstName());
         employee.setLastName(employeeDto.getLastName());
         employee.setHiredDate(employeeDto.getHiredDate());
+        Set<Account> accountSet = getAccountSetByAccountDtoList(employeeDto.getAccountDtoList());
+        employee.setAccounts(accountSet);
         return employee;
+    }
+
+    private static Set<Account> getAccountSetByAccountDtoList(List<AccountDto> accountDtoList) {
+        Set<Account> accountset = new HashSet<>();
+        for(AccountDto accountDto : accountDtoList) {
+            Account account = convertAccountDtoToAccount(accountDto);
+            accountset.add(account);
+        }
+        return accountset;
     }
 
     public static EmployeeDto convertEmployeeToEmployeeDto(Employee employee) {
@@ -112,7 +149,18 @@ public class DtoAndEntityConvertUtil {
         employeeDto.setLastName(employee.getLastName());
         employeeDto.setAddress(employee.getAddress());
         employeeDto.setHiredDate(employee.getHiredDate());
+        List<AccountDto> accountDtoList = getAccountDtoListByAccountSet(employee.getAccounts());
+        employeeDto.setAccountDtoList(accountDtoList);
         return employeeDto;
+    }
+
+    private static List<AccountDto> getAccountDtoListByAccountSet(Set<Account> accounts) {
+        List<AccountDto> accountDtoList = new ArrayList<>();
+        for(Account account : accounts) {
+            AccountDto accountDto = convertAccountToAccountDto(account);
+            accountDtoList.add(accountDto);
+        }
+        return accountDtoList;
     }
 
     public static Major convertMajorDtoToMajor(MajorDto majorDto) {
@@ -176,5 +224,93 @@ public class DtoAndEntityConvertUtil {
         projectDto.setDescription(project.getDescription());
         projectDto.setCreateDate(project.getCreateDate());
         return projectDto;
+    }
+
+    public static User convertUserDtoToUser(UserDto userDto) {
+        User user = new User();
+        user.setId(userDto.getId());
+        user.setName(userDto.getName());
+        user.setPassword(userDto.getPassword());
+        user.setSecretKey(userDto.getSecretKey());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
+        user.setRoles(getRolesByRoleDtoSet(userDto.getRoleDtoSet()));
+        return user;
+    }
+
+    private static Set<Role> getRolesByRoleDtoSet(Set<RoleDto> roleDtoSet) {
+        Set<Role> roleSet = new HashSet<>();
+        for(RoleDto roleDto : roleDtoSet) {
+            Role role = convertRoleDtoToRole(roleDto);
+            roleSet.add(role);
+        }
+        return roleSet;
+    }
+
+    public static UserDto convertUserToUserDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setPassword(user.getPassword());
+        userDto.setSecretKey(user.getSecretKey());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        userDto.setRoleDtoSet(getRoleDtoSetByRoles(user.getRoles()));
+        return userDto;
+    }
+
+    private static Set<RoleDto> getRoleDtoSetByRoles(Set<Role> roles) {
+        Set<RoleDto> roleDtoSet = new HashSet<>();
+        for(Role role : roles) {
+            RoleDto roleDto = convertRoleToRoleDto(role);
+            roleDtoSet.add(roleDto);
+        }
+        return roleDtoSet;
+    }
+
+    public static Role convertRoleDtoToRole(RoleDto roleDto) {
+        Role role = new Role();
+        role.setId(roleDto.getId());
+        role.setName(roleDto.getName());
+        role.setAllowedResource(roleDto.getAllowedResource());
+        role.setAllowedRead(roleDto.isAllowedRead());
+        role.setAllowedCreate(roleDto.isAllowedCreate());
+        role.setAllowedUpdate(roleDto.isAllowedUpdate());
+        role.setAllowedDelete(roleDto.isAllowedDelete());
+        role.setUsers(getusersByUserDtoSet(roleDto.getUserDtoSet()));
+        return role;
+    }
+
+    private static Set<User> getusersByUserDtoSet(Set<UserDto> userDtoSet) {
+        Set<User> userSet = new HashSet<>();
+        for(UserDto userDto : userDtoSet) {
+            User user = convertUserDtoToUser(userDto);
+            userSet.add(user);
+        }
+        return userSet;
+    }
+
+    public static RoleDto convertRoleToRoleDto(Role role) {
+        RoleDto roleDto = new RoleDto();
+        roleDto.setId(role.getId());
+        roleDto.setName(role.getName());
+        roleDto.setAllowedResource(role.getAllowedResource());
+        roleDto.setAllowedRead(role.isAllowedRead());
+        roleDto.setAllowedCreate(role.isAllowedCreate());
+        roleDto.setAllowedUpdate(role.isAllowedUpdate());
+        roleDto.setAllowedDelete(role.isAllowedDelete());
+        roleDto.setUserDtoSet(getUserDtoSetByUsers(role.getUsers()));
+        return roleDto;
+    }
+
+    private static Set<UserDto> getUserDtoSetByUsers(Set<User> users) {
+        Set<UserDto> userDtoSet = new HashSet<>();
+        for(User user : users) {
+            UserDto userDto = convertUserToUserDto(user);
+            userDtoSet.add(userDto);
+        }
+        return userDtoSet;
     }
 }

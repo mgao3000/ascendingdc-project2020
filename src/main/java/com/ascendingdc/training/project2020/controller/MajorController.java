@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/proj2020")
+@RequestMapping("/proj2020")
 public class MajorController {
 
     private Logger logger = LoggerFactory.getLogger(MajorController.class);
@@ -22,25 +22,25 @@ public class MajorController {
     @Autowired
     private MajorService majorService;
 
-    @GetMapping("/majors", produces = "application/json")
+    @GetMapping(path="/majors", produces = "application/json")
     public List<MajorDto> getAllMajors() {
         List<MajorDto> majorDtoList = majorService.getMajors();
         return majorDtoList;
     }
 
-    @GetMapping("/majors/{id}", produces = "application/json")
+    @GetMapping(path="/majors/{id}", produces = "application/json")
     public MajorDto getMajorByMajorId(@PathVariable("id") Long majorId) {
         MajorDto majorDto = majorService.getMajorById(majorId);
         return majorDto;
     }
 
-    @GetMapping("/majors/{name}", produces = "application/json")
+    @GetMapping(path="/majors/name/{name}", produces = "application/json")
     public MajorDto getMajorByMajorName(@PathVariable("name") String majorName) {
         MajorDto majorDto = majorService.getMajorByName(majorName);
         return majorDto;
     }
 
-    @PostMapping("/majors", consumes = "application/json", produces = "application/json")
+    @PostMapping(path="/majors", consumes = "application/json", produces = "application/json")
     public ResponseEntity<MajorDto> createMajor(@RequestBody MajorDto majorDto) {
         MajorDto savedMajorDto = majorService.save(majorDto);
 
@@ -57,7 +57,7 @@ public class MajorController {
 //        return ResponseEntity.ok(userService.saveUser(userDto));
     }
 
-    @PutMapping("/majors", consumes = "application/json", produces = "application/json")
+    @PutMapping(path="/majors", consumes = "application/json", produces = "application/json")
     public ResponseEntity<MajorDto> updateMajor(@RequestBody MajorDto majorDto) {
         MajorDto updatedMajorDto = majorService.update(majorDto);
 
@@ -69,8 +69,8 @@ public class MajorController {
         return ResponseEntity.created(location).build();
     }
 
-    @DeleteMapping("/majors/{name}", produces = "application/json")
-    public ResponseEntity getMajorByMajorName(@PathVariable("name") String majorName) {
+    @DeleteMapping(path="/majors/name/{name}", produces = "application/json")
+    public ResponseEntity deleteMajorByMajorName(@PathVariable("name") String majorName) {
         boolean deleteResult = majorService.deleteByName(majorName);
         if(deleteResult)
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -78,8 +78,17 @@ public class MajorController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
     }
 
-    @DeleteMapping("/majors", produces = "application/json")
-    public ResponseEntity getMajorByMajorDto(@RequestBody MajorDto majorDto) {
+    @DeleteMapping(path="/majors/{id}", produces = "application/json")
+    public ResponseEntity deleteMajorByMajorId(@PathVariable("id") Long majorId) {
+        boolean deleteResult = majorService.deleteById(majorId);
+        if(deleteResult)
+            return ResponseEntity.status(HttpStatus.OK).build();
+        else
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+    }
+
+    @DeleteMapping(path="/majors", produces = "application/json")
+    public ResponseEntity deleteMajorByMajorDto(@RequestBody MajorDto majorDto) {
         boolean deleteResult = majorService.delete(majorDto);
         if(deleteResult)
             return ResponseEntity.status(HttpStatus.OK).build();

@@ -183,7 +183,8 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         try {
-            Query<Major> query = session.createQuery(HQLStatementUtil.HQL_SELECT_ALL_MAJORS);
+//            Query<Major> query = session.createQuery(HQLStatementUtil.HQL_SELECT_ALL_MAJORS);
+            Query<Major> query = session.createQuery("From Major");
 
             majorList = query.list();
         } catch (HibernateException he) {
@@ -218,7 +219,8 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         try {
-            Query<Major> query = session.createQuery(HQLStatementUtil.HQL_SELECT_MAJOR_BY_ID);
+//            Query<Major> query = session.createQuery(HQLStatementUtil.HQL_SELECT_MAJOR_BY_ID);
+            Query<Major> query = session.createQuery("FROM Major as m where m.id = :id");
             query.setParameter("id", majorId);
 
             major = query.uniqueResult();
@@ -236,9 +238,13 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
         Major major = null;
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
+
+//        Long mikeTestId = 105L;
         try {
-            Query<Major> query = session.createQuery(HQLStatementUtil.HQL_SELECT_MAJOR_WITH_CHILDREN_BY_MAJOR_ID);
-            query.setParameter("id", majorId);
+//            Query<Major> query = session.createQuery(HQLStatementUtil.HQL_SELECT_MAJOR_WITH_CHILDREN_BY_MAJOR_ID);
+            Query<Major> query = session.createQuery("SELECT distinct m FROM Major as m " +
+                    "left join fetch m.students as student left join fetch student.projects where m.id = :majorId");
+            query.setParameter("majorId", majorId);
 
             major = query.uniqueResult();
         } catch (HibernateException he) {

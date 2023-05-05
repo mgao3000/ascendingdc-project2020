@@ -2,7 +2,10 @@ package com.ascendingdc.training.project2020.util;
 
 public class HQLStatementUtil {
 
-
+//    List<Long> ids = Arrays.asList(380L, 382L, 386L);
+//    Query query = em.createQuery("FROM TrackedItem item WHERE item.id IN (?1)");
+//    query.setParameterList(1, ids)
+//    List<TrackedItem> items = query.getResultList();
 
     /*
      * Major related HQL Statements

@@ -97,6 +97,24 @@ public class MajorDaoHibernateTest extends AbstractDaoHibernateTest {
     }
 
     @Test
+    public void getMajorByIdTest() {
+        /*
+         * Pick up a random MajorModel from DB
+         */
+        Major randomMajor = getRandomMajor();
+        if(randomMajor == null) {
+            logger.error("there is no major being found in database, please double check DB connection!");
+        } else {
+            Long majorId = randomMajor.getId();
+            Major retrievedMajor = majorDao.getMajorById(majorId);
+            assertEquals(randomMajor.getName(), retrievedMajor.getName());
+            assertTrue(true);
+        }
+
+
+    }
+
+    @Test
     public void getMajorByIdThrowLazyInitializationExceptionTest() {
         /*
          * Pick up a random MajorModel from DB
@@ -244,6 +262,9 @@ public class MajorDaoHibernateTest extends AbstractDaoHibernateTest {
          */
         boolean deleteSuccessfulFlag = majorDao.delete(savedMajor);
         assertEquals(true, deleteSuccessfulFlag);
+
+        Major retrievedMajor = majorDao.getMajorById(savedMajor.getId());
+        assertNull(retrievedMajor);
     }
 
     @Test

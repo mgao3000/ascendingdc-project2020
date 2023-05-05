@@ -52,12 +52,18 @@ public class Major {
     @JsonInclude(JsonInclude.Include.NON_NULL)
 //    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
 //    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
 //    @OneToMany(mappedBy = "major")
 //    @OneToMany(mappedBy = "major", fetch = FetchType.EAGER)
 ///    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Student> students;
 
+//    @PreRemove
+//    private void removeStudentFromMajor() {
+//        for(Student student : getStudents()) {
+//            student.getMajor();
+//        }
+//    }
     public Set<Student> getStudents() {
         if(students == null)
             students = new HashSet<Student>();
