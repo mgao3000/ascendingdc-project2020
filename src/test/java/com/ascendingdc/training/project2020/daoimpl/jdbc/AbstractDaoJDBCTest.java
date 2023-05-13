@@ -176,7 +176,7 @@ public abstract class AbstractDaoJDBCTest {
 
     protected void displayMajor(MajorDto major) {
         logger.info("Major detail={}", major);
-        displayStudentList(major.getStudentList());
+        displayStudentList(major.getStudentDtoList());
     }
 
 //    protected void displayStudentList(List<StudentModel> studentList) {

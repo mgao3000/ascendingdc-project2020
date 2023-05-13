@@ -51,6 +51,8 @@ public class Student  {
     @Column(name = "enrolled_date")
     private LocalDate enrolledDate;
 
+    transient private int flag;
+
     public StudentDto convertStudentToStudentDto() {
         StudentDto studentDto = new StudentDto();
         studentDto.setId(getId());

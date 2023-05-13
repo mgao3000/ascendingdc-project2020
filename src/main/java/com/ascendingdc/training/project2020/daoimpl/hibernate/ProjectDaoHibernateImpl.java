@@ -4,7 +4,7 @@ import com.ascendingdc.training.project2020.dao.hibernate.ProjectDao;
 import com.ascendingdc.training.project2020.entity.Major;
 import com.ascendingdc.training.project2020.entity.Project;
 import com.ascendingdc.training.project2020.exception.EntityCannotBeDeletedDueToNonEmptyChildrenException;
-import com.ascendingdc.training.project2020.exception.EntityNotExistException;
+import com.ascendingdc.training.project2020.exception.ItemNotFoundException;
 import com.ascendingdc.training.project2020.util.HQLStatementUtil;
 import com.ascendingdc.training.project2020.util.HibernateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -80,7 +80,7 @@ public class ProjectDaoHibernateImpl extends AbstractDaoHibernateImpl implements
         int deleteCount = 0;
         Project retrievedProject = getProjectWithAssociatedStudentsByName(projectName);
         if(retrievedProject == null) {
-            throw new EntityNotExistException("Cannot find the Project by the projectName to be deleted. input projectName = " + projectName);
+            throw new ItemNotFoundException("Cannot find the Project by the projectName to be deleted. input projectName = " + projectName);
         }
         if(nonStudentsAssociatedWithProject(retrievedProject)) {
             Transaction transaction = null;
@@ -123,7 +123,7 @@ public class ProjectDaoHibernateImpl extends AbstractDaoHibernateImpl implements
         Project retrievedProject = getProjectWithAssociatedStudentsById(projectId);
 //        logger.info("================#####$$$$$$$$, retrievedProject.getStudents().size()={}", retrievedProject.getStudents().size());
         if(retrievedProject == null) {
-            throw new EntityNotExistException("Cannot find the Project by the projectId to be deleted. input projectId = " + projectId);
+            throw new ItemNotFoundException("Cannot find the Project by the projectId to be deleted. input projectId = " + projectId);
         }
         if(nonStudentsAssociatedWithProject(retrievedProject)) {
             Transaction transaction = null;

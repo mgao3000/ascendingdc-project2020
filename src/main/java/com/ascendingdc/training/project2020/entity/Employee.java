@@ -48,6 +48,7 @@ public class Employee {
     public EmployeeDto convertEmployeeToEmployeeDto() {
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId(getId());
+        employeeDto.setName(getName());
         employeeDto.setEmail(getEmail());
         employeeDto.setFirstName(getFirstName());
         employeeDto.setLastName(getLastName());

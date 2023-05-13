@@ -1,7 +1,10 @@
 package com.ascendingdc.training.project2020.dto;
 
+import com.ascendingdc.training.project2020.entity.Role;
+import com.ascendingdc.training.project2020.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto {
@@ -84,6 +87,41 @@ public class UserDto {
 
     public void setRoleDtoSet(Set<RoleDto> roleDtoSet) {
         this.roleDtoSet = roleDtoSet;
+    }
+
+    public User convertUserDtoToUser() {
+        User user = new User();
+        user.setId(getId());
+        user.setName(getName());
+        user.setPassword(getPassword());
+        user.setSecretKey(getSecretKey());
+        user.setFirstName(getFirstName());
+        user.setLastName(getLastName());
+        user.setEmail(getEmail());
+        user.setRoles(getRolesByRoleDtoSet(getRoleDtoSet()));
+        return user;
+    }
+
+    private Set<Role> getRolesByRoleDtoSet(Set<RoleDto> roleDtoSet) {
+        Set<Role> roleSet = new HashSet<>();
+        for(RoleDto roleDto : roleDtoSet) {
+            Role role = convertRoleDtoToRoleWithoutUser(roleDto);
+            roleSet.add(role);
+        }
+        return roleSet;
+    }
+
+    private Role convertRoleDtoToRoleWithoutUser(RoleDto roleDto) {
+        Role role = new Role();
+        role.setId(roleDto.getId());
+        role.setName(roleDto.getName());
+        role.setAllowedResource(roleDto.getAllowedResource());
+        role.setAllowedRead(roleDto.isAllowedRead());
+        role.setAllowedCreate(roleDto.isAllowedCreate());
+        role.setAllowedUpdate(roleDto.isAllowedUpdate());
+        role.setAllowedDelete(roleDto.isAllowedDelete());
+//        role.setUsers(getusersByUserDtoSet(roleDto.getUserDtoSet()));
+        return role;
     }
 
     @Override

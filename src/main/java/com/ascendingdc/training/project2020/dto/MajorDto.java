@@ -1,10 +1,9 @@
 package com.ascendingdc.training.project2020.dto;
 
 import com.ascendingdc.training.project2020.entity.Major;
+import com.ascendingdc.training.project2020.entity.Student;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class MajorDto {
 
@@ -22,15 +21,26 @@ public class MajorDto {
 
     private String description;
 
-    private List<StudentDto> studentList = new ArrayList<StudentDto>();
+    private List<StudentDto> studentDtoList = new ArrayList<StudentDto>();
 
     public Major convertMajorDtoToMajor() {
         Major major = new Major();
         if(getId() != null)
             major.setId(getId());
         major.setName(getName());
-        major.setDescription(getDescription());
+        major.setDescription(this.getDescription());
+        Set<Student> studentSet = getStudentSetByStudentDtoList(this.getStudentDtoList());
+        major.setStudents(studentSet);
         return major;
+    }
+
+    private Set<Student> getStudentSetByStudentDtoList(List<StudentDto> studentDtoList) {
+        Set<Student> studentSet = new HashSet<>();
+        for(StudentDto studentDto : studentDtoList) {
+            Student student = studentDto.convertStudentDtoToStudent();
+            studentSet.add(student);
+        }
+        return studentSet;
     }
 
 //    public MajorDto convertMajorToMajorDto(Major major) {
@@ -58,6 +68,9 @@ public class MajorDto {
     }
 
     public String getDescription() {
+//        if(description != null && description.length() > 10) {
+//            return description + " mike";
+//        }
         return description;
     }
 
@@ -65,12 +78,12 @@ public class MajorDto {
         this.description = description;
     }
 
-    public List<StudentDto> getStudentList() {
-        return studentList;
+    public List<StudentDto> getStudentDtoList() {
+        return studentDtoList;
     }
 
-    public void setStudentList(List<StudentDto> studentList) {
-        this.studentList = studentList;
+    public void setStudentDtoList(List<StudentDto> studentDtoList) {
+        this.studentDtoList = studentDtoList;
     }
 
     @Override

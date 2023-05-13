@@ -90,14 +90,17 @@ public class SecurityFilter implements Filter {
         try {
             String wholeTokenString = req.getHeader("Authorization");
             String token = wholeTokenString.replaceAll("^(.*?) ", "");
+            logger.info("====== retrieved JWT token={}", token);
             if (token == null || token.trim().isEmpty())
                 return statusCode;
 
 //            Claims claims = JwtUtil.decodeJwtToken(token);
             Claims claims = jwtService.decryptJwtToken(token);
+            logger.info("===== after parsing JWT token, claims.getId()={}", claims.getId());
             //TODO pass username and check role
             if(claims.getId()!=null){
                 UserDto userDto = userService.getUserById(Long.valueOf(claims.getId()));
+                logger.info("====== Now using userId={}, retrieved userDto={}", claims.getId(), userDto);
                 if(userDto == null)
                     return statusCode;
 //                if(u==null)  statusCode = HttpServletResponse.SC_ACCEPTED;

@@ -7,6 +7,8 @@
 
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.RoleDto;
+import com.ascendingdc.training.project2020.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -55,8 +57,8 @@ public class User {
 
     //@ManyToMany(mappedBy = "users", cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
 //    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-//    @ManyToMany(fetch = FetchType.EAGER)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
+//    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") }
@@ -141,6 +143,42 @@ public class User {
         this.getRoles().remove(role);
         role.getUsers().remove(this);
     }
+
+    public UserDto convertUserToUserDto() {
+        UserDto userDto = new UserDto();
+        userDto.setId(getId());
+        userDto.setName(getName());
+        userDto.setPassword(getPassword());
+        userDto.setSecretKey(getSecretKey());
+        userDto.setFirstName(getFirstName());
+        userDto.setLastName(getLastName());
+        userDto.setEmail(getEmail());
+        userDto.setRoleDtoSet(getRoleDtoSetByRolesWithoutUserDto(getRoles()));
+        return userDto;
+    }
+
+    private Set<RoleDto> getRoleDtoSetByRolesWithoutUserDto(Set<Role> roles) {
+        Set<RoleDto> roleDtoSet = new HashSet<>();
+        for(Role role : roles) {
+            RoleDto roleDto = convertRoleToRoleDtoWithoutUser(role);
+            roleDtoSet.add(roleDto);
+        }
+        return roleDtoSet;
+    }
+
+    private static RoleDto convertRoleToRoleDtoWithoutUser(Role role) {
+        RoleDto roleDto = new RoleDto();
+        roleDto.setId(role.getId());
+        roleDto.setName(role.getName());
+        roleDto.setAllowedResource(role.getAllowedResource());
+        roleDto.setAllowedRead(role.isAllowedRead());
+        roleDto.setAllowedCreate(role.isAllowedCreate());
+        roleDto.setAllowedUpdate(role.isAllowedUpdate());
+        roleDto.setAllowedDelete(role.isAllowedDelete());
+//        roleDto.setUserDtoSet(getUserDtoSetByUsers(role.getUsers()));
+        return roleDto;
+    }
+
 
 
     @Override

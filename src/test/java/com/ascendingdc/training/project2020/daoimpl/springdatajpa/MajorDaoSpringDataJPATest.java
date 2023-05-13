@@ -259,7 +259,7 @@ public class MajorDaoSpringDataJPATest extends AbstractDaoSpringDataJPATest {
     }
 
     @Test
-    @Transactional
+//    @Transactional
     public void testMajorCascadeSaving() {
         //Step 1: create a temp Major
         Major major = createMajorByName(tempMajorName);

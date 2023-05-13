@@ -59,16 +59,18 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public int delete(Role role) {
+    public boolean delete(Role role) {
         String hql = "DELETE FROM Role as role where role.id=:Id";
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        int deleteResult = 0;
+        boolean deleteResult = false;
         try {
             Query<User> query = session.createQuery(hql);
             query.setParameter("Id", role.getId());
-            deleteResult = query.executeUpdate();
+            int deleteResultIntValue = query.executeUpdate();
             transaction.commit();
+            if(deleteResultIntValue > 0)
+                deleteResult = true;
         }catch (HibernateException he){
             if(transaction != null)
                 transaction.rollback();

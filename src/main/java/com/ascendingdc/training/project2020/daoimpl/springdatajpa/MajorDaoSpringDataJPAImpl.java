@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +82,11 @@ public class MajorDaoSpringDataJPAImpl implements MajorDao {
 
     @Override
     public List<Major> getMajors() {
-        return majorRepository.findAll();
+        List<Major> majorList = majorRepository.findAll();
+        if(majorList == null)
+            majorList = new ArrayList<Major>();
+        return majorList;
+
     }
 
     @Override
@@ -100,7 +105,10 @@ public class MajorDaoSpringDataJPAImpl implements MajorDao {
 
     @Override
     public List<Major> getMajorsWithChildren() {
-        return majorRepository.findAllMajorsWithStudentsAndProjects();
+        List<Major> majorList = majorRepository.findAllMajorsWithStudentsAndProjects();
+        if(majorList == null)
+            majorList = new ArrayList<Major>();
+        return majorList;
     }
 
     @Override

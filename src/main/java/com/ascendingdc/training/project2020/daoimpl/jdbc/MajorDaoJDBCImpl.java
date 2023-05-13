@@ -594,7 +594,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                     eachStudent.setProjectDtoList(projectList);
                 }
 
-                major.setStudentList(studentList);
+                major.setStudentDtoList(studentList);
                 majors.add(major);
             }
         }
@@ -676,7 +676,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                     eachStudent.setProjectDtoList(projectList);
                 }
 
-                retrievedMajor.setStudentList(studentList);
+                retrievedMajor.setStudentDtoList(studentList);
             }
         }
         catch(Exception e){
@@ -760,7 +760,7 @@ public class MajorDaoJDBCImpl implements MajorDao {
                     eachStudent.setProjectDtoList(projectList);
                 }
 
-                retrievedMajor.setStudentList(studentList);
+                retrievedMajor.setStudentDtoList(studentList);
             }
         }
         catch(Exception e){

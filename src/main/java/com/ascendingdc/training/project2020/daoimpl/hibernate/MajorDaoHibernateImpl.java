@@ -3,7 +3,7 @@ package com.ascendingdc.training.project2020.daoimpl.hibernate;
 import com.ascendingdc.training.project2020.dao.hibernate.MajorDao;
 import com.ascendingdc.training.project2020.entity.Major;
 import com.ascendingdc.training.project2020.exception.EntityCannotBeDeletedDueToNonEmptyChildrenException;
-import com.ascendingdc.training.project2020.exception.EntityNotExistException;
+import com.ascendingdc.training.project2020.exception.ItemNotFoundException;
 import com.ascendingdc.training.project2020.util.HQLStatementUtil;
 import com.ascendingdc.training.project2020.util.HibernateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +15,6 @@ import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +83,7 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
         int deleteCount = 0;
         Major retrievedMajor = getMajorAndStudentsAndProjectsByMajorName(majorName);
         if(retrievedMajor == null) {
-            throw new EntityNotExistException("Cannot find the Major by the majorName to be deleted. input majorName = " + majorName);
+            throw new ItemNotFoundException("Cannot find the Major by the majorName to be deleted. input majorName = " + majorName);
         }
         if(!majorHasStudents(retrievedMajor)) {
             Transaction transaction = null;
@@ -126,7 +125,7 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
         boolean deleteResult = false;
         Major retrievedMajor = getMajorAndStudentsAndProjectsByMajorId(majorId);
         if(retrievedMajor == null) {
-            throw new EntityNotExistException("Cannot find the Major by the majorId to be deleted. input majorId = " + majorId);
+            throw new ItemNotFoundException("Cannot find the Major by the majorId to be deleted. input majorId = " + majorId);
         }
         if(!majorHasStudents(retrievedMajor)) {
             Transaction transaction = null;

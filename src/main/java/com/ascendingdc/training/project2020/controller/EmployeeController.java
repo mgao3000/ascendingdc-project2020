@@ -13,11 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+//@Controller
 @RequestMapping(value = {"/ems", "/employees"})
 public class EmployeeController {
 //    @Autowired private Logger logger;
@@ -31,10 +33,12 @@ public class EmployeeController {
         return employeeService.getEmployees();
     }
 
+//    @ResponseBody
     @RequestMapping(value = "/{name}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public EmployeeDto getEmployeeByName(@PathVariable String name) {
         return employeeService.getEmployeeByName(name);
     }
+
 
     @RequestMapping(value = "/department/{deptName}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto, @PathVariable String deptName) {

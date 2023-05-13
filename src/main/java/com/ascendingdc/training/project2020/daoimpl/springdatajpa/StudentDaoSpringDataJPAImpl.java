@@ -11,6 +11,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,7 +99,12 @@ public class StudentDaoSpringDataJPAImpl implements StudentDao {
 
     @Override
     public List<Project> getAssociatedProjectsByStudentLoginName(String loginName) {
-        return studentRepository.findProjectsByStudentLoginName(loginName);
+ //       return studentRepository.findProjectsByStudentLoginName(loginName);
+        List<Project> projectList = studentRepository.findProjectsByStudentLoginName(loginName);
+        if(projectList == null) {
+            projectList = new ArrayList<>();
+        }
+        return projectList;
     }
 
     @Override

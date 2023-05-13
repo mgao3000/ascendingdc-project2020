@@ -4,7 +4,7 @@ import com.ascendingdc.training.project2020.dao.hibernate.StudentDao;
 import com.ascendingdc.training.project2020.entity.Project;
 import com.ascendingdc.training.project2020.entity.Student;
 import com.ascendingdc.training.project2020.exception.EntityCannotBeDeletedDueToNonEmptyChildrenException;
-import com.ascendingdc.training.project2020.exception.EntityNotExistException;
+import com.ascendingdc.training.project2020.exception.ItemNotFoundException;
 import com.ascendingdc.training.project2020.util.HQLStatementUtil;
 import com.ascendingdc.training.project2020.util.HibernateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Repository("studentHibernateDao")
 public class StudentDaoHibernateImpl extends AbstractDaoHibernateImpl implements StudentDao {
     private Logger logger = LoggerFactory.getLogger(StudentDaoHibernateImpl.class);
 
@@ -71,7 +71,7 @@ public class StudentDaoHibernateImpl extends AbstractDaoHibernateImpl implements
         int deleteCount = 0;
         Student retrievedStudent = getStudentWithAssociatedProjectsByLoginName(loginName);
         if(retrievedStudent == null) {
-            throw new EntityNotExistException("Cannot find the Student by the loginName to be deleted. input loginName = " + loginName);
+            throw new ItemNotFoundException("Cannot find the Student by the loginName to be deleted. input loginName = " + loginName);
         }
         if(!studentHasAssociatedProjects(retrievedStudent)) {
             Transaction transaction = null;
@@ -118,7 +118,7 @@ public class StudentDaoHibernateImpl extends AbstractDaoHibernateImpl implements
         boolean deleteResult = false;
         Student retrievedStudent = getStudentWithAssociatedProjectsByStudentId(studentId);
         if(retrievedStudent == null) {
-            throw new EntityNotExistException("Cannot find the Student by the studentId to be deleted. input studentId = " + studentId);
+            throw new ItemNotFoundException("Cannot find the Student by the studentId to be deleted. input studentId = " + studentId);
         }
         if(!studentHasAssociatedProjects(retrievedStudent)) {
             Transaction transaction = null;

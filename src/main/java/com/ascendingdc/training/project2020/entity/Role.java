@@ -7,6 +7,8 @@
 
 package com.ascendingdc.training.project2020.entity;
 
+import com.ascendingdc.training.project2020.dto.RoleDto;
+import com.ascendingdc.training.project2020.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -127,6 +129,42 @@ public class Role {
     public void removeUser(User user) {
         this.getUsers().remove(user);
         user.getRoles().remove(this);
+    }
+
+
+    public RoleDto convertRoleToRoleDto() {
+        RoleDto roleDto = new RoleDto();
+        roleDto.setId(getId());
+        roleDto.setName(getName());
+        roleDto.setAllowedResource(getAllowedResource());
+        roleDto.setAllowedRead(isAllowedRead());
+        roleDto.setAllowedCreate(isAllowedCreate());
+        roleDto.setAllowedUpdate(isAllowedUpdate());
+        roleDto.setAllowedDelete(isAllowedDelete());
+        roleDto.setUserDtoSet(getUserDtoSetByUsers(getUsers()));
+        return roleDto;
+    }
+
+    private static Set<UserDto> getUserDtoSetByUsers(Set<User> users) {
+        Set<UserDto> userDtoSet = new HashSet<>();
+        for(User user : users) {
+            UserDto userDto = convertUserToUserDtoWithoutRole(user);
+            userDtoSet.add(userDto);
+        }
+        return userDtoSet;
+    }
+
+    public static UserDto convertUserToUserDtoWithoutRole(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setPassword(user.getPassword());
+        userDto.setSecretKey(user.getSecretKey());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+//        userDto.setRoleDtoSet(getRoleDtoSetByRolesWithoutUserDto(user.getRoles()));
+        return userDto;
     }
 
     @Override

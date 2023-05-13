@@ -71,6 +71,16 @@ public class StudentServiceImpl implements StudentService {
         return studentDtoList;
     }
 
+    public List<ProjectDto> getAssociatedProjectsByStudentLoginName(String loginName)  {
+        List<Project> projectList = studentDao.getAssociatedProjectsByStudentLoginName(loginName);
+        List<ProjectDto> projectDtoList = new ArrayList<>();
+        for(Project project : projectList) {
+            ProjectDto projectDto = project.convertProjectToProjectDto();
+            projectDtoList.add(projectDto);
+        }
+        return projectDtoList;
+    }
+
     @Override
     public StudentDto getStudentById(Long id) {
         Student student = studentDao.getStudentById(id);

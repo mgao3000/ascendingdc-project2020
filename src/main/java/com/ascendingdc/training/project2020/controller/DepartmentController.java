@@ -53,6 +53,29 @@ public class DepartmentController {
         return department;
     }
 
+    @RequestMapping(value = "/singleheaders/{deptName}", method = RequestMethod.GET, headers="name=abc", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public DepartmentDto getDepartmentUsingOneHeaderValue(@PathVariable String deptName) {
+        DepartmentDto department = departmentService.getDepartmentEagerByName(deptName);
+        return department;
+    }
+
+    @RequestMapping(value = "/multiheaders/{deptName}", method = RequestMethod.GET, headers={"name=abc", "id=1"}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public DepartmentDto getDepartmentUsingTwoHeaderValue(@PathVariable String deptName) {
+        DepartmentDto department = departmentService.getDepartmentEagerByName(deptName);
+        return department;
+    }
+
+    @RequestMapping(value = "/pathparamtest/{deptName}", method = RequestMethod.GET, produces = {"text/plain"})
+    public String pathParamTest(@PathVariable String deptName, @RequestParam("id") int id) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("path variable:")
+                .append(deptName)
+                .append(",   input param:")
+                .append(id);
+        logger.info("======= before return , stringBuilder={}", stringBuilder.toString());
+        return stringBuilder.toString();
+    }
+
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public DepartmentDto createDepartment(@RequestBody DepartmentDto departmentDto) {
         logger.debug("Department: " + departmentDto.toString());

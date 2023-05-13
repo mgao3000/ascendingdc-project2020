@@ -1,14 +1,15 @@
 package com.ascendingdc.training.project2020.service.impl;
 
 import com.ascendingdc.training.project2020.dao.hibernate.MajorDao;
+import com.ascendingdc.training.project2020.dao.hibernate.StudentDao;
 import com.ascendingdc.training.project2020.dto.MajorDto;
 import com.ascendingdc.training.project2020.dto.ProjectDto;
 import com.ascendingdc.training.project2020.dto.StudentDto;
 import com.ascendingdc.training.project2020.entity.Major;
 import com.ascendingdc.training.project2020.entity.Project;
 import com.ascendingdc.training.project2020.entity.Student;
+import com.ascendingdc.training.project2020.exception.ItemNotFoundException;
 import com.ascendingdc.training.project2020.service.MajorService;
-import com.ascendingdc.training.project2020.util.DtoAndEntityConvertUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class MajorServiceImpl implements MajorService {
     @Autowired
     @Qualifier("majorSpringDataJPADao")
     protected MajorDao majorDao;
+
+    @Autowired
+    @Qualifier("studentSpringDataJPADao")
+    protected StudentDao studentDao;
 
     @Override
     public MajorDto save(MajorDto majorDto) {
@@ -72,6 +77,7 @@ public class MajorServiceImpl implements MajorService {
     public List<MajorDto> getMajors() {
         List<Major> majorList = majorDao.getMajors();
         List<MajorDto> majorDtoList = new ArrayList<>();
+        studentDao.getStudents();
         for(Major major : majorList) {
 //            MajorDto majorDto = DtoAndEntityConvertUtil.convertMajorToMajorDto(major);
             MajorDto majorDto = major.convertMajorToMajorDto();
@@ -82,17 +88,26 @@ public class MajorServiceImpl implements MajorService {
 
     @Override
     public MajorDto getMajorById(Long id) {
+        MajorDto majorDto = null;
         Major major = majorDao.getMajorById(id);
 //        MajorDto majorDto = DtoAndEntityConvertUtil.convertMajorToMajorDto(major);
-        MajorDto majorDto = major.convertMajorToMajorDto();
+        if(major != null) {
+            majorDto = major.convertMajorToMajorDto();
+        } else {
+            throw new ItemNotFoundException(String.format("Could not find Major with id = %d", id));
+        }
         return majorDto;
     }
 
     @Override
     public MajorDto getMajorByName(String majorName) {
+        MajorDto majorDto = null;
         Major major = majorDao.getMajorByName(majorName);
-//        MajorDto majorDto = DtoAndEntityConvertUtil.convertMajorToMajorDto(major);
-        MajorDto majorDto = major.convertMajorToMajorDto();
+        if(major != null) {
+            majorDto = major.convertMajorToMajorDto();
+        } else {
+            throw new ItemNotFoundException(String.format("Could not find Major with name = %s", majorName));
+        }
         return majorDto;
     }
 
@@ -104,7 +119,7 @@ public class MajorServiceImpl implements MajorService {
 //            MajorDto majorDto = DtoAndEntityConvertUtil.convertMajorToMajorDto(major);
             MajorDto majorDto = major.convertMajorToMajorDto();
             List<StudentDto> studentDtoList = getAssociatedStudentDtoList(major.getStudents());
-            majorDto.setStudentList(studentDtoList);
+            majorDto.setStudentDtoList(studentDtoList);
             majorDtoList.add(majorDto);
         }
         return majorDtoList;
@@ -133,9 +148,12 @@ public class MajorServiceImpl implements MajorService {
     @Override
     public MajorDto getMajorAndStudentsAndProjectsByMajorId(Long majorId) {
         Major major = majorDao.getMajorAndStudentsAndProjectsByMajorId(majorId);
+        if(major == null) {
+            throw new ItemNotFoundException(String.format("Could not find Major with is=%d", majorId));
+        }
         MajorDto majorDto = major.convertMajorToMajorDto();
         List<StudentDto> studentDtoList = getAssociatedStudentDtoList(major.getStudents());
-        majorDto.setStudentList(studentDtoList);
+        majorDto.setStudentDtoList(studentDtoList);
 
         return majorDto;
     }
@@ -143,9 +161,12 @@ public class MajorServiceImpl implements MajorService {
     @Override
     public MajorDto getMajorAndStudentsAndProjectsByMajorName(String majorName) {
         Major major = majorDao.getMajorAndStudentsAndProjectsByMajorName(majorName);
+        if(major == null) {
+            throw new ItemNotFoundException(String.format("Could not find Major with is=%s", majorName));
+        }
         MajorDto majorDto = major.convertMajorToMajorDto();
         List<StudentDto> studentDtoList = getAssociatedStudentDtoList(major.getStudents());
-        majorDto.setStudentList(studentDtoList);
+        majorDto.setStudentDtoList(studentDtoList);
 
         return majorDto;
     }

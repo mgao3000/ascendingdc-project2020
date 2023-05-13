@@ -1,6 +1,7 @@
 package com.ascendingdc.training.project2020.service;
 
 import com.ascendingdc.training.project2020.dao.hibernate.MajorDao;
+import com.ascendingdc.training.project2020.dao.hibernate.StudentDao;
 import com.ascendingdc.training.project2020.dto.MajorDto;
 import com.ascendingdc.training.project2020.dto.ProjectDto;
 import com.ascendingdc.training.project2020.dto.StudentDto;
@@ -32,6 +33,10 @@ import static org.mockito.Mockito.*;
 public class MajorServiceTest {
 
     private Logger logger = LoggerFactory.getLogger(MajorServiceTest.class);
+
+    @Mock(name="studentSpringDataJPADao")
+//    @Qualifier("majorSpringDataJPADao")
+    private StudentDao mockStudentDao;
 
     @Mock(name="majorSpringDataJPADao")
 //    @Qualifier("majorSpringDataJPADao")
@@ -160,13 +165,45 @@ public class MajorServiceTest {
 
     @Test
     public void testFindAllMajors() {
+//        List<Student> spyStudentList = spy(ArrayList.class);
+//        spyStudentList.add(mock(Student.class));
+
+        List<Major> spyMajorList = mock(ArrayList.class);
+
+        Iterator iterator = mock(Iterator.class);
+        when(spyMajorList.iterator()).thenReturn(iterator);
+
+        when(mockMajor.convertMajorToMajorDto()).thenReturn(mockMajorDto);
+        when(mockMajorDao.getMajors()).thenReturn(spyMajorList);
+        when(iterator.next()).thenReturn(mockMajor);
+        when(iterator.hasNext()).thenReturn(true, true, true, true, false);
+
+//        when(mockStudentDao.getStudents()).thenReturn(spyStudentList);
+
+        List<MajorDto> majorDtoList = majorService.getMajors();
+
+        assertEquals(4, majorDtoList.size(), "The majorDtoList.size() should return 3");
+
+        verify(mockMajor, times(4)).convertMajorToMajorDto();
+        verify(mockMajorDao, times(1)).getMajors();
+
+//        verify(mockStudentDao, times(1)).getStudents();
+    }
+
+    @Test
+    public void testFindAllMajorsUsingSpy() {
+//        List<Student> spyStudentList = spy(ArrayList.class);
+//        spyStudentList.add(mock(Student.class));
+
         List<Major> spyMajorList = spy(ArrayList.class);
         spyMajorList.add(mockMajor);
         spyMajorList.add(mockMajor);
         spyMajorList.add(mockMajor);
 
-         when(mockMajor.convertMajorToMajorDto()).thenReturn(mockMajorDto);
+        when(mockMajor.convertMajorToMajorDto()).thenReturn(mockMajorDto);
         when(mockMajorDao.getMajors()).thenReturn(spyMajorList);
+
+//        when(mockStudentDao.getStudents()).thenReturn(spyStudentList);
 
         List<MajorDto> majorDtoList = majorService.getMajors();
 
@@ -174,6 +211,8 @@ public class MajorServiceTest {
 
         verify(mockMajor, times(3)).convertMajorToMajorDto();
         verify(mockMajorDao, times(1)).getMajors();
+
+//        verify(mockStudentDao, times(1)).getStudents();
     }
 
     @Test

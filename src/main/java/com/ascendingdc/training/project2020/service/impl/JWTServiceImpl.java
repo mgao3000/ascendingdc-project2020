@@ -20,6 +20,7 @@ import java.util.Set;
 public class JWTServiceImpl implements JWTService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private final String SECRET_KEY = System.getProperty("secret.key");
+//    private final String SECRET_KEY = System.getenv("secret.key");
     private final String ISSUER = "com.ascending";
     private final long EXPIRATION_TIME = 86400 * 1000;
 
@@ -33,7 +34,7 @@ public class JWTServiceImpl implements JWTService {
    6. generate the token
 
          */
-
+        logger.info("==================, input SECRET_KEY = {}", SECRET_KEY);
 
         //JWT signature algorithm using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;

@@ -1,12 +1,11 @@
 package com.ascendingdc.training.project2020.entity;
 
 import com.ascendingdc.training.project2020.dto.MajorDto;
+import com.ascendingdc.training.project2020.dto.StudentDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "major")
@@ -31,12 +30,25 @@ public class Major {
     @Column(name ="description")
     private String description;
 
+//  private int age;
+
     public MajorDto convertMajorToMajorDto() {
         MajorDto majorDto = new MajorDto();
         majorDto.setId(getId());
         majorDto.setName(getName());
         majorDto.setDescription(getDescription());
+        List<StudentDto> studentDtoList = getMajorDtoListFromMajorSet(getStudents());
+        majorDto.setStudentDtoList(studentDtoList);
         return majorDto;
+    }
+
+    private List<StudentDto> getMajorDtoListFromMajorSet(Set<Student> students) {
+        List<StudentDto> studentDtoList = new ArrayList<>();
+        for(Student student : students) {
+            StudentDto studentDto = student.convertStudentToStudentDto();
+            studentDtoList.add(studentDto);
+        }
+        return studentDtoList;
     }
 
     //    public Major convertMajorDtoToMajor(MajorDto majorDto) {
@@ -135,5 +147,11 @@ public class Major {
                 ", description='" + description + '\'' +
                 '}';
     }
+
+
+//    id                BIGSERIAL NOT NULL,
+//    name              VARCHAR(30) not null unique,
+//    description       VARCHAR(150)
+
 
 }

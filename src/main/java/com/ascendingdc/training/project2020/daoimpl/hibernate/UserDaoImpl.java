@@ -10,6 +10,7 @@ package com.ascendingdc.training.project2020.daoimpl.hibernate;
 import com.ascendingdc.training.project2020.dao.hibernate.UserDao;
 import com.ascendingdc.training.project2020.entity.Role;
 import com.ascendingdc.training.project2020.entity.User;
+import com.ascendingdc.training.project2020.exception.UserNotFoundException;
 import com.ascendingdc.training.project2020.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -77,7 +78,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserByCredentials(String email, String password) throws Exception {
+    public User getUserByCredentials(String email, String password) throws UserNotFoundException {
 //        String hql = "FROM User as u where (lower(u.email) = :email or lower(u.name) =:email) and u.password = :password";
 //        String hql = "FROM User as u join fetch u.roles where (lower(u.email) = :email or lower(u.name) =:email) and u.password = :password";
         String hql = "FROM User as u join fetch u.roles where lower(u.email) = :email and u.password = :password";
@@ -92,7 +93,7 @@ public class UserDaoImpl implements UserDao {
         }
         catch (Exception e){
             logger.error("error: {}", e.getMessage());
-            throw new Exception("can't find user record or session");
+            throw new UserNotFoundException("can't find user record with email="+email + ", password="+password);
         }
     }
 
@@ -119,16 +120,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int delete(User user) {
+    public boolean delete(User user) {
         String hql = "DELETE FROM User as u where u.id=:Id";
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        int deleteResult = 0;
+        boolean deleteResult = false;
         try {
             Query<User> query = session.createQuery(hql);
             query.setParameter("Id", user.getId());
-            deleteResult = query.executeUpdate();
+            int deleteResultIntValue = query.executeUpdate();
             transaction.commit();
+            if(deleteResultIntValue > 0)
+                deleteResult = true;
         }catch (HibernateException he){
             if(transaction != null)
                 transaction.rollback();

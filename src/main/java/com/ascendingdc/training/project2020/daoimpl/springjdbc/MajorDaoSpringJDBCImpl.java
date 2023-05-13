@@ -109,7 +109,7 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
                         new ProjectMapper(), new Object[] {student.getId()});
                 student.setProjectDtoList(projectList);
             }
-            major.setStudentList(studentList);
+            major.setStudentDtoList(studentList);
         }
         return allMajors;
     }
@@ -127,7 +127,7 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
                         new ProjectMapper(), new Object[] {student.getId()});
                 student.setProjectDtoList(projectList);
             }
-            retrievedMajor.setStudentList(studentList);
+            retrievedMajor.setStudentDtoList(studentList);
         } catch (EmptyResultDataAccessException e) {
             //do nothing
         }
@@ -147,7 +147,7 @@ public class MajorDaoSpringJDBCImpl implements MajorDao {
                         new ProjectMapper(), new Object[] {student.getId()});
                 student.setProjectDtoList(projectList);
             }
-            retrievedMajor.setStudentList(studentList);
+            retrievedMajor.setStudentDtoList(studentList);
 
         } catch (EmptyResultDataAccessException e) {
             //do nothing
