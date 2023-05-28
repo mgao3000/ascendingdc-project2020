@@ -163,10 +163,10 @@ public class MajorControllerTest {
     }
 
     @Test
-    public void testGetMajorByName() throws Exception {
+    public void testGetMajorByName_happy_path() throws Exception {
         String majorName = "aaa";
         MajorDto majorDto = createMajorDtoByName(majorName);
-        Long majorId = 101L;;
+        Long majorId = 101L;
         majorDto.setId(majorId);
 
         String requestJsonString = JsonStringUtil.convertObjectToJsonString(majorName);

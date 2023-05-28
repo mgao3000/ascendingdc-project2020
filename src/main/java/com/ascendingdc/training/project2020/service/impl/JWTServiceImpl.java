@@ -16,23 +16,22 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Set;
 
-@Service
+//@Service("jwtService")
 public class JWTServiceImpl implements JWTService {
     private Logger logger = LoggerFactory.getLogger(getClass());
-    private final String SECRET_KEY = System.getProperty("secret.key");
-//    private final String SECRET_KEY = System.getenv("secret.key");
+//    private final String SECRET_KEY = System.getProperty("secret.key");
+    private final String SECRET_KEY = System.getenv("secret.key");
     private final String ISSUER = "com.ascending";
     private final long EXPIRATION_TIME = 86400 * 1000;
 
     public String generateToken(UserDto userDto) {
         /*
            1. decide signature algorithm
-   2. hard code secret key  -- late ruse VM option to pass in the key
-   3. sign JWT with key
-   4.  organize our payload:  Claims ---> map   cliams has some prefefined keys   ,  add your own custom key/value pairs
-   5. set claims JWT api
-   6. generate the token
-
+         * 2. hard code secret key  -- late ruse VM option to pass in the key
+         * 3. sign JWT with key
+         * 4. organize our payload:  Claims ---> map   cliams has some prefefined keys   ,  add your own custom key/value pairs
+         * 5. set claims JWT api
+         * 6. generate the token
          */
         logger.info("==================, input SECRET_KEY = {}", SECRET_KEY);
 
@@ -62,13 +61,13 @@ public class JWTServiceImpl implements JWTService {
 
         for (RoleDto roleDto : roles) {
             if (roleDto.isAllowedRead())
-                allowedReadResources = String.join(roleDto.getAllowedResource(), allowedReadResources, ",");
+                allowedReadResources = String.join(",", roleDto.getAllowedResource(), allowedReadResources);
             if (roleDto.isAllowedCreate())
-                allowedCreateResources = String.join(roleDto.getAllowedResource(), allowedCreateResources, ",");
+                allowedCreateResources = String.join(",", roleDto.getAllowedResource(), allowedCreateResources);
             if (roleDto.isAllowedUpdate())
-                allowedUpdateResources = String.join(roleDto.getAllowedResource(), allowedUpdateResources, ",");
+                allowedUpdateResources = String.join(",", roleDto.getAllowedResource(), allowedUpdateResources);
             if (roleDto.isAllowedDelete())
-                allowedDeleteResources = String.join(roleDto.getAllowedResource(), allowedDeleteResources, ",");
+                allowedDeleteResources = String.join(",", roleDto.getAllowedResource(), allowedDeleteResources);
         }
 
 ///        for (Role role : roles) {
@@ -122,5 +121,27 @@ public class JWTServiceImpl implements JWTService {
             logger.error("ExpiredJwtException is thrown when decryptJwtToken(token) in hasTokenExpired(token) is called, error={}", ex.getMessage());
         }
         return hasExpiredFlag;
+    }
+
+    @Override
+    public boolean validateAccessToken(String token) {
+        boolean isTokenValid = false;
+        try {
+            byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
+            Jwts.parser().setSigningKey(apiKeySecretBytes).parseClaimsJws(token);
+            isTokenValid = true;
+        } catch (ExpiredJwtException ex) {
+            logger.error("JWT expired", ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            logger.error("Token is null, empty or only whitespace", ex.getMessage());
+        } catch (MalformedJwtException ex) {
+            logger.error("JWT is invalid", ex);
+        } catch (UnsupportedJwtException ex) {
+            logger.error("JWT is not supported", ex);
+        } catch (SignatureException ex) {
+            logger.error("Signature validation failed");
+        }
+
+        return isTokenValid;
     }
 }

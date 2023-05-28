@@ -3,6 +3,7 @@ package com.ascendingdc.training.project2020.daoimpl.springdatajpa;
 import com.ascendingdc.training.project2020.dao.hibernate.MajorDao;
 import com.ascendingdc.training.project2020.daoimpl.repository.MajorRepository;
 import com.ascendingdc.training.project2020.entity.Major;
+import com.ascendingdc.training.project2020.exception.ItemNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,9 @@ public class MajorDaoSpringDataJPAImpl implements MajorDao {
 //        return majorRepository.deleteByName(majorName) > 0;
         boolean successFlag = false;
         try {
-            majorRepository.deleteByName(majorName);
-            successFlag = true;
+            int deleteResult = majorRepository.deleteByName(majorName);
+            if(deleteResult > 0)
+                successFlag = true;
         } catch (IllegalArgumentException iae) {
             logger.error("caught IllegalArgumentException when trying deleteByName with majorName={}, error={}", majorName, iae.getMessage());
         } catch (OptimisticLockingFailureException olfe) {
@@ -56,8 +58,11 @@ public class MajorDaoSpringDataJPAImpl implements MajorDao {
     public boolean deleteById(Long majorId) {
         boolean successFlag = false;
         try {
-            majorRepository.deleteById(majorId);
-            successFlag = true;
+            Optional<Major> optionalMajor = majorRepository.findById(majorId);
+            if(optionalMajor.isPresent()) {
+                majorRepository.deleteById(majorId);
+                successFlag = true;
+            }
         } catch (IllegalArgumentException iae) {
             logger.error("caught IllegalArgumentException when trying deleteById with majorId={}, error={}", majorId, iae.getMessage());
         } catch (OptimisticLockingFailureException olfe) {
@@ -69,15 +74,26 @@ public class MajorDaoSpringDataJPAImpl implements MajorDao {
     @Override
     public boolean delete(Major major) {
         boolean successFlag = false;
+        if(major != null) {
+            successFlag = deletingMajor(major);
+        }
+        return successFlag;
+    }
+
+    private boolean deletingMajor(Major major) {
+        boolean deleteFlag = false;
         try {
-            majorRepository.delete(major);
-            successFlag = true;
+                Optional<Major> optionalMajor = majorRepository.findById(major.getId());
+                if(optionalMajor.isPresent()) {
+                    majorRepository.delete(major);
+                    deleteFlag = true;
+                }
         } catch (IllegalArgumentException iae) {
             logger.error("caught IllegalArgumentException when trying delete major, error={}", iae.getMessage());
         } catch (OptimisticLockingFailureException olfe) {
             logger.error("caught OptimisticLockingFailureException when trying delete major, error={}", olfe.getMessage());
         }
-        return successFlag;
+        return deleteFlag;
     }
 
     @Override

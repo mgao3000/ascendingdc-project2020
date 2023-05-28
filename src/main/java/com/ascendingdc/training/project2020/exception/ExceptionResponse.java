@@ -6,16 +6,17 @@ public class ExceptionResponse {
 
     private String message;
 
+    private LocalDateTime dateTime;
+
+    private String description;
+
+
     public ExceptionResponse(String message, LocalDateTime dateTime, String description) {
         this.message = message;
         this.dateTime = dateTime;
         this.description = description;
     }
 
-    private LocalDateTime dateTime;
-
-
-    private String description;
 
     public String getMessage() {
         return message;
@@ -38,4 +39,12 @@ public class ExceptionResponse {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "ExceptionResponse{" +
+                "message='" + message + '\'' +
+                ", dateTime=" + dateTime +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

@@ -4,15 +4,18 @@ import com.ascendingdc.training.project2020.entity.Department;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+//@Controller
 @RequestMapping(value = "/world")
 public class HelloWorldController {
 //    @Autowired
 //    private Logger logger;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+//    @ResponseBody
     @GetMapping(value="hello", produces = MediaType.APPLICATION_JSON_VALUE)
 //    @RequestMapping(value = "hello", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String Hello() {

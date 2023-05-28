@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Repository
+@Repository("userDaoHibernateImpl")
 public class UserDaoImpl implements UserDao {
     private Logger logger=LoggerFactory.getLogger(getClass());
 

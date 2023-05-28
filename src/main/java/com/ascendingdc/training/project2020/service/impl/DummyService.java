@@ -30,4 +30,25 @@ public class DummyService {
             return "Not Good";
         }
     }
+
+    public char[] findDuplicateChars(char[] charArray) {
+        char[] duplicateCharArray = new char[charArray.length];
+
+        // write your code here
+
+        return duplicateCharArray;
+    }
+
+
+    /*
+     * assume the input intArray does not have any negative numbers
+     */
+    public int findSecondLargestNumber(int [] intArray) {
+        int secondLargestNumber = 0;
+
+        // write your code here
+
+
+        return secondLargestNumber;
+    }
 }

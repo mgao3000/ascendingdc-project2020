@@ -9,16 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+//@Component
+@WebFilter(filterName = "jwtTokenFilter", urlPatterns = {"/xxx/yyy"}, dispatcherTypes = {DispatcherType.REQUEST})
 public class JwtTokenFilter extends OncePerRequestFilter {
 	@Autowired
 	private JwtTokenUtil jwtUtil;
@@ -80,4 +84,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 //
 //		return userDetails;
 //	}
+
+	/*
+	 * sample of bypass this filter
+	 */
+//	@Override
+//	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//		return new AntPathMatcher().match("/api/v1/menus", request.getServletPath());
+//	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		return new AntPathMatcher().match("/proj2020/*", request.getServletPath());
+	}
 }

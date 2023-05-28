@@ -48,8 +48,8 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserById(Long userId) {
         User user = userDao.getUserById(userId);
         logger.info("======= Inside UserServiceImpl.java, getUserById(...) method, using userId={}, retrieved user={}", userId, user);
-//        UserDto userDto = DtoAndEntityConvertUtil.convertUserToUserDto(user);
-        UserDto userDto = user.convertUserToUserDto();
+        UserDto userDto = DtoAndEntityConvertUtil.convertUserToUserDto(user);
+//        UserDto userDto = user.convertUserToUserDto();
         logger.info("======= Inside UserServiceImpl.java, getUserById(...) method, using userId={}, converted userDto={}", userId, userDto);
         return userDto;
     }

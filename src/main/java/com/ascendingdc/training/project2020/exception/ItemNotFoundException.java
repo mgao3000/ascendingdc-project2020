@@ -1,8 +1,11 @@
 package com.ascendingdc.training.project2020.exception;
 
-public class ItemNotFoundException extends RuntimeException {
+import java.io.Serial;
+import java.io.Serializable;
 
-    private static final long serialVersionUID = 1415548448625453136L;
+public class ItemNotFoundException extends RuntimeException {
+    @Serial
+    private static final long serialVersionUID = 6621182640863473898L;
 
     public ItemNotFoundException() {
         super();

@@ -17,6 +17,8 @@ import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -24,10 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(filterName = "securityFilter", urlPatterns = {"/proj2020/*"}, dispatcherTypes = {DispatcherType.REQUEST})
-public class SecurityFilter implements Filter {
+@WebFilter(filterName = "securityFilter", urlPatterns = {"/xxx/*"}, dispatcherTypes = {DispatcherType.REQUEST})
+//public class SecurityFilter implements Filter {
+public class SecurityFilter extends OncePerRequestFilter {
 //    @Autowired private Logger logger;
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     @Autowired
     private UserService userService;
@@ -37,32 +40,46 @@ public class SecurityFilter implements Filter {
 
     private static String AUTH_URI = "/auth";  //"/hi";  //"/auth";
 
-    @Override
-    public void init(FilterConfig filterConfig) {
-        // TODO Auto-generated method stub
-    }
+//    @Override
+//    public void init(FilterConfig filterConfig) {
+//        // TODO Auto-generated method stub
+//    }
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+//    @Override
+//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+////        HttpServletRequest req = (HttpServletRequest)request;
+////        int statusCode = authorization(req);
+////        if (statusCode == HttpServletResponse.SC_ACCEPTED) filterChain.doFilter(request, response);
+////        else ((HttpServletResponse)response).sendError(statusCode);
+////        filterChain.doFilter(request, response);
+//
+//  //==========================================================
 //        HttpServletRequest req = (HttpServletRequest)request;
+//        HttpServletResponse resp = (HttpServletResponse)response;
+//
+/////        int statusCode = authorization(req);
 //        int statusCode = authorization(req);
-//        if (statusCode == HttpServletResponse.SC_ACCEPTED) filterChain.doFilter(request, response);
-//        else ((HttpServletResponse)response).sendError(statusCode);
-//        filterChain.doFilter(request, response);
+//        if (statusCode == HttpServletResponse.SC_ACCEPTED)
+//            filterChain.doFilter(request, response);
+//        else
+//            resp.sendError(statusCode);
+////        filterChain.doFilter(request, response);
+//
+//
+//    }
 
-  //==========================================================
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse resp = (HttpServletResponse)response;
 
-///        int statusCode = authorization(req);
         int statusCode = authorization(req);
         if (statusCode == HttpServletResponse.SC_ACCEPTED)
             filterChain.doFilter(request, response);
         else
             resp.sendError(statusCode);
-//        filterChain.doFilter(request, response);
-
-
     }
 
     public void destroy() {
@@ -89,7 +106,8 @@ public class SecurityFilter implements Filter {
         String httpMethodValue = req.getMethod();
         try {
             String wholeTokenString = req.getHeader("Authorization");
-            String token = wholeTokenString.replaceAll("^(.*?) ", "");
+//            String token = wholeTokenString.replaceAll("^(.*?) ", "");
+            String token = wholeTokenString.split(" ")[1].trim();
             logger.info("====== retrieved JWT token={}", token);
             if (token == null || token.trim().isEmpty())
                 return statusCode;
@@ -103,6 +121,8 @@ public class SecurityFilter implements Filter {
                 logger.info("====== Now using userId={}, retrieved userDto={}", claims.getId(), userDto);
                 if(userDto == null)
                     return statusCode;
+//                else
+//                    return HttpServletResponse.SC_ACCEPTED;
 //                if(u==null)  statusCode = HttpServletResponse.SC_ACCEPTED;
             }
 
@@ -128,6 +148,7 @@ public class SecurityFilter implements Filter {
 
             String [] allowedResourceArray = allowedResources.split(",");
             for (String eachAllowedResourceString : allowedResourceArray) {
+                logger.info("========================, uri={},  eachAllowedResourceString={}", uri, eachAllowedResourceString);
                 if (uri.trim().toLowerCase().startsWith(eachAllowedResourceString.trim().toLowerCase())) {
                     statusCode = HttpServletResponse.SC_ACCEPTED;
                     break;
@@ -142,5 +163,12 @@ public class SecurityFilter implements Filter {
 
         return statusCode;
     }
+
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        return true;
+////        return new AntPathMatcher().match("/proj2020/*", request.getServletPath());
+//    }
+
 
 }

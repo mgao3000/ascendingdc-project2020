@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = {"/auth"})
+@RequestMapping(value = {"/auth/temp"})
 public class AuthController {
 //    @Autowired private Logger logger;
     private Logger logger = LoggerFactory.getLogger(getClass());

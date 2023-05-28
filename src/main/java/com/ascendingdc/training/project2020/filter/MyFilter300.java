@@ -2,6 +2,7 @@ package com.ascendingdc.training.project2020.filter;//package com.ascending.trai
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -10,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 //@Component
-//@Order(20)
-@WebFilter(filterName = "myFilter", urlPatterns = {"/world/hi/*"}, dispatcherTypes = {DispatcherType.REQUEST})
-public class MyFilter300 implements Filter {
+@Order(20)
+@WebFilter(filterName = "myFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST})
+public class    MyFilter300 implements Filter {
 //    @Autowired
 //    private Logger logger;
     private Logger logger = LoggerFactory.getLogger(getClass());

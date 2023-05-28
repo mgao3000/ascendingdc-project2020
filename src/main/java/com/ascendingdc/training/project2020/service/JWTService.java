@@ -11,4 +11,6 @@ public interface JWTService {
     Claims decryptJwtToken(String token);
 
     boolean hasTokenExpired(String token);
+
+    boolean validateAccessToken(String token);
 }

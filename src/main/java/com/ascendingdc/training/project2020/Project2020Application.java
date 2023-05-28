@@ -8,7 +8,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
 //@ServletComponentScan("com.ascendingdc.training.project2020.filter")
-//@ServletComponentScan
+@ServletComponentScan
 public class Project2020Application {
 
 	public static void main(String[] args) {

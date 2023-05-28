@@ -94,7 +94,7 @@ public class MajorServiceImpl implements MajorService {
         if(major != null) {
             majorDto = major.convertMajorToMajorDto();
         } else {
-            throw new ItemNotFoundException(String.format("Could not find Major with id = %d", id));
+            throw new ItemNotFoundException("Could not find Major with id = " + id);
         }
         return majorDto;
     }

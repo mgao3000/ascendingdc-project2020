@@ -2,6 +2,8 @@ package com.ascendingdc.training.project2020.filter;//package com.ascending.trai
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -12,6 +14,7 @@ import java.io.IOException;
 //@Component
 //@Order(1)
 @WebFilter(filterName = "myFilter2", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST})
+@Order(3)
 public class MyFilter200 implements Filter {
 //    @Autowired
 //    private Logger logger;
@@ -27,8 +30,13 @@ public class MyFilter200 implements Filter {
         logger.info("2222222222 pre action from MySecondFilter, RequestURI={}", req.getRequestURI());
         logger.info("2222222222 pre action from MySecondFilter, Header={}", req.getHeader("testHeader"));
 
-        //do something to keep the request flow going through the chain
-        filterChain.doFilter(req, resp);
+//        int intValue = 10;
+//        if(intValue > 0) {
+//            resp.sendError(HttpStatus.UNAUTHORIZED.value());
+//        } else {
+            //do something to keep the request flow going through the chain
+            filterChain.doFilter(req, resp);
+//        }
 
         //do something after post execution
         logger.info("2222222222 post action from MySecondFilter, status={}", resp.getStatus());

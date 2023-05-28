@@ -1,5 +1,7 @@
 package com.ascendingdc.training.project2020.service.impl;
 
+import com.ascendingdc.training.project2020.aop.annotations.Loggable;
+import com.ascendingdc.training.project2020.aop.annotations.TrackTime;
 import com.ascendingdc.training.project2020.dao.hibernate.DepartmentDao;
 import com.ascendingdc.training.project2020.dto.DepartmentDetailDto;
 import com.ascendingdc.training.project2020.dto.DepartmentDto;
@@ -60,6 +62,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         return deleteResult;
     }
 
+    @Loggable
+    @TrackTime
     @Override
     public List<DepartmentDto> getDepartments() {
         List<Department> departmentList = departmentDao.getDepartments();

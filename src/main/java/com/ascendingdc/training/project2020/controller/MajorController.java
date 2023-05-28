@@ -1,5 +1,7 @@
 package com.ascendingdc.training.project2020.controller;
 
+import com.ascendingdc.training.project2020.aop.annotations.Loggable;
+import com.ascendingdc.training.project2020.aop.annotations.TrackTime;
 import com.ascendingdc.training.project2020.dto.MajorDto;
 import com.ascendingdc.training.project2020.exception.ItemNotFoundException;
 import com.ascendingdc.training.project2020.exception.ExceptionResponse;
@@ -26,6 +28,8 @@ public class MajorController {
     @Autowired
     private MajorService majorService;
 
+    @Loggable
+    @TrackTime
     @GetMapping(path="/majors", produces = "application/json")
     public List<MajorDto> getAllMajors() {
         List<MajorDto> majorDtoList = majorService.getMajors();
@@ -42,7 +46,7 @@ public class MajorController {
         } catch (ItemNotFoundException e) {
             ExceptionResponse exceptionResponse = new ExceptionResponse("ItemNotFoundException", LocalDateTime.now(), e.getMessage());
             responseEntity =  new ResponseEntity<Object>(exceptionResponse, HttpStatus.NOT_FOUND);
-
+//            throw new ItemNotFoundException(e.getMessage());
         }
         return responseEntity;
 //        MajorDto majorDto = majorService.getMajorById(majorId);

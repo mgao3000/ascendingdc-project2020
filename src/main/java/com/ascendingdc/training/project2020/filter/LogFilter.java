@@ -9,6 +9,7 @@ package com.ascendingdc.training.project2020.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @WebFilter(filterName = "logFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST})
+//@Order(2)
 public class LogFilter implements Filter {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -34,6 +36,7 @@ public class LogFilter implements Filter {
         long startTime = System.currentTimeMillis();
         HttpServletRequest req = (HttpServletRequest)request;
         String logInfo = logInfo(req);
+        logger.info("###@@@$$$ retrieved logInfo = {}", logInfo);
         logger.info("###@@@$$$ Starting time: {}", String.valueOf(startTime));
         filterChain.doFilter(request, response);
         logger.info(logInfo.replace("responseTime", String.valueOf(System.currentTimeMillis() - startTime)));

@@ -70,8 +70,9 @@ public class Major {
 ///    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Student> students;
 
+
 //    @PreRemove
-//    private void removeStudentFromMajor() {
+//    private removeStudentFromMajor() {
 //        for(Student student : getStudents()) {
 //            student.getMajor();
 //        }

@@ -12,8 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,6 +31,7 @@ public class JWTServiceTest {
     private JWTService jwtService;
 
     @Autowired
+    @Qualifier("userSpringDataJPADao")
     private UserDao userDao;
 
     private User user;
@@ -79,6 +84,8 @@ public class JWTServiceTest {
         String passwordEncryptedWithMD5Hex = DigestUtils.md5Hex(passwordInPlainText);
         logger.info("=====, the original password value is: {}, after MD5HEX encrypted, the value becomes {}",
                 passwordInPlainText, passwordEncryptedWithMD5Hex);
+
+
     }
 
     @Test
@@ -89,5 +96,36 @@ public class JWTServiceTest {
         boolean tokenExpirationFlag = jwtService.hasTokenExpired(token);
         assertFalse(tokenExpirationFlag);
     }
+
+    @Test
+    public void stringJoinMethodTest() {
+        String urlResourcesOne = "/employees,/ems,/accounts";
+        String urlResourcesTwo = "/xxx,/yyy,/zzz,/";
+        String allowedResources = "";
+
+        allowedResources = String.join(urlResourcesOne, allowedResources, ",");
+        logger.info("=============, after join urlResourcesOne, allowedResources={}", allowedResources);
+
+        allowedResources = String.join(urlResourcesTwo, allowedResources, ",");
+        logger.info("=============, after join urlResourcesTwo, allowedResources={}", allowedResources);
+
+    }
+
+    @Test
+    public void stringJoinMethodUsingDelimiterTest() {
+        String urlResourcesOne = "/employees,/ems,/accounts";
+        String urlResourcesTwo = "/xxx,/yyy,/zzz,/";
+        String allowedResources = "";
+
+        allowedResources = String.join(",", urlResourcesOne, allowedResources);
+        logger.info("=============, after join urlResourcesOne using Delimiter, allowedResources={}", allowedResources);
+
+        allowedResources = String.join(",", urlResourcesTwo, allowedResources);
+        logger.info("=============, after join urlResourcesTwo using Delimiter, allowedResources={}", allowedResources);
+
+        String message = String.join(",", "This", "is", "a", "");
+        logger.info("==========, message={}", message);
+    }
+
 
 }

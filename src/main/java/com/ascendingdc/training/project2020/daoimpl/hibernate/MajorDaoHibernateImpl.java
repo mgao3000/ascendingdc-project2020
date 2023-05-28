@@ -25,6 +25,9 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
 
     @Override
     public Major save(Major major) {
+//                    String description = major.getDescription();
+//            major.setDescription(major.getName() + "_changeit");
+
         Transaction transaction = null;
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -39,9 +42,9 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
 //                major.setId(id);
 //            }
 //            session.saveOrUpdate(major);
-            session.persist(major);
+            session.persist(major); //session.save(major);
 //            String description = major.getDescription();
- //           major.setDescription(major.getName() + "_changeit");
+//            major.setDescription(major.getName() + "_changeit");
 //            major.setDescription(description);
             transaction.commit();
         } catch (Exception e) {
@@ -52,6 +55,7 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
             session.close();
         }
 //        major.setDescription("hahaha");
+//        major.setDescription("bbb");
         return major;
     }
 
@@ -223,6 +227,8 @@ public class MajorDaoHibernateImpl extends AbstractDaoHibernateImpl implements M
             query.setParameter("id", majorId);
 
             major = query.uniqueResult();
+//            major.setName("aaa");
+//            major.setDescription("bbb");
         } catch (HibernateException he) {
             logger.error("fail to retrieve major with id={}, error={}", majorId, he.getMessage());
         } finally {

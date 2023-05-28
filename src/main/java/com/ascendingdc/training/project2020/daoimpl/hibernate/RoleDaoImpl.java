@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Repository("roleDaoHibernateImpl")
 public class RoleDaoImpl implements RoleDao {
     private Logger logger= LoggerFactory.getLogger(getClass());
 
