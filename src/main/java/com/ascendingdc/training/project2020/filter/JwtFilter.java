@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -36,9 +37,20 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
-    private String AUTH_URI = "/auth";
-    private String AUTH_URI_EXTERNAL = "/project2020/auth";
+//    private String AUTH_URI = "/auth";
+//    private String AUTH_URI_EXTERNAL = "/project2020/auth";
 
+    @Value("${AUTH_URI}")
+    private String AUTH_URI;
+
+    @Value("${EXTERNAL_AUTH_URI}")
+    private String AUTH_URI_EXTERNAL;
+
+    /*
+     * When the app is deployed to external Tomcat, spring DI unable to be fulfilled,
+     * therefore, we need to override the following method which is inherited from GenericFilterBean
+     * to initialize the DI components manually.
+     */
     @Override
     public void initFilterBean() throws ServletException {
 
@@ -179,6 +191,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private boolean incomingUriRequestForAuth(String uri) {
         boolean isUriRequestForAuth = false;
+        logger.info("=============== input AUTH_URI={}", AUTH_URI);
+        logger.info("=============== input AUTH_URI_EXTERNAL={}", AUTH_URI_EXTERNAL);
         if(uri.equalsIgnoreCase(AUTH_URI) || uri.equalsIgnoreCase(AUTH_URI_EXTERNAL)) {
             isUriRequestForAuth = true;
         }

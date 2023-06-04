@@ -14,7 +14,8 @@
 	<groupId>com.ascendingdc.training</groupId>
 	<artifactId>project2020</artifactId>
 
-<!--	<packaging>war</packaging>-->
+	<packaging>war</packaging>
+<!--	<packaging>jar</packaging>-->
 
 	<version>0.0.1-SNAPSHOT</version>
 	<name>project2020</name>
@@ -107,11 +108,11 @@
 <!--&lt;!&ndash;			<scope>provided</scope>&ndash;&gt;-->
 <!--		</dependency>-->
 		<!-- Instruct spring boot not to use the inbuilt Tomcat server -->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
-<!--			<scope>provided</scope>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.flywaydb</groupId>

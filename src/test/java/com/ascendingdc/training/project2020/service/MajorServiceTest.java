@@ -200,6 +200,13 @@ public class MajorServiceTest {
         spyMajorList.add(mockMajor);
         spyMajorList.add(mockMajor);
 
+//        List<Major> majorList = new ArrayList<Major>(3);
+//        List<Major> spyMajorList = spy(majorList);
+//        Major major = createMajorByName("aaa");
+//        spyMajorList.add(mockMajor);
+//        spyMajorList.add(mockMajor);
+//        spyMajorList.add(mockMajor);
+
         when(mockMajor.convertMajorToMajorDto()).thenReturn(mockMajorDto);
         when(mockMajorDao.getMajors()).thenReturn(spyMajorList);
 
