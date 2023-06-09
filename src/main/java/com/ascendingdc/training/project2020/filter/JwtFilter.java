@@ -51,20 +51,20 @@ public class JwtFilter extends OncePerRequestFilter {
      * therefore, we need to override the following method which is inherited from GenericFilterBean
      * to initialize the DI components manually.
      */
-    @Override
-    public void initFilterBean() throws ServletException {
-
-//        WebApplicationContext webApplicationContext =
-//                WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-//        //reference to bean from app context
-//        jwtService = webApplicationContext.getBean(JwtServiceOneImpl.class);
-//        userService = webApplicationContext.getBean(UserService.class);
-
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, getServletContext());
-
-        //do something with your bean
-//        propertyValue = yourBeanToInject.getValue("propertyName");
-    }
+//    @Override
+//    public void initFilterBean() throws ServletException {
+//
+////        WebApplicationContext webApplicationContext =
+////                WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+////        //reference to bean from app context
+////        jwtService = webApplicationContext.getBean(JwtServiceOneImpl.class);
+////        userService = webApplicationContext.getBean(UserService.class);
+//
+//        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, getServletContext());
+//
+//        //do something with your bean
+////        propertyValue = yourBeanToInject.getValue("propertyName");
+//    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
